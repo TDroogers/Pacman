@@ -1,40 +1,44 @@
 package nl.drogecode.pacman;
 
+import java.util.ArrayList;
+
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 
 public class Man extends Circle
 {
   private Stage stage;
+  private Map map;
   private Thread th;
   private Sleeper sleep = new Sleeper();
-  private double x, y, newX, newY, maxX, maxY;
+  private double oldX, oldY, x, y, newX, newY, maxX, maxY;
   private int direction;
-  private final int SPEED = 3;
+  private final int SPEED = 2;
   private boolean walking;
 
-  public Man(Stage stage)
+  public Man(Stage stage, Map map)
   {
     this.stage = stage;
-    setCenterX(100);
-    setCenterY(100);
+    this.map = map;
+    setCenterX(22);
+    setCenterY(47);
     setFill(Color.YELLOW);
     setRadius(5.0);
-    
+
     startMove();
   }
-  
+
   public void setDirection(int newDir)
   {
     direction = newDir;
   }
 
   /*
-   * ===================================================
-   * private funcitons
+   * =================================================== private funcitons
    * ===================================================
    * 
    * loop
@@ -61,56 +65,77 @@ public class Man extends Circle
     walking = true;
     while (walking)
     {
-      newX = x = getCenterX();
-      newY = y = getCenterY();
+      newX = getCenterX();
+      newY = getCenterY();
       walker();
-      if (!checkBumpWall())
+      if (!checkBumpBorder())
       {
         sleep.sleeper(30);
         continue;
       }
       updateMan();
+      oldX = x;
+      oldY = y;
+      x = newX;
+      y = newY;
       sleep.sleeper(30);
     }
   }
-  
+
   /*
-   * ===================================================
-   * Stuff while in loop
+   * =================================================== Stuff while in loop
    */
-  
+
   private void walker()
   {
-    switch(direction)
+    switch (direction)
     {
-      case 0:
+      case 1:
         newY = y - SPEED;
         break;
-      
-      case 1:
-        newX = x + SPEED;
-        break; 
-        
+
       case 2:
+        newX = x + SPEED;
+        break;
+
+      case 3:
         newY = y + SPEED;
         break;
-        
-      case 3:
+
+      case 4:
         newX = x - SPEED;
         break;
     }
   }
 
-  private boolean checkBumpWall()
+  private boolean checkBumpBorder()
   {
     // Has to be side specific, but fine for now.
     if (newX > maxX || newX < 0 || newY > maxY || newY < 25)
     {
+      direction = 0;
       return false;
     }
     return true;
   }
-  
+
+  private void checkBumpWall()
+  {
+    ArrayList<Shape> shapes = map.getShapeAray();
+
+    for (Shape shape : shapes)
+    {
+      if (getBoundsInParent().intersects(shape.getBoundsInParent()))
+      {
+        System.out.println("bam");
+        direction = 0;
+        setCenterX(oldX);
+        setCenterY(oldY);
+        return;
+      }
+    }
+  }
+
   private void updateMan()
   {
     Platform.runLater(new Runnable()
@@ -119,6 +144,7 @@ public class Man extends Circle
       {
         setCenterX(newX);
         setCenterY(newY);
+        checkBumpWall();
       }
     });
   }

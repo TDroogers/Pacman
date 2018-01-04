@@ -28,8 +28,8 @@ public class Pacman extends Application
     /*
      * create objects
      */
-    Man man = new Man(primaryStage);
-    new Map(root);
+    Map map = new Map(root);
+    Man man = new Man(primaryStage, map);
     
     /*
      * keybord reader
@@ -66,7 +66,7 @@ public class Pacman extends Application
     /*
      * Make menu visable.
      */
-    Scene scene = new Scene(root, 400, 400);
+    Scene scene = new Scene(root, 700, 400);
     pane.prefHeightProperty().bind(scene.heightProperty());
     pane.prefWidthProperty().bind(scene.widthProperty());
     pane.setTop(menuBar);

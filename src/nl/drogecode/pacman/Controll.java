@@ -33,19 +33,19 @@ public class Controll
     switch (keyCode)
     {
       case UP:
-        man.setDirection(0);
-        break;
-        
-      case RIGHT:
         man.setDirection(1);
         break;
         
-      case DOWN:
+      case RIGHT:
         man.setDirection(2);
         break;
         
-      case LEFT:
+      case DOWN:
         man.setDirection(3);
+        break;
+        
+      case LEFT:
+        man.setDirection(4);
         break;
 
       default:

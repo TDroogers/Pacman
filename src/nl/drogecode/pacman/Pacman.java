@@ -28,7 +28,8 @@ public class Pacman extends Application
     /*
      * create objects
      */
-    Map map = new Map(root);
+    Score score = new Score();
+    Map map = new Map(root, score);
     Man man = new Man(primaryStage, map);
     
     /*
@@ -39,7 +40,7 @@ public class Pacman extends Application
     /*
      * Start building 
      */
-    root.getChildren().addAll(pane, man);
+    root.getChildren().addAll(pane, man, score);
     primaryStage.setTitle("Pacman");
     primaryStage.setResizable(false);
     primaryStage.show();

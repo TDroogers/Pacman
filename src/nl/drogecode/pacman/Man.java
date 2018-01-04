@@ -74,6 +74,7 @@ public class Man extends Circle
         continue;
       }
       updateMan();
+      checkBumpCoin();
       oldX = x;
       oldY = y;
       x = newX;
@@ -121,16 +122,30 @@ public class Man extends Circle
 
   private void checkBumpWall()
   {
-    ArrayList<Shape> shapes = map.getShapeAray();
+    ArrayList<Shape> shapes = map.getShapeArray();
 
     for (Shape shape : shapes)
     {
       if (getBoundsInParent().intersects(shape.getBoundsInParent()))
       {
-        System.out.println("bam");
         direction = 0;
         setCenterX(oldX);
         setCenterY(oldY);
+        return;
+      }
+    }
+  }
+  
+  private void checkBumpCoin()
+  {
+    ArrayList<Shape> coins = map.getCoinsArray();
+    
+    for (Shape coin : coins)
+    {
+      if (getBoundsInParent().intersects(coin.getBoundsInParent()))
+      {
+        map.remove(coin, 1);
+        coins.remove(coin);
         return;
       }
     }

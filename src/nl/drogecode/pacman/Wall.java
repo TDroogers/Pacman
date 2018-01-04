@@ -7,7 +7,7 @@ public class Wall extends Rectangle
 {
   public Wall(double x, double y, Character direction, double howFar)
   {
-    this(x, y, direction, howFar, Color.GRAY);
+    this(x, y, direction, howFar, Color.ANTIQUEWHITE);
   }
 
   public Wall(double x, double y, Character direction, double howFar, Color color)

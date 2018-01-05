@@ -20,7 +20,7 @@ public class Pacman extends Application
   Score score;
   Map map;
   Man man;
-  GameLogic logic;
+  GameLogic logic = new GameLogic();
   
   @Override public void start(Stage primaryStage)
   {
@@ -35,9 +35,10 @@ public class Pacman extends Application
      */
     score = new Score();
     map = new Map(root, score);
-    man = new Man(primaryStage, map);
+    man = new Man(primaryStage, map, logic);
+    Ghost.setStatics(primaryStage, man, logic);
     
-    logic = new GameLogic(map, man, score);
+    logic.setStuff(map, man, score);
     
     /*
      * keybord reader

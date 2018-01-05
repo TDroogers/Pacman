@@ -9,11 +9,12 @@ import javafx.scene.shape.Shape;
 
 public class Map
 {
-  Group root;
-  Score score;
-  ArrayList<Shape> shape;
-  ArrayList<Shape> coins;
-  int scoreCounter;
+  private volatile Group root;
+  private volatile Score score;
+  private volatile ArrayList<Shape> shape;
+  private volatile ArrayList<Shape> coins;
+  private volatile ArrayList<Shape> ghosts;
+  private volatile int scoreCounter;
 
   public Map(Group root, Score score)
   {
@@ -29,9 +30,11 @@ public class Map
     {
       root.getChildren().removeAll(coins);
       root.getChildren().removeAll(shape);
+      root.getChildren().removeAll(ghosts);
     }
     drawWalls();
     drawCoins();
+    drawGhosts();
   }
 
   public ArrayList<Shape> getShapeArray()
@@ -111,6 +114,15 @@ public class Map
     drawCoinRow(115, 123, 'x', 5);
     
     root.getChildren().addAll(coins);
+  }
+  
+  private void drawGhosts()
+  {
+    ghosts = new ArrayList<>();
+    
+    ghosts.add(new Ghost(50, 100));
+    
+    root.getChildren().addAll(ghosts);
   }
   
   private void drawCoinRow(double x, double y, Character c, int count)

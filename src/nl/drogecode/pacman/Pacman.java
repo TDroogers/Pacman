@@ -17,6 +17,11 @@ public class Pacman extends Application
     launch(args);
   }
   
+  Score score;
+  Map map;
+  Man man;
+  GameLogic logic;
+  
   @Override public void start(Stage primaryStage)
   {
     Group root = new Group();
@@ -28,9 +33,11 @@ public class Pacman extends Application
     /*
      * create objects
      */
-    Score score = new Score();
-    Map map = new Map(root, score);
-    Man man = new Man(primaryStage, map);
+    score = new Score();
+    map = new Map(root, score);
+    man = new Man(primaryStage, map);
+    
+    logic = new GameLogic(map, man, score);
     
     /*
      * keybord reader
@@ -60,6 +67,7 @@ public class Pacman extends Application
      * Make menu doe stuff.
      */
     add1.setOnAction(e -> System.out.println(e));
+    add2.setOnAction(e -> logic.restart());
     menuFile.getItems().addAll(add1);
     menuFile.getItems().addAll(add2);
     menuBar.getMenus().addAll(menuFile);

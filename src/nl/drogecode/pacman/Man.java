@@ -24,12 +24,20 @@ public class Man extends Circle
   {
     this.stage = stage;
     this.map = map;
-    setCenterX(22);
-    setCenterY(47);
     setFill(Color.YELLOW);
     setRadius(5.0);
-
+    
+    restart();
     startMove();
+  }
+  
+  public void restart()
+  {
+    x = newX = oldX = 22;
+    y = newY = oldY = 47;
+    setCenterX(x);
+    setCenterY(y);
+    direction = 0;
   }
 
   public void setDirection(int newDir)
@@ -38,7 +46,10 @@ public class Man extends Circle
   }
 
   /*
-   * =================================================== private funcitons
+   * ===================================================
+   * 
+   * private funcitons
+   * 
    * ===================================================
    * 
    * loop
@@ -62,11 +73,11 @@ public class Man extends Circle
   {
     maxX = stage.getScene().getWidth();
     maxY = stage.getScene().getHeight();
+    newX = getCenterX();
+    newY = getCenterY();
     walking = true;
     while (walking)
     {
-      newX = getCenterX();
-      newY = getCenterY();
       walker();
       if (!checkBumpBorder())
       {
@@ -74,6 +85,7 @@ public class Man extends Circle
         continue;
       }
       updateMan();
+      checkBumpWall();
       checkBumpCoin();
       oldX = x;
       oldY = y;
@@ -84,7 +96,9 @@ public class Man extends Circle
   }
 
   /*
-   * =================================================== Stuff while in loop
+   * ===================================================
+   * 
+   * Stuff while in loop
    */
 
   private void walker()
@@ -129,17 +143,18 @@ public class Man extends Circle
       if (getBoundsInParent().intersects(shape.getBoundsInParent()))
       {
         direction = 0;
-        setCenterX(oldX);
-        setCenterY(oldY);
+        updateMan();
+        x = newX = oldX;
+        y = newY = oldY;
         return;
       }
     }
   }
-  
+
   private void checkBumpCoin()
   {
     ArrayList<Shape> coins = map.getCoinsArray();
-    
+
     for (Shape coin : coins)
     {
       if (getBoundsInParent().intersects(coin.getBoundsInParent()))
@@ -159,7 +174,6 @@ public class Man extends Circle
       {
         setCenterX(newX);
         setCenterY(newY);
-        checkBumpWall();
       }
     });
   }

@@ -12,6 +12,11 @@ import javafx.stage.Stage;
 
 public class Pacman extends Application
 {
+  Score score;
+  Map map;
+  Man man;
+  GameLogic logic;
+  
   public static void main(String[] args)
   {
     launch(args);
@@ -21,16 +26,20 @@ public class Pacman extends Application
   {
     Group root = new Group();
     BorderPane pane = new BorderPane();
-    Scene scene = setScene(root, pane);
+    Scene scene = getScene(root, pane);
     scene.setFill(Color.BLACK);
     primaryStage.setScene(scene);
     
     /*
      * create objects
      */
-    Score score = new Score();
-    Map map = new Map(root, score);
-    Man man = new Man(primaryStage, map);
+    logic = new GameLogic();
+    score = new Score();
+    map = new Map(root, score);
+    man = new Man(primaryStage, map, logic);
+    Ghost.setStatics(primaryStage, man, logic);
+    
+    logic.setStuff(map, man, score);
     
     /*
      * keybord reader
@@ -46,7 +55,7 @@ public class Pacman extends Application
     primaryStage.show();
   }
   
-  private Scene setScene(Group root, BorderPane pane)
+  private Scene getScene(Group root, BorderPane pane)
   {
     /*
      * Construct menu.
@@ -60,6 +69,7 @@ public class Pacman extends Application
      * Make menu doe stuff.
      */
     add1.setOnAction(e -> System.out.println(e));
+    add2.setOnAction(e -> logic.restart());
     menuFile.getItems().addAll(add1);
     menuFile.getItems().addAll(add2);
     menuBar.getMenus().addAll(menuFile);

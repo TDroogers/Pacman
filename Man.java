@@ -9,27 +9,37 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 
-public class Man extends Circle
+public class Man extends Circle implements Cloneable
 {
-  private Stage stage;
-  private Map map;
-  private Thread th;
+  private volatile Stage stage;
+  private volatile Map map;
+  private volatile GameLogic logic;
+  private volatile Thread th;
   private Sleeper sleep = new Sleeper();
-  private double oldX, oldY, x, y, newX, newY, maxX, maxY;
-  private int direction;
+  private volatile double oldX, oldY, x, y, newX, newY, maxX, maxY;
+  private volatile int direction;
   private final int SPEED = 2;
-  private boolean walking;
+  private volatile boolean walking;
 
-  public Man(Stage stage, Map map)
+  public Man(Stage stage, Map map, GameLogic logic)
   {
     this.stage = stage;
     this.map = map;
-    setCenterX(22);
-    setCenterY(47);
+    this.logic = logic;
     setFill(Color.YELLOW);
     setRadius(5.0);
 
+    restart();
     startMove();
+  }
+
+  public void restart()
+  {
+    x = newX = oldX = 22;
+    y = newY = oldY = 47;
+    setCenterX(x);
+    setCenterY(y);
+    direction = 0;
   }
 
   public void setDirection(int newDir)
@@ -37,39 +47,67 @@ public class Man extends Circle
     direction = newDir;
   }
 
+  public double getXman()
+  {
+    return x;
+  }
+
+  public double getYman()
+  {
+    return y;
+  }
+
+  public void startMove()
+  {
+    if (!walking)
+    {
+      Task<Void> task = new Task<Void>()
+      {
+        @Override protected Void call() throws Exception
+        {
+          sleep.sleeper(60);
+          initiateLoop();
+          return null;
+        }
+      };
+      th = new Thread(task);
+      th.setDaemon(true);
+      th.start();
+    }
+  }
+
   /*
-   * =================================================== private funcitons
+   * ===================================================
+   * 
+   * private funcitons
+   * 
    * ===================================================
    * 
    * loop
    */
-  private void startMove()
-  {
-    Task<Void> task = new Task<Void>()
-    {
-      @Override protected Void call() throws Exception
-      {
-        initiateLoop();
-        return null;
-      }
-    };
-    th = new Thread(task);
-    th.setDaemon(true);
-    th.start();
-  }
 
-  private void initiateLoop()
+  private void initiateLoop() throws CloneNotSupportedException
   {
     maxX = stage.getScene().getWidth();
     maxY = stage.getScene().getHeight();
+    newX = getCenterX();
+    newY = getCenterY();
     walking = true;
     while (walking)
     {
-      newX = getCenterX();
-      newY = getCenterY();
       walker();
-      if (!checkBumpBorder())
+      if (!logic.checkBumpBorder(newX, maxX, newY, maxY))
       {
+        System.out.println("wall :(");
+        direction = 0;
+        sleep.sleeper(30);
+        continue;
+      }
+      if (!logic.checkBumpWall(this, newX, newY))
+      {
+        direction = 0;
+        x = newX = oldX;
+        y = newY = oldY;
         sleep.sleeper(30);
         continue;
       }
@@ -84,7 +122,9 @@ public class Man extends Circle
   }
 
   /*
-   * =================================================== Stuff while in loop
+   * ===================================================
+   * 
+   * Stuff while in loop
    */
 
   private void walker()
@@ -109,37 +149,10 @@ public class Man extends Circle
     }
   }
 
-  private boolean checkBumpBorder()
-  {
-    // Has to be side specific, but fine for now.
-    if (newX > maxX || newX < 0 || newY > maxY || newY < 25)
-    {
-      direction = 0;
-      return false;
-    }
-    return true;
-  }
-
-  private void checkBumpWall()
-  {
-    ArrayList<Shape> shapes = map.getShapeArray();
-
-    for (Shape shape : shapes)
-    {
-      if (getBoundsInParent().intersects(shape.getBoundsInParent()))
-      {
-        direction = 0;
-        setCenterX(oldX);
-        setCenterY(oldY);
-        return;
-      }
-    }
-  }
-  
   private void checkBumpCoin()
   {
     ArrayList<Shape> coins = map.getCoinsArray();
-    
+
     for (Shape coin : coins)
     {
       if (getBoundsInParent().intersects(coin.getBoundsInParent()))
@@ -159,7 +172,6 @@ public class Man extends Circle
       {
         setCenterX(newX);
         setCenterY(newY);
-        checkBumpWall();
       }
     });
   }

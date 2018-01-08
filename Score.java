@@ -11,7 +11,12 @@ public class Score extends Text
     setFont(new Font(20));
     setX(610);
     setY(375);
-    setText("score");
+    setText("0");
     setFill(Color.WHITE);
+  }
+  
+  public void restart()
+  {
+    setText("0");
   }
 }

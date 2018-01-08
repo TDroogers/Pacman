@@ -6,23 +6,34 @@ import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
 import nl.drogecode.pacman.*;
+import nl.drogecode.pacman.logic.GameLogic;
 
-public class Ghost extends Circle
+public class Ghost extends NpcObject
 {
+  private Circle ghost;
+  
   private static Stage stage;
   private static Man man;
   private static GameLogic logic;
-  private Sleeper sleep = new Sleeper();
-  private Thread th;
-  private double oldX, oldY, x, y, newX, newY, maxX, maxY;
-  private boolean walking;
+  
   public Ghost(double x, double y)
   {
-    setCenterX(x);
-    setCenterY(y);
-    setFill(Color.GREEN);
-    setRadius(5.0);
+    /*
+     * 
+     * error, he needs a super.
+     * 
+     */
+    ghost = new Circle();
+    ghost.setCenterX(x);
+    ghost.setCenterY(y);
+    ghost.setFill(Color.GREEN);
+    ghost.setRadius(5.0);
     startMove();
+  }
+  
+  public Circle getGhost()
+  {
+    return ghost;
   }
   
   public static void setStatics(Stage s, Man m, GameLogic l)
@@ -52,13 +63,13 @@ public class Ghost extends Circle
   {
     maxX = stage.getScene().getWidth();
     maxY = stage.getScene().getHeight();
-    newX = getCenterX();
-    newY = getCenterY();
+    newX = ghost.getCenterX();
+    newY = ghost.getCenterY();
     walking = true;
     while (walking)
     {
       walker();
-      logic.checkBumpWall(this, newX, newY);
+      logic.checkBumpWall(ghost, newX, newY);
       if (!logic.checkBumpBorder(newX, maxX, newY, maxY))
       {
         sleep.sleeper(30);
@@ -74,16 +85,32 @@ public class Ghost extends Circle
   
   private void walker()
   {
-    double xchecker = man.getCenterX() - getCenterX();
-    double ychecker = man.getCenterY() - getCenterY();
+    double xchecker = man.getMan().getCenterX() - ghost.getCenterX();
+    double ychecker = man.getMan().getCenterY() - ghost.getCenterY();
     
     if (Math.abs(xchecker) >= Math.abs(ychecker))
     {
       System.out.print("x");
+      if (xchecker > 0)
+      {
+        System.out.println(" Right");
+      }
+      else
+      {
+        System.out.println(" Left");
+      }
     }
     else
     {
-      System.out.println("y");
+      System.out.print("y");
+      if (ychecker > 0)
+      {
+        System.out.println(" Down");
+      }
+      else
+      {
+        System.out.println(" Up");
+      }
     }
     
   }

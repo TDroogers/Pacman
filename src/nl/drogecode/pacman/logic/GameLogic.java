@@ -1,4 +1,4 @@
-package nl.drogecode.pacman;
+package nl.drogecode.pacman.logic;
 
 import java.util.ArrayList;
 
@@ -6,6 +6,8 @@ import javafx.application.Platform;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;
+import nl.drogecode.pacman.Map;
+import nl.drogecode.pacman.Score;
 import nl.drogecode.pacman.objects.Man;
 
 public class GameLogic

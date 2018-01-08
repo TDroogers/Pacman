@@ -1,9 +1,11 @@
-package nl.drogecode.pacman;
+package nl.drogecode.pacman.objects;
 
 import javafx.concurrent.Task;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
+
+import nl.drogecode.pacman.*;
 
 public class Ghost extends Circle
 {

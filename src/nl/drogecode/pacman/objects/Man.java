@@ -1,4 +1,4 @@
-package nl.drogecode.pacman;
+package nl.drogecode.pacman.objects;
 
 import java.util.ArrayList;
 
@@ -8,6 +8,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
+
+import nl.drogecode.pacman.*;
 
 public class Man extends Circle implements Cloneable
 {

@@ -9,32 +9,33 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import nl.drogecode.pacman.objects.Ghost;
+import nl.drogecode.pacman.objects.Man;
 
 public class Pacman extends Application
 {
+  Score score;
+  Map map;
+  Man man;
+  GameLogic logic;
+  
   public static void main(String[] args)
   {
     launch(args);
   }
   
-  
-  
-  Score score;
-  Map map;
-  Man man;
-  GameLogic logic = new GameLogic();
-  
   @Override public void start(Stage primaryStage)
   {
     Group root = new Group();
     BorderPane pane = new BorderPane();
-    Scene scene = setScene(root, pane);
+    Scene scene = getScene(root, pane);
     scene.setFill(Color.BLACK);
     primaryStage.setScene(scene);
     
     /*
      * create objects
      */
+    logic = new GameLogic();
     score = new Score();
     map = new Map(root, score);
     man = new Man(primaryStage, map, logic);
@@ -56,7 +57,7 @@ public class Pacman extends Application
     primaryStage.show();
   }
   
-  private Scene setScene(Group root, BorderPane pane)
+  private Scene getScene(Group root, BorderPane pane)
   {
     /*
      * Construct menu.

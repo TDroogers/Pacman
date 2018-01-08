@@ -6,6 +6,7 @@ import javafx.application.Platform;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;
+import nl.drogecode.pacman.objects.Man;
 
 public class GameLogic
 {

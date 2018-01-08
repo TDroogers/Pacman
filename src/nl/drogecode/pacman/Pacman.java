@@ -17,6 +17,8 @@ public class Pacman extends Application
     launch(args);
   }
   
+  
+  
   Score score;
   Map map;
   Man man;

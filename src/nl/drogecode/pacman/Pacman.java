@@ -10,12 +10,14 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import nl.drogecode.pacman.logic.GameLogic;
-import nl.drogecode.pacman.objects.Ghost;
 import nl.drogecode.pacman.objects.Man;
+import nl.drogecode.pacman.text.Lifes;
+import nl.drogecode.pacman.text.Score;
 
 public class Pacman extends Application
 {
   Score score;
+  Lifes lifes;
   Map map;
   Man man;
   GameLogic logic;
@@ -38,6 +40,7 @@ public class Pacman extends Application
      */
     logic = new GameLogic();
     score = new Score();
+    lifes = new Lifes();
     map = new Map(root, score, logic);
     man = new Man(logic);
     
@@ -51,7 +54,7 @@ public class Pacman extends Application
     /*
      * Start building 
      */
-    root.getChildren().addAll(pane, man.getMan(), score);
+    root.getChildren().addAll(pane, man.getMan(), score, lifes);
     primaryStage.setTitle("Pacman");
     primaryStage.setResizable(false);
     primaryStage.show();

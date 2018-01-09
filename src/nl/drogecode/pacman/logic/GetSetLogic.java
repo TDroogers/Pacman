@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 import nl.drogecode.pacman.Map;
-import nl.drogecode.pacman.Score;
 import nl.drogecode.pacman.objects.Man;
+import nl.drogecode.pacman.text.Score;
 
 public class GetSetLogic
 {
@@ -65,6 +65,11 @@ public class GetSetLogic
   public ArrayList<Shape> getCoinArray()
   {
     return map.getCoinsArray();
+  }
+  
+  public ArrayList<Shape> getWallArray()
+  {
+    return map.getShapeArray();
   }
   
   public boolean removeCoin(Shape coin)

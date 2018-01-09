@@ -2,7 +2,6 @@ package nl.drogecode.pacman.objects;
 
 import java.util.ArrayList;
 
-import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -93,22 +92,12 @@ public class Man extends MovingObject
     while (walking)
     {
       walker();
-      if (!logic.checkBumpBorder(newX, maxX, newY, maxY))
+      if (!checkMove(man))
       {
-        System.out.println("wall :(");
-        direction = 0;
         sleep.sleeper(30);
         continue;
       }
-      if (!logic.checkBumpWall(man, newX, newY))
-      {
-        direction = 0;
-        x = newX = oldX;
-        y = newY = oldY;
-        sleep.sleeper(30);
-        continue;
-      }
-      updateMan();
+      moveObject(man);
       checkBumpCoin();
       oldX = x;
       oldY = y;
@@ -159,17 +148,5 @@ public class Man extends MovingObject
         return;
       }
     }
-  }
-
-  private void updateMan()
-  {
-    Platform.runLater(new Runnable()
-    {
-      @Override public void run()
-      {
-        man.setCenterX(newX);
-        man.setCenterY(newY);
-      }
-    });
   }
 }

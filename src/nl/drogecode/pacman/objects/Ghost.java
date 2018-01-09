@@ -49,18 +49,18 @@ public class Ghost extends NpcObject
     }
     maxX = logic.getSceneWidth();
     maxY = logic.getSceneHight();
-    newX = ghost.getCenterX();
-    newY = ghost.getCenterY();
+    x = newX = ghost.getCenterX();
+    y = newY = ghost.getCenterY();
     walking = true;
     while (walking)
     {
       walker();
-      logic.checkBumpWall(ghost, newX, newY);
-      if (!logic.checkBumpBorder(newX, maxX, newY, maxY))
+      if (!checkMove(ghost))
       {
         sleep.sleeper(30);
         continue;
       }
+      moveObject(ghost);
       oldX = x;
       oldY = y;
       x = newX;
@@ -76,26 +76,24 @@ public class Ghost extends NpcObject
     
     if (Math.abs(xchecker) >= Math.abs(ychecker))
     {
-      System.out.print("x");
       if (xchecker > 0)
       {
-        System.out.println(" Right");
+        newX = x + SPEED;
       }
       else
       {
-        System.out.println(" Left");
+        newX = x - SPEED;
       }
     }
     else
     {
-      System.out.print("y");
       if (ychecker > 0)
       {
-        System.out.println(" Down");
+        newY = y + SPEED;
       }
       else
       {
-        System.out.println(" Up");
+        newY = y - SPEED;
       }
     }
     

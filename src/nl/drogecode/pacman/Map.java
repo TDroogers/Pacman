@@ -8,6 +8,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
 import nl.drogecode.pacman.logic.GameLogic;
 import nl.drogecode.pacman.objects.Ghost;
+import nl.drogecode.pacman.text.Score;
 
 public class Map
 {
@@ -108,6 +109,8 @@ public class Map
     shape.add(new Wall(12, 170, 'x', 100, Color.PURPLE));
     shape.add(new Wall(30, 172, 'y', 100, Color.PURPLE));
     
+    shape.add(new Wall(600, 40, 'y', 30, Color.BROWN));
+    shape.add(new Wall(600, 70, 'x', 85, Color.BROWN));
     shape.add(new Wall(600, 350, 'y', 35, Color.BROWN));
     shape.add(new Wall(600, 350, 'x', 85, Color.BROWN));
 
@@ -135,6 +138,7 @@ public class Map
     ghosts = new ArrayList<>();
     
     ghosts.add(new Ghost(50, 100, logic).getGhost());
+    ghosts.add(new Ghost(200, 300, logic).getGhost());
     
     root.getChildren().addAll(ghosts);
   }

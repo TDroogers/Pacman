@@ -44,7 +44,7 @@ public class Pacman extends Application
     map = new Map(root, score, logic);
     man = new Man(logic);
     
-    logic.setStuff(primaryStage, map, man, score);
+    logic.setStuff(primaryStage, map, man, score, lifes);
     
     /*
      * keybord reader

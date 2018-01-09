@@ -1,10 +1,6 @@
 package nl.drogecode.pacman.logic;
 
-import java.util.ArrayList;
-
 import javafx.application.Platform;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Shape;
 
 public class GameLogic extends GetSetLogic
 {
@@ -17,8 +13,26 @@ public class GameLogic extends GetSetLogic
       {
         map.restart();
         man.restart();
+        lifes.restart();
         score.restart();
       }
     });
+  }
+  
+  public boolean loseLife()
+  {
+    Platform.runLater(new Runnable()
+    {
+      @Override public void run()
+      {
+        if (!lifes.loseLife())
+        {
+          restart();
+        }
+        map.loseLife();
+        man.restart();
+      }
+    });
+    return true;
   }
 }

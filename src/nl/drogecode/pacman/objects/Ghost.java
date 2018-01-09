@@ -61,6 +61,15 @@ public class Ghost extends NpcObject
         continue;
       }
       moveObject(ghost);
+      if (checkBumpMan(ghost))
+      {
+        restart = true;
+        logic.loseLife();
+      }
+      if (restart)
+      {
+        break;
+      }
       oldX = x;
       oldY = y;
       x = newX;
@@ -78,22 +87,22 @@ public class Ghost extends NpcObject
     {
       if (xchecker > 0)
       {
-        newX = x + SPEED;
+        newX = x + SPEED*0.75;
       }
       else
       {
-        newX = x - SPEED;
+        newX = x - SPEED*0.75;
       }
     }
     else
     {
       if (ychecker > 0)
       {
-        newY = y + SPEED;
+        newY = y + SPEED*0.75;
       }
       else
       {
-        newY = y - SPEED;
+        newY = y - SPEED*0.75;
       }
     }
     

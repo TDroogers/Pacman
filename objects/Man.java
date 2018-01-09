@@ -1,4 +1,4 @@
-package nl.drogecode.pacman;
+package nl.drogecode.pacman.objects;
 
 import java.util.ArrayList;
 
@@ -7,38 +7,35 @@ import javafx.concurrent.Task;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;
-import javafx.stage.Stage;
+import nl.drogecode.pacman.logic.GameLogic;
 
-public class Man extends Circle implements Cloneable
+public class Man extends MovingObject
 {
-  private volatile Stage stage;
-  private volatile Map map;
-  private volatile GameLogic logic;
-  private volatile Thread th;
-  private Sleeper sleep = new Sleeper();
-  private volatile double oldX, oldY, x, y, newX, newY, maxX, maxY;
-  private volatile int direction;
-  private final int SPEED = 2;
-  private volatile boolean walking;
+  private Circle man;
+  
 
-  public Man(Stage stage, Map map, GameLogic logic)
+  public Man(GameLogic logic)
   {
-    this.stage = stage;
-    this.map = map;
-    this.logic = logic;
-    setFill(Color.YELLOW);
-    setRadius(5.0);
+    super(logic);
+    man = new Circle();
+    man.setFill(Color.YELLOW);
+    man.setRadius(5.0);
 
     restart();
     startMove();
+  }
+  
+  public Circle getMan()
+  {
+    return man;
   }
 
   public void restart()
   {
     x = newX = oldX = 22;
     y = newY = oldY = 47;
-    setCenterX(x);
-    setCenterY(y);
+    man.setCenterX(x);
+    man.setCenterY(y);
     direction = 0;
   }
 
@@ -88,22 +85,22 @@ public class Man extends Circle implements Cloneable
 
   private void initiateLoop() throws CloneNotSupportedException
   {
-    maxX = stage.getScene().getWidth();
-    maxY = stage.getScene().getHeight();
-    newX = getCenterX();
-    newY = getCenterY();
+    maxX = logic.getSceneWidth();
+    maxY = logic.getSceneHight();
+    newX = man.getCenterX();
+    newY = man.getCenterY();
     walking = true;
     while (walking)
     {
       walker();
-      if (!logic.checkBumpBorder(newX, maxX, newY, maxY))
+      if (!checkBumpBorder(newX, maxX, newY, maxY))
       {
         System.out.println("wall :(");
         direction = 0;
         sleep.sleeper(30);
         continue;
       }
-      if (!logic.checkBumpWall(this, newX, newY))
+      if (!checkBumpWall(man, newX, newY))
       {
         direction = 0;
         x = newX = oldX;
@@ -151,13 +148,13 @@ public class Man extends Circle implements Cloneable
 
   private void checkBumpCoin()
   {
-    ArrayList<Shape> coins = map.getCoinsArray();
+    ArrayList<Shape> coins = logic.getCoinArray();
 
     for (Shape coin : coins)
     {
-      if (getBoundsInParent().intersects(coin.getBoundsInParent()))
+      if (man.getBoundsInParent().intersects(coin.getBoundsInParent()))
       {
-        map.remove(coin, 1);
+        logic.removeCoin(coin);
         coins.remove(coin);
         return;
       }
@@ -170,8 +167,8 @@ public class Man extends Circle implements Cloneable
     {
       @Override public void run()
       {
-        setCenterX(newX);
-        setCenterY(newY);
+        man.setCenterX(newX);
+        man.setCenterY(newY);
       }
     });
   }

@@ -2,6 +2,7 @@ package nl.drogecode.pacman;
 
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
+import nl.drogecode.pacman.objects.Man;
 
 public class Controll
 {

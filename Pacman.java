@@ -9,6 +9,9 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import nl.drogecode.pacman.logic.GameLogic;
+import nl.drogecode.pacman.objects.Ghost;
+import nl.drogecode.pacman.objects.Man;
 
 public class Pacman extends Application
 {
@@ -35,11 +38,10 @@ public class Pacman extends Application
      */
     logic = new GameLogic();
     score = new Score();
-    map = new Map(root, score);
-    man = new Man(primaryStage, map, logic);
-    Ghost.setStatics(primaryStage, man, logic);
+    map = new Map(root, score, logic);
+    man = new Man(logic);
     
-    logic.setStuff(map, man, score);
+    logic.setStuff(primaryStage, map, man, score);
     
     /*
      * keybord reader
@@ -49,7 +51,7 @@ public class Pacman extends Application
     /*
      * Start building 
      */
-    root.getChildren().addAll(pane, man, score);
+    root.getChildren().addAll(pane, man.getMan(), score);
     primaryStage.setTitle("Pacman");
     primaryStage.setResizable(false);
     primaryStage.show();

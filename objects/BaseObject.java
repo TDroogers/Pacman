@@ -1,6 +1,6 @@
 package nl.drogecode.pacman.objects;
 
-public class BaseObject
+public abstract class BaseObject
 {
   
 }

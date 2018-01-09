@@ -3,25 +3,11 @@ package nl.drogecode.pacman.logic;
 import java.util.ArrayList;
 
 import javafx.application.Platform;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;
-import nl.drogecode.pacman.Map;
-import nl.drogecode.pacman.Score;
-import nl.drogecode.pacman.objects.Man;
 
-public class GameLogic
+public class GameLogic extends GetSetLogic
 {
-  Map map;
-  Man man;
-  Score score;
-
-  public void setStuff(Map map, Man man, Score score)
-  {
-    this.map = map;
-    this.man = man;
-    this.score = score;
-  }
 
   public void restart()
   {
@@ -38,7 +24,7 @@ public class GameLogic
   
   public boolean checkBumpBorder(double newX, double maxX, double newY, double maxY)
   {
-    // Has to be side specific, but fine for now.
+    // Has to be side specific, but fine for now. (In the current map you can never reach the borders)
     if (newX > maxX || newX < 0 || newY > maxY || newY < 25)
     {
       return false;

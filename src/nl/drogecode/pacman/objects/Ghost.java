@@ -3,26 +3,16 @@ package nl.drogecode.pacman.objects;
 import javafx.concurrent.Task;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.stage.Stage;
-
-import nl.drogecode.pacman.*;
 import nl.drogecode.pacman.logic.GameLogic;
 
 public class Ghost extends NpcObject
 {
   private Circle ghost;
   
-  private static Stage stage;
-  private static Man man;
-  private static GameLogic logic;
-  
-  public Ghost(double x, double y)
+  public Ghost(double x, double y, GameLogic logic)
   {
-    /*
-     * 
-     * error, he needs a super.
-     * 
-     */
+    super(logic);
+
     ghost = new Circle();
     ghost.setCenterX(x);
     ghost.setCenterY(y);
@@ -36,16 +26,8 @@ public class Ghost extends NpcObject
     return ghost;
   }
   
-  public static void setStatics(Stage s, Man m, GameLogic l)
-  {
-    stage = s;
-    man = m;
-    logic = l;
-  }
-  
   private void startMove()
   {
-    System.out.println(man);
     Task<Void> task = new Task<Void>()
     {
       @Override protected Void call() throws Exception
@@ -61,8 +43,12 @@ public class Ghost extends NpcObject
   
   private void initiateLoop()
   {
-    maxX = stage.getScene().getWidth();
-    maxY = stage.getScene().getHeight();
+    while (!logic.getReady())
+    {
+      sleep.sleeper();
+    }
+    maxX = logic.getSceneWidth();
+    maxY = logic.getSceneHight();
     newX = ghost.getCenterX();
     newY = ghost.getCenterY();
     walking = true;
@@ -85,8 +71,8 @@ public class Ghost extends NpcObject
   
   private void walker()
   {
-    double xchecker = man.getMan().getCenterX() - ghost.getCenterX();
-    double ychecker = man.getMan().getCenterY() - ghost.getCenterY();
+    double xchecker = logic.getXMan() - ghost.getCenterX();
+    double ychecker = logic.getYMan() - ghost.getCenterY();
     
     if (Math.abs(xchecker) >= Math.abs(ychecker))
     {

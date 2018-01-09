@@ -7,9 +7,6 @@ import javafx.concurrent.Task;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;
-import javafx.stage.Stage;
-
-import nl.drogecode.pacman.*;
 import nl.drogecode.pacman.logic.GameLogic;
 
 public class Man extends MovingObject
@@ -17,9 +14,9 @@ public class Man extends MovingObject
   private Circle man;
   
 
-  public Man(Stage stage, Map map, GameLogic logic)
+  public Man(GameLogic logic)
   {
-    super(stage, map, logic);
+    super(logic);
     man = new Circle();
     man.setFill(Color.YELLOW);
     man.setRadius(5.0);
@@ -88,8 +85,8 @@ public class Man extends MovingObject
 
   private void initiateLoop() throws CloneNotSupportedException
   {
-    maxX = stage.getScene().getWidth();
-    maxY = stage.getScene().getHeight();
+    maxX = logic.getSceneWidth();
+    maxY = logic.getSceneHight();
     newX = man.getCenterX();
     newY = man.getCenterY();
     walking = true;
@@ -151,13 +148,13 @@ public class Man extends MovingObject
 
   private void checkBumpCoin()
   {
-    ArrayList<Shape> coins = map.getCoinsArray();
+    ArrayList<Shape> coins = logic.getCoinArray();
 
     for (Shape coin : coins)
     {
       if (man.getBoundsInParent().intersects(coin.getBoundsInParent()))
       {
-        map.remove(coin, 1);
+        logic.removeCoin(coin);
         coins.remove(coin);
         return;
       }

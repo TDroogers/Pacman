@@ -38,11 +38,10 @@ public class Pacman extends Application
      */
     logic = new GameLogic();
     score = new Score();
-    map = new Map(root, score);
-    man = new Man(primaryStage, map, logic);
-    Ghost.setStatics(primaryStage, man, logic);
+    map = new Map(root, score, logic);
+    man = new Man(logic);
     
-    logic.setStuff(map, man, score);
+    logic.setStuff(primaryStage, map, man, score);
     
     /*
      * keybord reader

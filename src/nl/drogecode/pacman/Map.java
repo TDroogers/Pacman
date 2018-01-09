@@ -6,21 +6,24 @@ import javafx.application.Platform;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
+import nl.drogecode.pacman.logic.GameLogic;
 import nl.drogecode.pacman.objects.Ghost;
 
 public class Map
 {
   private volatile Group root;
   private volatile Score score;
+  private volatile GameLogic logic;
   private volatile ArrayList<Shape> shape;
   private volatile ArrayList<Shape> coins;
   private volatile ArrayList<Shape> ghosts;
   private volatile int scoreCounter;
 
-  public Map(Group root, Score score)
+  public Map(Group root, Score score, GameLogic logic)
   {
     this.root = root;
     this.score = score;
+    this.logic = logic;
     restart();
   }
   
@@ -131,7 +134,7 @@ public class Map
   {
     ghosts = new ArrayList<>();
     
-    ghosts.add(new Ghost(50, 100).getGhost());
+    ghosts.add(new Ghost(50, 100, logic).getGhost());
     
     root.getChildren().addAll(ghosts);
   }

@@ -7,8 +7,6 @@ import nl.drogecode.pacman.logic.GameLogic;
 
 public class MovingObject extends BaseObject
 {
-  protected volatile Stage stage;
-  protected volatile Map map;
   protected volatile GameLogic logic;
   
   protected Sleeper sleep = new Sleeper();
@@ -18,11 +16,8 @@ public class MovingObject extends BaseObject
   protected volatile int direction;
   protected final int SPEED = 2;
   
-  public MovingObject (Stage stage, Map map, GameLogic logic)
+  public MovingObject (GameLogic logic)
   {
-
-    this.stage = stage;
-    this.map = map;
     this.logic = logic;
   }
 }

@@ -6,20 +6,24 @@ import javafx.application.Platform;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
+import nl.drogecode.pacman.logic.GameLogic;
+import nl.drogecode.pacman.objects.Ghost;
 
 public class Map
 {
   private volatile Group root;
   private volatile Score score;
+  private volatile GameLogic logic;
   private volatile ArrayList<Shape> shape;
   private volatile ArrayList<Shape> coins;
   private volatile ArrayList<Shape> ghosts;
   private volatile int scoreCounter;
 
-  public Map(Group root, Score score)
+  public Map(Group root, Score score, GameLogic logic)
   {
     this.root = root;
     this.score = score;
+    this.logic = logic;
     restart();
   }
   
@@ -75,27 +79,34 @@ public class Map
      */
     shape = new ArrayList<>();
 
-    shape.add(new Wall(10, 35, 'x', 680));
-    shape.add(new Wall(10, 35, 'y', 355));
-    shape.add(new Wall(10, 385, 'x', 680));
-    shape.add(new Wall(685, 35, 'y', 355));
+    shape.add(new Wall(12, 35, 'x', 676, Color.BLUE));
+    shape.add(new Wall(10, 35, 'y', 355, Color.BLUE));
+    shape.add(new Wall(12, 385, 'x', 676, Color.BLUE));
+    shape.add(new Wall(685, 35, 'y', 355, Color.BLUE));
     
-    shape.add(new Wall(30, 55, 'x', 50));
-    shape.add(new Wall(30, 55, 'y', 100));
-    shape.add(new Wall(80, 55, 'y', 100));
-    shape.add(new Wall(30, 150, 'x', 170));
-    shape.add(new Wall(100, 130, 'x', 80));
+    shape.add(new Wall(30, 55, 'x', 50, Color.ORANGE));
+    shape.add(new Wall(30, 55, 'y', 100, Color.ORANGE));
+    shape.add(new Wall(80, 55, 'y', 100, Color.ORANGE));
+    shape.add(new Wall(30, 150, 'x', 170, Color.ORANGE));
     
-    shape.add(new Wall(100, 55, 'y', 80));
-    shape.add(new Wall(100, 55, 'x', 80));
-    shape.add(new Wall(200, 55, 'x', 80));
-    shape.add(new Wall(125, 75, 'x', 200));
-    shape.add(new Wall(125, 75, 'y', 40));
-    shape.add(new Wall(125, 110, 'x', 75));
-    shape.add(new Wall(200, 110, 'y', 45));
+    shape.add(new Wall(100, 130, 'x', 80, Color.AQUA));
+    shape.add(new Wall(100, 55, 'y', 80, Color.AQUA));
+    shape.add(new Wall(100, 55, 'x', 80, Color.AQUA));
+    shape.add(new Wall(275, 35, 'y', 25, Color.AQUA));
+    shape.add(new Wall(200, 55, 'x', 80, Color.AQUA));
     
-    shape.add(new Wall(10, 170, 'x', 100));
-    shape.add(new Wall(30, 170, 'y', 100));
+    shape.add(new Wall(125, 75, 'x', 200, Color.GREEN));
+    shape.add(new Wall(125, 75, 'y', 40, Color.GREEN));
+    shape.add(new Wall(125, 110, 'x', 75, Color.GREEN));
+    shape.add(new Wall(200, 110, 'y', 45, Color.GREEN));
+    
+    shape.add(new Wall(220, 95, 'x', 135, Color.CORAL));
+    shape.add(new Wall(300, 55, 'x', 80, Color.CORAL));
+    shape.add(new Wall(350, 55, 'y', 80, Color.CORAL));
+    shape.add(new Wall(375, 55, 'y', 80, Color.CORAL));
+    
+    shape.add(new Wall(12, 170, 'x', 100, Color.PURPLE));
+    shape.add(new Wall(30, 172, 'y', 100, Color.PURPLE));
     
     shape.add(new Wall(600, 350, 'y', 35, Color.BROWN));
     shape.add(new Wall(600, 350, 'x', 85, Color.BROWN));
@@ -107,7 +118,10 @@ public class Map
   {
     coins = new ArrayList<>();
     
+    drawCoinRow(137, 100, 'x', 3);
     drawCoinRow(37, 46, 'x', 7);
+    drawCoinRow(220, 46, 'x', 4);
+    drawCoinRow(365, 66, 'y', 5);
     drawCoinRow(23, 62, 'y', 7);
     drawCoinRow(23, 180, 'y', 7);
     drawCoinRow(92, 68, 'y', 6);
@@ -120,7 +134,7 @@ public class Map
   {
     ghosts = new ArrayList<>();
     
-    ghosts.add(new Ghost(50, 100));
+    ghosts.add(new Ghost(50, 100, logic).getGhost());
     
     root.getChildren().addAll(ghosts);
   }

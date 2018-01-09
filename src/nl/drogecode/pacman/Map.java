@@ -12,12 +12,12 @@ import nl.drogecode.pacman.text.Score;
 
 public class Map
 {
-  private volatile Group root;
-  private volatile Score score;
-  private volatile GameLogic logic;
+  private Group root;
+  private Score score;
+  private GameLogic logic;
   private volatile ArrayList<Shape> shape;
   private volatile ArrayList<Shape> coins;
-  private volatile ArrayList<Shape> ghosts;
+  private volatile ArrayList<Ghost> ghosts;
   private volatile int scoreCounter;
 
   public Map(Group root, Score score, GameLogic logic)
@@ -45,7 +45,6 @@ public class Map
     if (shape != null)
     {
       root.getChildren().removeAll(shape);
-      root.getChildren().removeAll(ghosts);
     }
     drawWalls();
     drawGhosts();
@@ -128,33 +127,36 @@ public class Map
   {
     coins = new ArrayList<>();
 
+    drawCoinRow(340, 71, 'y', 2);
     drawCoinRow(137, 100, 'x', 3);
-    drawCoinRow(37, 46, 'x', 7);
-    drawCoinRow(220, 46, 'x', 4);
-    drawCoinRow(365, 66, 'y', 5);
+    drawCoinRow(37, 46, 'x', 8);
+    drawCoinRow(220, 46, 'x', 5);
+    drawCoinRow(365, 66, 'y', 6);
     drawCoinRow(23, 62, 'y', 7);
-    drawCoinRow(23, 180, 'y', 7);
-    drawCoinRow(92, 68, 'y', 6);
-    drawCoinRow(115, 123, 'x', 5);
+    drawCoinRow(23, 180, 'y', 8);
+    drawCoinRow(92, 68, 'y', 7);
+    drawCoinRow(115, 123, 'x', 6);
 
     root.getChildren().addAll(coins);
   }
 
   private void drawGhosts()
   {
-    Ghost.setRestart(false);
+    ghostKiller();
     ghosts = new ArrayList<>();
 
-    ghosts.add(new Ghost(50, 100, logic).getGhost());
-    ghosts.add(new Ghost(200, 300, logic).getGhost());
+    // ghosts.add(new Ghost(22, 100, logic)); // die tester
+    ghosts.add(new Ghost(50, 100, logic)); // This ghost will never reache you
+    ghosts.add(new Ghost(200, 300, logic));
 
-    root.getChildren().addAll(ghosts);
+    addGhosts();
   }
 
   private void drawCoinRow(double x, double y, Character c, int count)
   {
-    for (int i = 0; i <= count; i++)
+    for (int i = 0; i < count; i++)
     {
+      logic.setCoinsLeft((byte) 0);
       coins.add(new Coin(x, y));
       switch (c)
       {
@@ -167,5 +169,28 @@ public class Map
           break;
       }
     }
+  }
+
+  private boolean ghostKiller()
+  {
+    if (ghosts == null)
+    {
+      return false;
+    }
+    for (Ghost ghost : ghosts)
+    {
+      root.getChildren().remove(ghost.getGhost());
+      ghost.setWalking(false);
+    }
+    return true;
+  }
+
+  private boolean addGhosts()
+  {
+    for (Ghost ghost : ghosts)
+    {
+      root.getChildren().add(ghost.getGhost());
+    }
+    return true;
   }
 }

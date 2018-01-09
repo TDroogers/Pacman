@@ -18,6 +18,7 @@ public class GetSetLogic
   protected Score score;
   protected Lifes lifes;
   protected boolean ready;
+  protected volatile int coinsLeft;
 
   public void setStuff(Stage stage, Map map, Man man, Score score, Lifes lifes)
   {
@@ -27,6 +28,29 @@ public class GetSetLogic
     this.score = score;
     this.lifes = lifes;
     ready = true;
+  }
+
+  public int getCoinsLeft()
+  {
+    return coinsLeft;
+  }
+
+  public boolean setCoinsLeft(byte coin)
+  {
+    switch (coin)
+    {
+      case 0:
+        coinsLeft++;
+        break;
+
+      case 1:
+        coinsLeft--;
+        break;
+
+      default:
+        return false;
+    }
+    return true;
   }
 
   public boolean getReady()

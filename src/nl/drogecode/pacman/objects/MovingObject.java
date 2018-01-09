@@ -10,7 +10,7 @@ import nl.drogecode.pacman.logic.GameLogic;
 
 public class MovingObject extends BaseObject
 {
-  protected volatile GameLogic logic;
+  protected static GameLogic logic;
   
   protected Sleeper sleep;
   protected Thread th;
@@ -19,10 +19,20 @@ public class MovingObject extends BaseObject
   protected volatile int direction;
   protected final int SPEED = 2;
   
-  protected MovingObject (GameLogic logic)
+  protected MovingObject ()
   {
-    this.logic = logic;
     sleep = new Sleeper();
+  }
+  
+  public static boolean setLogic(GameLogic logic)
+  {
+    MovingObject.logic = logic;
+    return true;
+  }
+
+  public void setDirection(int newDir)
+  {
+    direction = newDir;
   }
   
   protected boolean checkMove(Circle object)

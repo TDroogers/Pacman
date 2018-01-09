@@ -15,7 +15,7 @@ public class Man extends MovingObject
 
   public Man(GameLogic logic)
   {
-    super(logic);
+    super();
     man = new Circle();
     man.setFill(Color.YELLOW);
     man.setRadius(5.0);
@@ -36,11 +36,6 @@ public class Man extends MovingObject
     man.setCenterX(x);
     man.setCenterY(y);
     direction = 0;
-  }
-
-  public void setDirection(int newDir)
-  {
-    direction = newDir;
   }
 
   public double getXman()
@@ -144,6 +139,8 @@ public class Man extends MovingObject
       if (man.getBoundsInParent().intersects(coin.getBoundsInParent()))
       {
         logic.removeCoin(coin);
+        logic.setCoinsLeft((byte)1);
+        logic.checkWin();
         coins.remove(coin);
         return;
       }

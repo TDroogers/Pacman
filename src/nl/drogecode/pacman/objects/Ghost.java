@@ -11,7 +11,7 @@ public class Ghost extends NpcObject
   
   public Ghost(double x, double y, GameLogic logic)
   {
-    super(logic);
+    super();
 
     ghost = new Circle();
     ghost.setCenterX(x);
@@ -63,11 +63,9 @@ public class Ghost extends NpcObject
       moveObject(ghost);
       if (checkBumpMan(ghost))
       {
-        restart = true;
+        walking = false;
+        sleep.sleeper(30);
         logic.loseLife();
-      }
-      if (restart)
-      {
         break;
       }
       oldX = x;

@@ -1,20 +1,18 @@
 package nl.drogecode.pacman.objects;
 
 import javafx.scene.shape.Circle;
-import nl.drogecode.pacman.logic.GameLogic;
 
 public class NpcObject extends MovingObject
 {
-  protected static boolean restart;
 
-  public NpcObject (GameLogic logic)
+  public NpcObject ()
   {
-    super(logic);
+    super();
   }
   
-  public static boolean setRestart(boolean res)
+  public boolean setWalking(boolean res)
   {
-    restart = res;
+    walking = res;
     return true;
   }
   

@@ -1,9 +1,7 @@
 package nl.drogecode.pacman.objects;
 
-import java.util.ArrayList;
+import java.util.List;
 
-import javafx.application.Platform;
-import javafx.concurrent.Task;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;
@@ -16,7 +14,7 @@ public class Man extends MovingObject
 
   public Man(GameLogic logic)
   {
-    super(logic);
+    super();
     man = new Circle();
     man.setFill(Color.YELLOW);
     man.setRadius(5.0);
@@ -25,7 +23,7 @@ public class Man extends MovingObject
     startMove();
   }
   
-  public Circle getMan()
+  public Circle getObject()
   {
     return man;
   }
@@ -39,11 +37,6 @@ public class Man extends MovingObject
     direction = 0;
   }
 
-  public void setDirection(int newDir)
-  {
-    direction = newDir;
-  }
-
   public double getXman()
   {
     return x;
@@ -52,25 +45,6 @@ public class Man extends MovingObject
   public double getYman()
   {
     return y;
-  }
-
-  public void startMove()
-  {
-    if (!walking)
-    {
-      Task<Void> task = new Task<Void>()
-      {
-        @Override protected Void call() throws Exception
-        {
-          sleep.sleeper(60);
-          initiateLoop();
-          return null;
-        }
-      };
-      th = new Thread(task);
-      th.setDaemon(true);
-      th.start();
-    }
   }
 
   /*
@@ -83,7 +57,7 @@ public class Man extends MovingObject
    * loop
    */
 
-  private void initiateLoop() throws CloneNotSupportedException
+  protected void initiateLoop()
   {
     maxX = logic.getSceneWidth();
     maxY = logic.getSceneHight();
@@ -93,22 +67,12 @@ public class Man extends MovingObject
     while (walking)
     {
       walker();
-      if (!checkBumpBorder(newX, maxX, newY, maxY))
+      if (!checkMove(man))
       {
-        System.out.println("wall :(");
-        direction = 0;
         sleep.sleeper(30);
         continue;
       }
-      if (!checkBumpWall(man, newX, newY))
-      {
-        direction = 0;
-        x = newX = oldX;
-        y = newY = oldY;
-        sleep.sleeper(30);
-        continue;
-      }
-      updateMan();
+      moveObject(man);
       checkBumpCoin();
       oldX = x;
       oldY = y;
@@ -148,28 +112,18 @@ public class Man extends MovingObject
 
   private void checkBumpCoin()
   {
-    ArrayList<Shape> coins = logic.getCoinArray();
+    List<Shape> coins = logic.getCoinArray();
 
     for (Shape coin : coins)
     {
       if (man.getBoundsInParent().intersects(coin.getBoundsInParent()))
       {
         logic.removeCoin(coin);
+        logic.setCoinsLeft((byte)1);
+        logic.checkWin();
         coins.remove(coin);
         return;
       }
     }
-  }
-
-  private void updateMan()
-  {
-    Platform.runLater(new Runnable()
-    {
-      @Override public void run()
-      {
-        man.setCenterX(newX);
-        man.setCenterY(newY);
-      }
-    });
   }
 }

@@ -10,12 +10,15 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import nl.drogecode.pacman.logic.GameLogic;
-import nl.drogecode.pacman.objects.Ghost;
 import nl.drogecode.pacman.objects.Man;
+import nl.drogecode.pacman.objects.MovingObject;
+import nl.drogecode.pacman.text.Lifes;
+import nl.drogecode.pacman.text.Score;
 
 public class Pacman extends Application
 {
   Score score;
+  Lifes lifes;
   Map map;
   Man man;
   GameLogic logic;
@@ -27,6 +30,15 @@ public class Pacman extends Application
   
   @Override public void start(Stage primaryStage)
   {
+    /*
+     * Setup logic
+     */
+    logic = new GameLogic();
+    MovingObject.setLogic(logic);
+    
+    /*
+     * construct screen stuff
+     */
     Group root = new Group();
     BorderPane pane = new BorderPane();
     Scene scene = getScene(root, pane);
@@ -36,12 +48,12 @@ public class Pacman extends Application
     /*
      * create objects
      */
-    logic = new GameLogic();
     score = new Score();
+    lifes = new Lifes();
     map = new Map(root, score, logic);
     man = new Man(logic);
     
-    logic.setStuff(primaryStage, map, man, score);
+    logic.setStuff(primaryStage, map, man, score, lifes);
     
     /*
      * keybord reader
@@ -51,7 +63,7 @@ public class Pacman extends Application
     /*
      * Start building 
      */
-    root.getChildren().addAll(pane, man.getMan(), score);
+    root.getChildren().addAll(pane, man.getObject(), score, lifes);
     primaryStage.setTitle("Pacman");
     primaryStage.setResizable(false);
     primaryStage.show();

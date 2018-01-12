@@ -1,12 +1,29 @@
 package nl.drogecode.pacman.objects;
 
-import nl.drogecode.pacman.logic.GameLogic;
+import javafx.scene.shape.Circle;
 
-public class NpcObject extends MovingObject
+public abstract class NpcObject extends MovingObject
 {
 
-  public NpcObject (GameLogic logic)
+  public NpcObject ()
   {
-    super(logic);
+    super();
+  }
+  
+  public boolean setWalking(boolean res)
+  {
+    walking = res;
+    return true;
+  }
+  
+  protected boolean checkBumpMan(Circle ghost)
+  {
+    Circle man = logic.getMan();
+
+      if (man.getBoundsInParent().intersects(ghost.getBoundsInParent()))
+      {
+        return true;
+      }
+      return false;
   }
 }

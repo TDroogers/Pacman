@@ -6,9 +6,9 @@ import javafx.scene.shape.Circle;
 import nl.drogecode.pacman.logic.GameLogic;
 import nl.drogecode.pacman.objects.NpcObject;
 
-public class Ghost extends NpcObject
+public abstract class Ghost extends NpcObject
 {
-  private Circle ghost;
+  protected Circle ghost;
   
   public Ghost(double x, double y, GameLogic logic)
   {
@@ -77,33 +77,5 @@ public class Ghost extends NpcObject
     }
   }
   
-  private void walker()
-  {
-    double xchecker = logic.getXMan() - ghost.getCenterX();
-    double ychecker = logic.getYMan() - ghost.getCenterY();
-    
-    if (Math.abs(xchecker) >= Math.abs(ychecker))
-    {
-      if (xchecker > 0)
-      {
-        newX = x + SPEED*0.75;
-      }
-      else
-      {
-        newX = x - SPEED*0.75;
-      }
-    }
-    else
-    {
-      if (ychecker > 0)
-      {
-        newY = y + SPEED*0.75;
-      }
-      else
-      {
-        newY = y - SPEED*0.75;
-      }
-    }
-    
-  }
+  protected abstract void walker();
 }

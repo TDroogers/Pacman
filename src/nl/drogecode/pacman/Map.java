@@ -8,7 +8,10 @@ import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
 import nl.drogecode.pacman.logic.GameLogic;
+import nl.drogecode.pacman.objects.Coin;
+import nl.drogecode.pacman.objects.Wall;
 import nl.drogecode.pacman.objects.ghosts.Ghost;
+import nl.drogecode.pacman.objects.ghosts.XorYGhost;
 import nl.drogecode.pacman.text.Score;
 
 public class Map
@@ -178,9 +181,9 @@ public class Map
     ghostKiller();
     ghosts = new ArrayList<>();
 
-    ghosts.add(new Ghost(50, 100, logic)); // This ghost will never reache you
-    ghosts.add(new Ghost(200, 280, logic));
-    ghosts.add(new Ghost(250, 380, logic));
+    ghosts.add(new XorYGhost(50, 100, logic)); // This ghost will never reache you
+    ghosts.add(new XorYGhost(200, 280, logic));
+    ghosts.add(new XorYGhost(250, 380, logic));
 
     addGhosts();
   }

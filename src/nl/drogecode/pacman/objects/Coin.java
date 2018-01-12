@@ -1,4 +1,4 @@
-package nl.drogecode.pacman;
+package nl.drogecode.pacman.objects;
 
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;

@@ -1,6 +1,5 @@
 package nl.drogecode.pacman.objects;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javafx.application.Platform;
@@ -9,7 +8,7 @@ import javafx.scene.shape.Shape;
 import nl.drogecode.pacman.Sleeper;
 import nl.drogecode.pacman.logic.GameLogic;
 
-public class MovingObject extends BaseObject
+public abstract class MovingObject extends BaseObject
 {
   protected static GameLogic logic;
   
@@ -85,7 +84,7 @@ public class MovingObject extends BaseObject
     }
     return true;
   }
-  
+
   private boolean checkBumpWall(Circle a, double newX, double newY)
   {
 

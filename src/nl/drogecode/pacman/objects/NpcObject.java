@@ -2,7 +2,7 @@ package nl.drogecode.pacman.objects;
 
 import javafx.scene.shape.Circle;
 
-public class NpcObject extends MovingObject
+public abstract class NpcObject extends MovingObject
 {
 
   public NpcObject ()

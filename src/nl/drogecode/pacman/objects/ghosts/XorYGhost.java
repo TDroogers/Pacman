@@ -9,35 +9,42 @@ public class XorYGhost extends Ghost
   {
     super(x, y, logic);
   }
-  
-  protected void walker()
+
+  @Override protected void walker()
   {
     double xchecker = logic.getXMan() - ghost.getCenterX();
     double ychecker = logic.getYMan() - ghost.getCenterY();
-    
+
     if (Math.abs(xchecker) >= Math.abs(ychecker))
     {
       if (xchecker > 0)
       {
-        newX = x + SPEED*0.75;
+        newX = x + GSPEED;
       }
       else
       {
-        newX = x - SPEED*0.75;
+        newX = x - GSPEED;
       }
     }
     else
     {
       if (ychecker > 0)
       {
-        newY = y + SPEED*0.75;
+        newY = y + GSPEED;
       }
       else
       {
-        newY = y - SPEED*0.75;
+        newY = y - GSPEED;
       }
     }
-    
+
   }
-  
+
+  @Override protected void afterBumb()
+  {
+  }
+
+  @Override protected void beforeLoop()
+  {}
+
 }

@@ -1,9 +1,7 @@
 package nl.drogecode.pacman.objects;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import javafx.concurrent.Task;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;
@@ -25,7 +23,7 @@ public class Man extends MovingObject
     startMove();
   }
   
-  public Circle getMan()
+  public Circle getObject()
   {
     return man;
   }
@@ -49,25 +47,6 @@ public class Man extends MovingObject
     return y;
   }
 
-  public void startMove()
-  {
-    if (!walking)
-    {
-      Task<Void> task = new Task<Void>()
-      {
-        @Override protected Void call() throws Exception
-        {
-          sleep.sleeper(60);
-          initiateLoop();
-          return null;
-        }
-      };
-      th = new Thread(task);
-      th.setDaemon(true);
-      th.start();
-    }
-  }
-
   /*
    * ===================================================
    * 
@@ -78,7 +57,7 @@ public class Man extends MovingObject
    * loop
    */
 
-  private void initiateLoop() throws CloneNotSupportedException
+  protected void initiateLoop()
   {
     maxX = logic.getSceneWidth();
     maxY = logic.getSceneHight();

@@ -63,7 +63,7 @@ public class Pacman extends Application
     /*
      * Start building 
      */
-    root.getChildren().addAll(pane, man.getMan(), score, lifes);
+    root.getChildren().addAll(pane, man.getObject(), score, lifes);
     primaryStage.setTitle("Pacman");
     primaryStage.setResizable(false);
     primaryStage.show();

@@ -3,6 +3,7 @@ package nl.drogecode.pacman.objects;
 import java.util.List;
 
 import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;
 import nl.drogecode.pacman.Sleeper;
@@ -66,6 +67,35 @@ public abstract class MovingObject extends BaseObject
     });
     return true;
   }
+
+  protected void startMove()
+  {
+    if (!walking)
+    {
+      Task<Void> task = new Task<Void>()
+      {
+        @Override protected Void call() throws Exception
+        {
+          sleep.sleeper(60);
+          initiateLoop();
+          return null;
+        }
+      };
+      th = new Thread(task);
+      th.setDaemon(true);
+      th.start();
+    }
+  }
+  
+  /*
+   * 
+   * ====================================================
+   * 
+   * abstract function's
+   * 
+   */
+  
+  protected abstract void initiateLoop();
   
   /*
    * 

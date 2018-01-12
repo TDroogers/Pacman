@@ -11,6 +11,7 @@ import nl.drogecode.pacman.logic.GameLogic;
 import nl.drogecode.pacman.objects.Coin;
 import nl.drogecode.pacman.objects.Wall;
 import nl.drogecode.pacman.objects.ghosts.Ghost;
+import nl.drogecode.pacman.objects.ghosts.RandomGhost;
 import nl.drogecode.pacman.objects.ghosts.XorYGhost;
 import nl.drogecode.pacman.text.Score;
 
@@ -181,9 +182,9 @@ public class Map
     ghostKiller();
     ghosts = new ArrayList<>();
 
-    ghosts.add(new XorYGhost(50, 100, logic)); // This ghost will never reache you
+    ghosts.add(new RandomGhost(50, 100, logic)); // This ghost will never reache you
     ghosts.add(new XorYGhost(200, 280, logic));
-    ghosts.add(new XorYGhost(250, 380, logic));
+    ghosts.add(new RandomGhost(250, 350, logic));
 
     addGhosts();
   }
@@ -224,7 +225,7 @@ public class Map
     }
     for (Ghost ghost : ghosts)
     {
-      root.getChildren().remove(ghost.getGhost());
+      root.getChildren().remove(ghost.getObject());
       ghost.setWalking(false);
     }
     return true;
@@ -234,7 +235,7 @@ public class Map
   {
     for (Ghost ghost : ghosts)
     {
-      root.getChildren().add(ghost.getGhost());
+      root.getChildren().add(ghost.getObject());
     }
     return true;
   }

@@ -78,7 +78,7 @@ public class GetSetLogic
 
   public Circle getMan()
   {
-    return man.getMan();
+    return man.getObject();
   }
 
   public double getXMan()

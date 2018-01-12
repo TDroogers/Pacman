@@ -1,6 +1,5 @@
 package nl.drogecode.pacman.objects.ghosts;
 
-import javafx.concurrent.Task;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import nl.drogecode.pacman.logic.GameLogic;
@@ -9,6 +8,7 @@ import nl.drogecode.pacman.objects.NpcObject;
 public abstract class Ghost extends NpcObject
 {
   protected Circle ghost;
+  protected final double GSPEED = SPEED*0.75;
   
   public Ghost(double x, double y, GameLogic logic)
   {
@@ -22,27 +22,12 @@ public abstract class Ghost extends NpcObject
     startMove();
   }
   
-  public Circle getGhost()
+  public Circle getObject()
   {
     return ghost;
   }
   
-  private void startMove()
-  {
-    Task<Void> task = new Task<Void>()
-    {
-      @Override protected Void call() throws Exception
-      {
-        initiateLoop();
-        return null;
-      }
-    };
-    th = new Thread(task);
-    th.setDaemon(true);
-    th.start();
-  }
-  
-  private void initiateLoop()
+  protected void initiateLoop()
   {
     while (!logic.getReady())
     {
@@ -53,11 +38,13 @@ public abstract class Ghost extends NpcObject
     x = newX = ghost.getCenterX();
     y = newY = ghost.getCenterY();
     walking = true;
+    beforeLoop();
     while (walking)
     {
       walker();
       if (!checkMove(ghost))
       {
+        afterBumb();
         sleep.sleeper(30);
         continue;
       }
@@ -77,5 +64,7 @@ public abstract class Ghost extends NpcObject
     }
   }
   
+  protected abstract void beforeLoop();
   protected abstract void walker();
+  protected abstract void afterBumb();
 }

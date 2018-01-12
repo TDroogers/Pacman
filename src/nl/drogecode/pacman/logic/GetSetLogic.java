@@ -1,6 +1,6 @@
 package nl.drogecode.pacman.logic;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;
@@ -95,12 +95,12 @@ public class GetSetLogic
    * Map
    */
 
-  public ArrayList<Shape> getCoinArray()
+  public List<Shape> getCoinArray()
   {
     return map.getCoinsArray();
   }
 
-  public ArrayList<Shape> getWallArray()
+  public List<Shape> getWallArray()
   {
     return map.getShapeArray();
   }

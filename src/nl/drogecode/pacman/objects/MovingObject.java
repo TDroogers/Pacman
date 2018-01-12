@@ -1,6 +1,7 @@
 package nl.drogecode.pacman.objects;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javafx.application.Platform;
 import javafx.scene.shape.Circle;
@@ -92,7 +93,7 @@ public class MovingObject extends BaseObject
     clone.setCenterX(newX);
     clone.setCenterY(newY);
     clone.setRadius(a.getRadius());
-    ArrayList<Shape> shapes = logic.getWallArray();
+    List<Shape> shapes = logic.getWallArray();
 
     for (Shape shape : shapes)
     {

@@ -1,9 +1,10 @@
-package nl.drogecode.pacman.objects;
+package nl.drogecode.pacman.objects.ghosts;
 
 import javafx.concurrent.Task;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import nl.drogecode.pacman.logic.GameLogic;
+import nl.drogecode.pacman.objects.NpcObject;
 
 public class Ghost extends NpcObject
 {

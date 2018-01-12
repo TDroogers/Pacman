@@ -1,6 +1,7 @@
 package nl.drogecode.pacman.objects;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javafx.concurrent.Task;
 import javafx.scene.paint.Color;
@@ -132,7 +133,7 @@ public class Man extends MovingObject
 
   private void checkBumpCoin()
   {
-    ArrayList<Shape> coins = logic.getCoinArray();
+    List<Shape> coins = logic.getCoinArray();
 
     for (Shape coin : coins)
     {

@@ -19,7 +19,7 @@ public class GameLogic extends GetSetLogic
       }
     });
   }
-  
+
   public boolean loseLife()
   {
     Platform.runLater(new Runnable()
@@ -28,6 +28,7 @@ public class GameLogic extends GetSetLogic
       {
         if (!lifes.loseLife())
         {
+          man.setDirection(0);
           showDieAllert();
           restart();
         }
@@ -37,7 +38,7 @@ public class GameLogic extends GetSetLogic
     });
     return true;
   }
-  
+
   public boolean checkWin()
   {
     if (getCoinsLeft() <= 0)
@@ -46,7 +47,9 @@ public class GameLogic extends GetSetLogic
       {
         @Override public void run()
         {
-      showWinAllert();
+          man.setDirection(0);
+          showWinAllert();
+          restart();
         }
       });
       return true;
@@ -54,20 +57,21 @@ public class GameLogic extends GetSetLogic
     System.out.println(getCoinsLeft());
     return false;
   }
-  
+
   private boolean showDieAllert()
   {
-    man.setDirection(0);
     Alert a = new Alert(Alert.AlertType.INFORMATION, "You are dead!");
     a.showAndWait();
     return true;
   }
-  
+
   private boolean showWinAllert()
   {
-    man.setDirection(0);
     Alert a = new Alert(Alert.AlertType.INFORMATION, "You have won");
     a.showAndWait();
     return true;
+    /*
+     * TODO: hiscore
+     */
   }
 }

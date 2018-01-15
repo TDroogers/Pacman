@@ -10,7 +10,6 @@ import nl.drogecode.pacman.logic.GameLogic;
 public class Man extends MovingObject
 {
   private Circle man;
-  
 
   public Man(GameLogic logic)
   {
@@ -22,7 +21,7 @@ public class Man extends MovingObject
     restart();
     startMove();
   }
-  
+
   public Circle getObject()
   {
     return man;
@@ -78,7 +77,9 @@ public class Man extends MovingObject
       oldY = y;
       x = newX;
       y = newY;
-      sleep.sleeper(30);
+
+      Thread.yield();
+      sleep.sleeper(Long.MAX_VALUE);
     }
   }
 
@@ -119,7 +120,7 @@ public class Man extends MovingObject
       if (man.getBoundsInParent().intersects(coin.getBoundsInParent()))
       {
         logic.removeCoin(coin);
-        logic.setCoinsLeft((byte)1);
+        logic.setCoinsLeft((byte) 1);
         logic.checkWin();
         coins.remove(coin);
         return;

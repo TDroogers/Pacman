@@ -13,6 +13,8 @@ import nl.drogecode.pacman.objects.Intersection;
 import nl.drogecode.pacman.objects.Wall;
 import nl.drogecode.pacman.objects.ghosts.Ghost;
 import nl.drogecode.pacman.objects.ghosts.OnWallChoiceGhost;
+import nl.drogecode.pacman.objects.ghosts.RandomGhost;
+import nl.drogecode.pacman.objects.ghosts.XorYGhost;
 import nl.drogecode.pacman.text.Score;
 
 public class Map
@@ -162,24 +164,24 @@ public class Map
 
     // Row
     drawCoinRow(340, 71, 'y', 2);
-    // drawCoinRow(137, 100, 'x', 3);
-    // drawCoinRow(37, 46, 'x', 8);
-    // drawCoinRow(220, 46, 'x', 5);
-    // drawCoinRow(365, 66, 'y', 6);
-    // drawCoinRow(23, 62, 'y', 7);
-    // drawCoinRow(23, 180, 'y', 8);
-    // drawCoinRow(23, 305, 'y', 6);
-    // drawCoinRow(92, 68, 'y', 7);
-    // drawCoinRow(115, 123, 'x', 6);
-    //
-    // drawCoinRow(55, 308, 'x', 9);
-    // drawCoinRow(55, 328, 'x', 9);
-    // drawCoinRow(55, 348, 'x', 9);
-    // drawCoinRow(55, 368, 'x', 9);
+    drawCoinRow(137, 100, 'x', 3);
+    drawCoinRow(37, 46, 'x', 8);
+    drawCoinRow(220, 46, 'x', 5);
+    drawCoinRow(365, 66, 'y', 6);
+    drawCoinRow(23, 62, 'y', 7);
+    drawCoinRow(23, 180, 'y', 8);
+    drawCoinRow(23, 305, 'y', 6);
+    drawCoinRow(92, 68, 'y', 7);
+    drawCoinRow(115, 123, 'x', 6);
+
+    drawCoinRow(55, 308, 'x', 9);
+    drawCoinRow(55, 328, 'x', 9);
+    drawCoinRow(55, 348, 'x', 9);
+    drawCoinRow(55, 368, 'x', 9);
 
     // square
-    // drawCoinSquare(62, 205, 9, 6);
-    // drawCoinSquare(200, 305, 12, 7);
+    drawCoinSquare(62, 205, 9, 6);
+    drawCoinSquare(200, 305, 12, 7);
 
     root.getChildren().addAll(coins);
   }
@@ -189,9 +191,9 @@ public class Map
     ghostKiller();
     ghosts = new ArrayList<>();
 
-    // ghosts.add(new OnWallChoiceGhost(50, 100, logic)); // This ghost will never reache you
-    // ghosts.add(new XorYGhost(200, 280, logic));
-    // ghosts.add(new RandomGhost(250, 350, logic));
+    ghosts.add(new OnWallChoiceGhost(50, 100, logic)); // This ghost will never reache you
+    ghosts.add(new XorYGhost(200, 280, logic));
+    ghosts.add(new RandomGhost(250, 350, logic));
     ghosts.add(new OnWallChoiceGhost(450, 350, logic));
 
     addGhosts();
@@ -211,8 +213,9 @@ public class Map
     intersection.add(new Intersection(40, 287));
     intersection.add(new Intersection(394, 48));
     intersection.add(new Intersection(212, 88));
-    intersection.add(new Intersection(126, 184));
-    intersection.add(new Intersection(183, 183));
+    intersection.add(new Intersection(125, 182));
+    intersection.add(new Intersection(183, 182));
+    intersection.add(new Intersection(213, 182));
     intersection.add(new Intersection(292, 65));
     intersection.add(new Intersection(168, 309));
     intersection.add(new Intersection(168, 329));
@@ -221,8 +224,6 @@ public class Map
     intersection.add(new Intersection(43, 329));
     intersection.add(new Intersection(43, 349));
     intersection.add(new Intersection(43, 369));
-
-    root.getChildren().addAll(intersection);
   }
 
   private void drawCoinSquare(double x, double y, int xCount, int yCount)

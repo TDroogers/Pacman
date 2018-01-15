@@ -124,7 +124,6 @@ public class GetSetLogic
    */
   public void setWakeUp(Thread thread)
   {
-    System.out.println(thread);
     wakeUp.setNewThread(thread);
   }
 

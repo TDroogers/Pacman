@@ -162,7 +162,6 @@ public abstract class Ghost extends NpcObject
 
     if (!checkMove(ghost))
     {
-      System.out.println("bumb");
       afterBumb();
       sleep.sleeper(30);
       bumped = true;

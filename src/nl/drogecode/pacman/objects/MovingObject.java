@@ -6,8 +6,8 @@ import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;
-import nl.drogecode.pacman.Sleeper;
 import nl.drogecode.pacman.logic.GameLogic;
+import nl.drogecode.pacman.logic.Sleeper;
 
 public abstract class MovingObject extends BaseObject
 {
@@ -79,6 +79,7 @@ public abstract class MovingObject extends BaseObject
         @Override protected Void call() throws Exception
         {
           sleep.sleeper(60);
+          logic.setWakeUp(th);
           initiateLoop();
           return null;
         }
@@ -142,7 +143,7 @@ public abstract class MovingObject extends BaseObject
 
   private void checkIntersection(Circle clone)
   {
-    clone.setRadius(0.2);
+    clone.setRadius(1);
     List<Intersection> intersections = logic.getIntersectionArray();
 
     int count = 0;

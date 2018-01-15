@@ -1,4 +1,4 @@
-package nl.drogecode.pacman;
+package nl.drogecode.pacman.logic;
 
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;

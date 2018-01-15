@@ -18,6 +18,7 @@ public class GetSetLogic
   protected Man man;
   protected Score score;
   protected Lifes lifes;
+  protected WakeUp wakeUp;
   protected boolean ready;
   protected volatile int coinsLeft;
 
@@ -28,6 +29,7 @@ public class GetSetLogic
     this.man = man;
     this.score = score;
     this.lifes = lifes;
+    this.wakeUp = new WakeUp();
     ready = true;
   }
 
@@ -115,5 +117,19 @@ public class GetSetLogic
   {
     map.remove(coin, 1);
     return true;
+  }
+
+  /*
+   * Wake up a thread
+   */
+  public void setWakeUp(Thread thread)
+  {
+    System.out.println(thread);
+    wakeUp.setNewThread(thread);
+  }
+
+  public void setStopper(boolean stop)
+  {
+    wakeUp.setStopper(stop);
   }
 }

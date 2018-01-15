@@ -11,6 +11,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import nl.drogecode.pacman.logic.Controll;
 import nl.drogecode.pacman.logic.GameLogic;
 import nl.drogecode.pacman.objects.Man;
 import nl.drogecode.pacman.objects.MovingObject;
@@ -19,11 +20,6 @@ import nl.drogecode.pacman.text.Score;
 
 public class Pacman extends Application
 {
-  Score score;
-  Lifes lifes;
-  Map map;
-  Man man;
-  GameLogic logic;
 
   public static void main(String[] args)
   {
@@ -35,7 +31,7 @@ public class Pacman extends Application
     /*
      * Setup logic
      */
-    logic = new GameLogic();
+    GameLogic logic = new GameLogic();
     MovingObject.setLogic(logic);
 
     /*
@@ -43,17 +39,17 @@ public class Pacman extends Application
      */
     Group root = new Group();
     BorderPane pane = new BorderPane();
-    Scene scene = getScene(root, pane);
+    Scene scene = getScene(root, pane, logic);
     scene.setFill(Color.BLACK);
     primaryStage.setScene(scene);
 
     /*
      * create objects
      */
-    score = new Score();
-    lifes = new Lifes();
-    map = new Map(root, score, logic);
-    man = new Man(logic);
+    Score score = new Score();
+    Lifes lifes = new Lifes();
+    Map map = new Map(root, score, logic);
+    Man man = new Man(logic);
 
     logic.setStuff(primaryStage, map, man, score, lifes);
 
@@ -61,6 +57,15 @@ public class Pacman extends Application
      * keybord reader
      */
     new Controll(primaryStage, man);
+    getMouseLocation(root);
+
+    // exit
+    primaryStage.setOnCloseRequest(e ->
+    {
+      e.consume();
+      System.out.println("clean exit :)");
+      CloseClick(primaryStage, logic);
+    });
 
     /*
      * Start building
@@ -70,10 +75,9 @@ public class Pacman extends Application
     primaryStage.setResizable(false);
     primaryStage.show();
 
-    getMouseLocation(root);
   }
 
-  private Scene getScene(Group root, BorderPane pane)
+  private Scene getScene(Group root, BorderPane pane, GameLogic logic)
   {
     /*
      * Construct menu.
@@ -117,5 +121,11 @@ public class Pacman extends Application
         System.out.println("");
       }
     });
+  }
+
+  public void CloseClick(Stage stage, GameLogic logic)
+  {
+    logic.setStopper(true);
+    stage.close();
   }
 }

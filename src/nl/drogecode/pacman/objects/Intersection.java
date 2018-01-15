@@ -10,6 +10,6 @@ public class Intersection extends Circle
     setFill(Color.RED);
     setCenterX(x);
     setCenterY(y);
-    setRadius(2);
+    setRadius(1);
   }
 }

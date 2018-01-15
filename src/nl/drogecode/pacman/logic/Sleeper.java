@@ -1,13 +1,18 @@
-package nl.drogecode.pacman;
+package nl.drogecode.pacman.logic;
 
 public class Sleeper
 {
   public boolean sleeper()
   {
-    return sleeper(30);
+    return sleeper(30L);
   }
 
-  public boolean sleeper(int time)
+  public boolean sleeper(int i)
+  {
+    return sleeper(Long.valueOf(i));
+  }
+
+  public boolean sleeper(Long time)
   {
     try
     {
@@ -15,8 +20,6 @@ public class Sleeper
     }
     catch (InterruptedException ex)
     {
-      System.out.println("Time thread error: " + ex);
-      Thread.currentThread().interrupt();
       return false;
     }
     return true;

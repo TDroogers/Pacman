@@ -67,7 +67,9 @@ public abstract class Ghost extends NpcObject
       oldY = y;
       x = newX;
       y = newY;
-      sleep.sleeper(30);
+
+      Thread.yield();
+      sleep.sleeper(Long.MAX_VALUE);
     }
   }
 
@@ -100,8 +102,10 @@ public abstract class Ghost extends NpcObject
     double ychecker = logic.getYMan() - ghost.getCenterY();
 
     if (Math.abs(xchecker) >= Math.abs(ychecker)
-        && (previus.isEmpty() || (!(previus.contains(Direction.RIGHT) || previus.contains(Direction.LEFT))
-            || ((previus.contains(Direction.UP) || previus.contains(Direction.DOWN))))))
+        && (previus.isEmpty() || (!((previus.contains(Direction.RIGHT) && xchecker > 0)
+            || (previus.contains(Direction.LEFT) && xchecker <= 0))
+            || (((previus.contains(Direction.DOWN) && ychecker > 0)
+                || (previus.contains(Direction.UP) && ychecker <= 0))))))
     {
       if ((xchecker > 0 || previus.contains(Direction.LEFT)) && !previus.contains(Direction.RIGHT))
       {
@@ -158,11 +162,11 @@ public abstract class Ghost extends NpcObject
 
     if (!checkMove(ghost))
     {
+      System.out.println("bumb");
       afterBumb();
       sleep.sleeper(30);
       bumped = true;
       intersected = false;
-      intersectionId = -1;
       return false;
     }
     else if (intersected)

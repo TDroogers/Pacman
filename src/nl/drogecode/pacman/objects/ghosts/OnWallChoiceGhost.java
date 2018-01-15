@@ -8,7 +8,7 @@ import nl.drogecode.pacman.logic.GameLogic;
 public class OnWallChoiceGhost extends Ghost
 {
   Direction mirror;
-  // boolean didShow;
+  boolean didShow;
 
   public OnWallChoiceGhost(double x, double y, GameLogic logic)
   {
@@ -28,11 +28,11 @@ public class OnWallChoiceGhost extends Ghost
   @Override protected void noBumb()
   {
     previus = new ArrayList<>();
-    // if (didShow)
-    // {
-    // System.out.println(" ");
-    // didShow = false;
-    // }
+    if (didShow)
+    {
+      System.out.println(" ");
+      didShow = false;
+    }
     switch (dir)
     {
       case UP:
@@ -58,7 +58,7 @@ public class OnWallChoiceGhost extends Ghost
   protected void findMan()
   {
     super.findMan();
-    // didShow = true;
+    didShow = true;
     if (!previus.contains(dir))
     {
       previus.add(dir);
@@ -67,6 +67,6 @@ public class OnWallChoiceGhost extends Ghost
     {
       previus = new ArrayList<>();
     }
-    // System.out.println(mirror + " " + dir + " : " + previus);
+    System.out.println(mirror + " " + dir + " : " + previus);
   }
 }

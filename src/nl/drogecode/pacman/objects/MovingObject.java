@@ -12,19 +12,19 @@ import nl.drogecode.pacman.logic.GameLogic;
 public abstract class MovingObject extends BaseObject
 {
   protected static GameLogic logic;
-  
+
   protected Sleeper sleep;
   protected Thread th;
   protected double oldX, oldY, x, y, newX, newY, maxX, maxY;
-  protected boolean walking;
-  protected volatile int direction;
+  protected boolean walking, intersected;
+  protected volatile int direction, intersectionId;
   protected final int SPEED = 2;
-  
-  protected MovingObject ()
+
+  protected MovingObject()
   {
     sleep = new Sleeper();
   }
-  
+
   public static boolean setLogic(GameLogic logic)
   {
     MovingObject.logic = logic;
@@ -35,15 +35,18 @@ public abstract class MovingObject extends BaseObject
   {
     direction = newDir;
   }
-  
+
   protected boolean checkMove(Circle object)
   {
+    Circle clone = getClone(object, newX, newY);
+    checkIntersection(clone);
+    clone.setRadius(object.getRadius());
     if (!checkBumpBorder())
     {
       direction = 0;
       return false;
     }
-    if (!checkBumpWall(object, newX, newY))
+    if (!checkBumpWall(clone))
     {
       direction = 0;
       x = newX = oldX;
@@ -52,8 +55,7 @@ public abstract class MovingObject extends BaseObject
     }
     return true;
   }
-  
-  
+
   protected boolean moveObject(Circle object)
   {
 
@@ -86,7 +88,7 @@ public abstract class MovingObject extends BaseObject
       th.start();
     }
   }
-  
+
   /*
    * 
    * ====================================================
@@ -94,9 +96,9 @@ public abstract class MovingObject extends BaseObject
    * abstract function's
    * 
    */
-  
+
   protected abstract void initiateLoop();
-  
+
   /*
    * 
    * =====================================================
@@ -104,7 +106,16 @@ public abstract class MovingObject extends BaseObject
    * private functions
    * 
    */
-  
+
+  private Circle getClone(Circle a, double newX, double newY)
+  {
+    Circle clone = new Circle();
+    clone.setCenterX(newX);
+    clone.setCenterY(newY);
+
+    return clone;
+  }
+
   private boolean checkBumpBorder()
   {
     // Has to be side specific, but fine for now. (In the current map you can never reach the borders)
@@ -115,13 +126,8 @@ public abstract class MovingObject extends BaseObject
     return true;
   }
 
-  private boolean checkBumpWall(Circle a, double newX, double newY)
+  private boolean checkBumpWall(Circle clone)
   {
-
-    Circle clone = new Circle();
-    clone.setCenterX(newX);
-    clone.setCenterY(newY);
-    clone.setRadius(a.getRadius());
     List<Shape> shapes = logic.getWallArray();
 
     for (Shape shape : shapes)
@@ -132,5 +138,27 @@ public abstract class MovingObject extends BaseObject
       }
     }
     return true;
+  }
+
+  private void checkIntersection(Circle clone)
+  {
+    clone.setRadius(0.2);
+    List<Intersection> intersections = logic.getIntersectionArray();
+
+    int count = 0;
+    for (Intersection intersection : intersections)
+    {
+      if (clone.getBoundsInParent().intersects(intersection.getBoundsInParent()))
+      {
+        if (count == intersectionId)
+        {
+          intersected = false;
+          return;
+        }
+        intersected = true;
+        intersectionId = count;
+      }
+      count++;
+    }
   }
 }

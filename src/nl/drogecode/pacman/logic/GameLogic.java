@@ -54,7 +54,6 @@ public class GameLogic extends GetSetLogic
       });
       return true;
     }
-    System.out.println(getCoinsLeft());
     return false;
   }
 

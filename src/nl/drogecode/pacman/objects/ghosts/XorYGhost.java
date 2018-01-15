@@ -12,39 +12,17 @@ public class XorYGhost extends Ghost
 
   @Override protected void walker()
   {
-    double xchecker = logic.getXMan() - ghost.getCenterX();
-    double ychecker = logic.getYMan() - ghost.getCenterY();
-
-    if (Math.abs(xchecker) >= Math.abs(ychecker))
-    {
-      if (xchecker > 0)
-      {
-        newX = x + GSPEED;
-      }
-      else
-      {
-        newX = x - GSPEED;
-      }
-    }
-    else
-    {
-      if (ychecker > 0)
-      {
-        newY = y + GSPEED;
-      }
-      else
-      {
-        newY = y - GSPEED;
-      }
-    }
-
+    findMan();
+    super.walker();
   }
 
   @Override protected void afterBumb()
-  {
-  }
+  {}
 
   @Override protected void beforeLoop()
+  {}
+
+  @Override protected void noBumb()
   {}
 
 }

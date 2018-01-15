@@ -1,11 +1,13 @@
 package nl.drogecode.pacman;
 
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -22,12 +24,12 @@ public class Pacman extends Application
   Map map;
   Man man;
   GameLogic logic;
-  
+
   public static void main(String[] args)
   {
     launch(args);
   }
-  
+
   @Override public void start(Stage primaryStage)
   {
     /*
@@ -35,7 +37,7 @@ public class Pacman extends Application
      */
     logic = new GameLogic();
     MovingObject.setLogic(logic);
-    
+
     /*
      * construct screen stuff
      */
@@ -44,7 +46,7 @@ public class Pacman extends Application
     Scene scene = getScene(root, pane);
     scene.setFill(Color.BLACK);
     primaryStage.setScene(scene);
-    
+
     /*
      * create objects
      */
@@ -52,23 +54,25 @@ public class Pacman extends Application
     lifes = new Lifes();
     map = new Map(root, score, logic);
     man = new Man(logic);
-    
+
     logic.setStuff(primaryStage, map, man, score, lifes);
-    
+
     /*
      * keybord reader
      */
     new Controll(primaryStage, man);
 
     /*
-     * Start building 
+     * Start building
      */
     root.getChildren().addAll(pane, man.getObject(), score, lifes);
     primaryStage.setTitle("Pacman");
     primaryStage.setResizable(false);
     primaryStage.show();
+
+    getMouseLocation(root);
   }
-  
+
   private Scene getScene(Group root, BorderPane pane)
   {
     /*
@@ -97,5 +101,21 @@ public class Pacman extends Application
     pane.setTop(menuBar);
 
     return scene;
+  }
+
+  private void getMouseLocation(Group root)
+  {
+    /*
+     * for fast map building!
+     */
+    root.setOnMouseClicked(new EventHandler<MouseEvent>()
+    {
+      @Override public void handle(MouseEvent event)
+      {
+        System.out.println("X: " + event.getSceneX());
+        System.out.println("Y: " + event.getSceneY());
+        System.out.println("");
+      }
+    });
   }
 }

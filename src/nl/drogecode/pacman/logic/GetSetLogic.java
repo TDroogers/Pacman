@@ -6,6 +6,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 import nl.drogecode.pacman.Map;
+import nl.drogecode.pacman.objects.Intersection;
 import nl.drogecode.pacman.objects.Man;
 import nl.drogecode.pacman.text.Lifes;
 import nl.drogecode.pacman.text.Score;
@@ -103,6 +104,11 @@ public class GetSetLogic
   public List<Shape> getWallArray()
   {
     return map.getShapeArray();
+  }
+
+  public List<Intersection> getIntersectionArray()
+  {
+    return map.getIntersectionArray();
   }
 
   public boolean removeCoin(Shape coin)

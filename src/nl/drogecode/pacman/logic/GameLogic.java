@@ -59,6 +59,7 @@ public class GameLogic extends GetSetLogic
 
   private boolean showDieAllert()
   {
+    System.gc();
     Alert a = new Alert(Alert.AlertType.INFORMATION, "You are dead!");
     a.showAndWait();
     return true;
@@ -66,6 +67,7 @@ public class GameLogic extends GetSetLogic
 
   private boolean showWinAllert()
   {
+    System.gc();
     Alert a = new Alert(Alert.AlertType.INFORMATION, "You have won");
     a.showAndWait();
     return true;

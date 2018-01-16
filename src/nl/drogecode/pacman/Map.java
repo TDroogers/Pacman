@@ -6,6 +6,7 @@ import java.util.List;
 import javafx.application.Platform;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;
 import nl.drogecode.pacman.logic.GameLogic;
 import nl.drogecode.pacman.objects.Coin;
@@ -25,7 +26,7 @@ public class Map
   private volatile List<Shape> shape;
   private volatile List<Shape> coins;
   private volatile List<Ghost> ghosts;
-  private volatile List<Intersection> intersection;
+  private volatile List<Circle> intersection;
   private volatile int scoreCounter;
 
   public Map(Group root, Score score, GameLogic logic)
@@ -75,7 +76,7 @@ public class Map
     return ghosts;
   }
 
-  public List<Intersection> getIntersectionArray()
+  public List<Circle> getIntersectionArray()
   {
     return intersection;
   }
@@ -105,55 +106,55 @@ public class Map
      */
     shape = new ArrayList<>();
 
-    shape.add(new Wall(12, 35, 'x', 676, Color.BLUE));
-    shape.add(new Wall(10, 35, 'y', 355, Color.BLUE));
-    shape.add(new Wall(12, 385, 'x', 676, Color.BLUE));
-    shape.add(new Wall(685, 35, 'y', 355, Color.BLUE));
+    newWall(12, 35, 'x', 676, Color.BLUE);
+    newWall(10, 35, 'y', 355, Color.BLUE);
+    newWall(12, 385, 'x', 676, Color.BLUE);
+    newWall(685, 35, 'y', 355, Color.BLUE);
 
-    shape.add(new Wall(30, 55, 'x', 50, Color.ORANGE));
-    shape.add(new Wall(30, 55, 'y', 100, Color.ORANGE));
-    shape.add(new Wall(80, 55, 'y', 100, Color.ORANGE));
-    shape.add(new Wall(30, 150, 'x', 170, Color.ORANGE));
-    shape.add(new Wall(135, 150, 'y', 25, Color.ORANGE));
+    newWall(30, 55, 'x', 50);
+    newWall(30, 55, 'y', 100);
+    newWall(80, 55, 'y', 100);
+    newWall(30, 150, 'x', 170);
+    newWall(135, 150, 'y', 25);
 
-    shape.add(new Wall(100, 130, 'x', 80, Color.AQUA));
-    shape.add(new Wall(100, 55, 'y', 80, Color.AQUA));
-    shape.add(new Wall(100, 55, 'x', 80, Color.AQUA));
-    shape.add(new Wall(275, 35, 'y', 25, Color.AQUA));
-    shape.add(new Wall(200, 55, 'x', 80, Color.AQUA));
+    newWall(100, 130, 'x', 80, Color.AQUA);
+    newWall(100, 55, 'y', 80, Color.AQUA);
+    newWall(100, 55, 'x', 80, Color.AQUA);
+    newWall(275, 35, 'y', 25, Color.AQUA);
+    newWall(200, 55, 'x', 80, Color.AQUA);
 
-    shape.add(new Wall(125, 75, 'x', 200, Color.GREEN));
-    shape.add(new Wall(125, 75, 'y', 40, Color.GREEN));
-    shape.add(new Wall(125, 110, 'x', 75, Color.GREEN));
-    shape.add(new Wall(200, 110, 'y', 45, Color.GREEN));
+    newWall(125, 75, 'x', 200, Color.GREEN);
+    newWall(125, 75, 'y', 40, Color.GREEN);
+    newWall(125, 110, 'x', 75, Color.GREEN);
+    newWall(200, 110, 'y', 45, Color.GREEN);
 
-    shape.add(new Wall(220, 95, 'x', 135, Color.CORAL));
-    shape.add(new Wall(300, 55, 'x', 80, Color.CORAL));
-    shape.add(new Wall(350, 55, 'y', 80, Color.CORAL));
-    shape.add(new Wall(375, 55, 'y', 80, Color.CORAL));
+    newWall(220, 95, 'x', 135, Color.CORAL);
+    newWall(300, 55, 'x', 80, Color.CORAL);
+    newWall(350, 55, 'y', 80, Color.CORAL);
+    newWall(375, 55, 'y', 80, Color.CORAL);
 
-    shape.add(new Wall(30, 172, 'y', 100, Color.PURPLE));
-    shape.add(new Wall(50, 192, 'y', 85, Color.PURPLE));
-    shape.add(new Wall(168, 192, 'y', 30, Color.PURPLE));
-    shape.add(new Wall(168, 242, 'y', 35, Color.PURPLE));
-    shape.add(new Wall(50, 192, 'x', 120, Color.PURPLE));
-    shape.add(new Wall(50, 272, 'x', 120, Color.PURPLE));
-    shape.add(new Wall(12, 295, 'x', 150, Color.PURPLE));
-    shape.add(new Wall(12, 170, 'x', 100, Color.PURPLE));
+    newWall(30, 172, 'y', 100, Color.PURPLE);
+    newWall(50, 192, 'y', 85, Color.PURPLE);
+    newWall(168, 192, 'y', 30, Color.PURPLE);
+    newWall(168, 242, 'y', 35, Color.PURPLE);
+    newWall(50, 192, 'x', 120, Color.PURPLE);
+    newWall(50, 272, 'x', 120, Color.PURPLE);
+    newWall(12, 295, 'x', 150, Color.PURPLE);
+    newWall(12, 170, 'x', 100, Color.PURPLE);
 
-    shape.add(new Wall(30, 295, 'y', 75, Color.DARKTURQUOISE));
-    shape.add(new Wall(50, 315, 'x', 110, Color.DARKTURQUOISE));
-    shape.add(new Wall(50, 335, 'x', 110, Color.DARKTURQUOISE));
-    shape.add(new Wall(50, 355, 'x', 110, Color.DARKTURQUOISE));
-    shape.add(new Wall(50, 375, 'x', 110, Color.DARKTURQUOISE));
-    shape.add(new Wall(190, 295, 'x', 150, Color.DARKTURQUOISE));
-    shape.add(new Wall(190, 295, 'y', 70, Color.DARKTURQUOISE));
-    shape.add(new Wall(340, 295, 'y', 93, Color.DARKTURQUOISE));
+    newWall(30, 295, 'y', 75, Color.DARKTURQUOISE);
+    newWall(50, 315, 'x', 110, Color.DARKTURQUOISE);
+    newWall(50, 335, 'x', 110, Color.DARKTURQUOISE);
+    newWall(50, 355, 'x', 110, Color.DARKTURQUOISE);
+    newWall(50, 375, 'x', 110, Color.DARKTURQUOISE);
+    newWall(190, 295, 'x', 150, Color.DARKTURQUOISE);
+    newWall(190, 295, 'y', 70, Color.DARKTURQUOISE);
+    newWall(340, 295, 'y', 93, Color.DARKTURQUOISE);
 
-    shape.add(new Wall(600, 40, 'y', 30, Color.BROWN));
-    shape.add(new Wall(600, 70, 'x', 85, Color.BROWN));
-    shape.add(new Wall(600, 350, 'y', 35, Color.BROWN));
-    shape.add(new Wall(600, 350, 'x', 85, Color.BROWN));
+    newWall(600, 40, 'y', 30, Color.BROWN);
+    newWall(600, 70, 'x', 85, Color.BROWN);
+    newWall(600, 350, 'y', 35, Color.BROWN);
+    newWall(600, 350, 'x', 85, Color.BROWN);
 
     root.getChildren().addAll(shape);
   }
@@ -203,27 +204,27 @@ public class Map
   {
     intersection = new ArrayList<>();
 
-    intersection.add(new Intersection(189, 48));
-    intersection.add(new Intersection(93, 46));
-    intersection.add(new Intersection(189, 66));
-    intersection.add(new Intersection(366, 143));
-    intersection.add(new Intersection(184, 231));
-    intersection.add(new Intersection(157, 231));
-    intersection.add(new Intersection(172, 287));
-    intersection.add(new Intersection(41, 287));
-    intersection.add(new Intersection(394, 48));
-    intersection.add(new Intersection(212, 88));
-    intersection.add(new Intersection(125, 182));
-    intersection.add(new Intersection(183, 182));
-    intersection.add(new Intersection(213, 182));
-    intersection.add(new Intersection(292, 65));
-    intersection.add(new Intersection(168, 309));
-    intersection.add(new Intersection(168, 329));
-    intersection.add(new Intersection(168, 349));
-    intersection.add(new Intersection(168, 369));
-    intersection.add(new Intersection(43, 329));
-    intersection.add(new Intersection(43, 349));
-    intersection.add(new Intersection(43, 369));
+    newIntersection(189, 48);
+    newIntersection(93, 46);
+    newIntersection(189, 66);
+    newIntersection(366, 143);
+    newIntersection(184, 231);
+    newIntersection(157, 231);
+    newIntersection(172, 287);
+    newIntersection(41, 287);
+    newIntersection(394, 48);
+    newIntersection(212, 88);
+    newIntersection(125, 182);
+    newIntersection(183, 182);
+    newIntersection(213, 182);
+    newIntersection(292, 65);
+    newIntersection(168, 309);
+    newIntersection(168, 329);
+    newIntersection(168, 349);
+    newIntersection(168, 369);
+    newIntersection(43, 329);
+    newIntersection(43, 349);
+    newIntersection(43, 369);
 
     root.getChildren().addAll(intersection);
   }
@@ -242,7 +243,7 @@ public class Map
     for (int i = 0; i < count; i++)
     {
       logic.setCoinsLeft((byte) 0);
-      coins.add(new Coin(x, y));
+      coins.add(new Coin(x, y).getObject());
       switch (c)
       {
         case 'x':
@@ -254,6 +255,21 @@ public class Map
           break;
       }
     }
+  }
+
+  private void newWall(double x, double y, Character cha, double howFar)
+  {
+    shape.add(new Wall(x, y, cha, howFar).getObject());
+  }
+
+  private void newWall(double x, double y, Character cha, double howFar, Color color)
+  {
+    shape.add(new Wall(x, y, cha, howFar, color).getObject());
+  }
+
+  private void newIntersection(double x, double y)
+  {
+    intersection.add(new Intersection(x, y).getObject());
   }
 
   private boolean ghostKiller()

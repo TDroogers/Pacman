@@ -144,10 +144,10 @@ public abstract class MovingObject extends BaseObject
   private void checkIntersection(Circle clone)
   {
     clone.setRadius(1);
-    List<Intersection> intersections = logic.getIntersectionArray();
+    List<Circle> intersections = logic.getIntersectionArray();
 
     int count = 0;
-    for (Intersection intersection : intersections)
+    for (Circle intersection : intersections)
     {
       if (clone.getBoundsInParent().intersects(intersection.getBoundsInParent()))
       {

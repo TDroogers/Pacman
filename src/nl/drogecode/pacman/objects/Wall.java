@@ -3,8 +3,10 @@ package nl.drogecode.pacman.objects;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-public class Wall extends Rectangle
+public class Wall extends BaseObject
 {
+  private Rectangle wall;
+
   public Wall(double x, double y, Character direction, double howFar)
   {
     this(x, y, direction, howFar, Color.ANTIQUEWHITE);
@@ -12,18 +14,24 @@ public class Wall extends Rectangle
 
   public Wall(double x, double y, Character direction, double howFar, Color color)
   {
-    setX(x);
-    setY(y);
-    setFill(color);
+    wall = new Rectangle();
+    wall.setX(x);
+    wall.setY(y);
+    wall.setFill(color);
     if (direction.equals('x'))
     {
-      setWidth(howFar);
-      setHeight(5);
+      wall.setWidth(howFar);
+      wall.setHeight(5);
     }
-    else if(direction.equals('y'))
+    else if (direction.equals('y'))
     {
-      setWidth(5);
-      setHeight(howFar);
+      wall.setWidth(5);
+      wall.setHeight(howFar);
     }
+  }
+
+  public Rectangle getObject()
+  {
+    return wall;
   }
 }

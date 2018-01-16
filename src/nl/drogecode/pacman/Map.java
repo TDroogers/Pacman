@@ -210,7 +210,7 @@ public class Map
     intersection.add(new Intersection(184, 231));
     intersection.add(new Intersection(157, 231));
     intersection.add(new Intersection(172, 287));
-    intersection.add(new Intersection(40, 287));
+    intersection.add(new Intersection(41, 287));
     intersection.add(new Intersection(394, 48));
     intersection.add(new Intersection(212, 88));
     intersection.add(new Intersection(125, 182));
@@ -224,6 +224,8 @@ public class Map
     intersection.add(new Intersection(43, 329));
     intersection.add(new Intersection(43, 349));
     intersection.add(new Intersection(43, 369));
+
+    root.getChildren().addAll(intersection);
   }
 
   private void drawCoinSquare(double x, double y, int xCount, int yCount)

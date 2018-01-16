@@ -129,7 +129,7 @@ public abstract class Ghost extends NpcObject
     }
     else
     {
-      if ((ychecker > 0 || previus.contains(Direction.UP) && !previus.contains(Direction.DOWN)))
+      if ((ychecker > 0 || previus.contains(Direction.UP)) && !previus.contains(Direction.DOWN))
       {
         dir = Direction.DOWN;
       }

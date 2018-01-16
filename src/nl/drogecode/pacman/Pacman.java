@@ -1,6 +1,7 @@
 package nl.drogecode.pacman;
 
 import javafx.application.Application;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -62,9 +63,7 @@ public class Pacman extends Application
     // exit
     primaryStage.setOnCloseRequest(e ->
     {
-      e.consume();
-      System.out.println("clean exit :)");
-      CloseClick(primaryStage, logic);
+      CloseClick(e, primaryStage, logic);
     });
 
     /*
@@ -123,9 +122,11 @@ public class Pacman extends Application
     });
   }
 
-  public void CloseClick(Stage stage, GameLogic logic)
+  public void CloseClick(Event e, Stage stage, GameLogic logic)
   {
+    e.consume();
     logic.setStopper(true);
     stage.close();
+    System.out.println("clean exit :)");
   }
 }

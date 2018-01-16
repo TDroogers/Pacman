@@ -2,6 +2,8 @@ package nl.drogecode.pacman.logic;
 
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
+import nl.drogecode.pacman.objects.BaseObject;
+import nl.drogecode.pacman.objects.NpcObject;
 
 public class GameLogic extends GetSetLogic
 {
@@ -59,6 +61,7 @@ public class GameLogic extends GetSetLogic
 
   private boolean showDieAllert()
   {
+    holdGhosts();
     System.gc();
     Alert a = new Alert(Alert.AlertType.INFORMATION, "You are dead!");
     a.showAndWait();
@@ -67,6 +70,7 @@ public class GameLogic extends GetSetLogic
 
   private boolean showWinAllert()
   {
+    holdGhosts();
     System.gc();
     Alert a = new Alert(Alert.AlertType.INFORMATION, "You have won");
     a.showAndWait();
@@ -74,5 +78,13 @@ public class GameLogic extends GetSetLogic
     /*
      * TODO: hiscore
      */
+  }
+
+  private void holdGhosts()
+  {
+    for (BaseObject ghost : map.getGhostsArray())
+    {
+      ((NpcObject) ghost).setWalking(false);
+    }
   }
 }

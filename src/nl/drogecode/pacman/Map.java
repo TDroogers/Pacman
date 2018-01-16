@@ -6,13 +6,13 @@ import java.util.List;
 import javafx.application.Platform;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;
 import nl.drogecode.pacman.logic.GameLogic;
+import nl.drogecode.pacman.objects.BaseObject;
 import nl.drogecode.pacman.objects.Coin;
 import nl.drogecode.pacman.objects.Intersection;
+import nl.drogecode.pacman.objects.NpcObject;
 import nl.drogecode.pacman.objects.Wall;
-import nl.drogecode.pacman.objects.ghosts.Ghost;
 import nl.drogecode.pacman.objects.ghosts.OnWallChoiceGhost;
 import nl.drogecode.pacman.objects.ghosts.RandomGhost;
 import nl.drogecode.pacman.objects.ghosts.XorYGhost;
@@ -25,8 +25,8 @@ public class Map
   private GameLogic logic;
   private volatile List<Shape> shape;
   private volatile List<Shape> coins;
-  private volatile List<Ghost> ghosts;
-  private volatile List<Circle> intersection;
+  private volatile List<BaseObject> ghosts;
+  private volatile List<BaseObject> intersection;
   private volatile int scoreCounter;
 
   public Map(Group root, Score score, GameLogic logic)
@@ -71,12 +71,12 @@ public class Map
     return coins;
   }
 
-  public List<Ghost> getGhostsArray()
+  public List<BaseObject> getGhostsArray()
   {
     return ghosts;
   }
 
-  public List<Circle> getIntersectionArray()
+  public List<BaseObject> getIntersectionArray()
   {
     return intersection;
   }
@@ -197,36 +197,36 @@ public class Map
     ghosts.add(new RandomGhost(250, 350, logic));
     ghosts.add(new OnWallChoiceGhost(450, 350, logic));
 
-    addGhosts();
+    addObject(ghosts);
   }
 
   private void drawIntersection()
   {
     intersection = new ArrayList<>();
 
-    newIntersection(189, 48);
-    newIntersection(93, 46);
-    newIntersection(189, 66);
-    newIntersection(366, 143);
-    newIntersection(184, 231);
-    newIntersection(157, 231);
-    newIntersection(172, 287);
-    newIntersection(41, 287);
-    newIntersection(394, 48);
-    newIntersection(212, 88);
-    newIntersection(125, 182);
-    newIntersection(183, 182);
-    newIntersection(213, 182);
-    newIntersection(292, 65);
-    newIntersection(168, 309);
-    newIntersection(168, 329);
-    newIntersection(168, 349);
-    newIntersection(168, 369);
-    newIntersection(43, 329);
-    newIntersection(43, 349);
-    newIntersection(43, 369);
+    newIntersection(1, 189, 48);
+    newIntersection(2, 93, 46);
+    newIntersection(3, 189, 66);
+    newIntersection(4, 366, 143);
+    newIntersection(5, 184, 231);
+    newIntersection(6, 157, 231);
+    newIntersection(7, 172, 287);
+    newIntersection(8, 41, 287);
+    newIntersection(9, 394, 48);
+    newIntersection(10, 212, 88);
+    newIntersection(11, 125, 182);
+    newIntersection(12, 183, 182);
+    newIntersection(13, 213, 182);
+    newIntersection(14, 292, 65);
+    newIntersection(15, 168, 309);
+    newIntersection(16, 168, 329);
+    newIntersection(17, 168, 349);
+    newIntersection(18, 168, 369);
+    newIntersection(19, 43, 329);
+    newIntersection(20, 43, 349);
+    newIntersection(21, 43, 369);
 
-    root.getChildren().addAll(intersection);
+    addObject(intersection);
   }
 
   private void drawCoinSquare(double x, double y, int xCount, int yCount)
@@ -267,9 +267,9 @@ public class Map
     shape.add(new Wall(x, y, cha, howFar, color).getObject());
   }
 
-  private void newIntersection(double x, double y)
+  private void newIntersection(int i, double x, double y)
   {
-    intersection.add(new Intersection(x, y).getObject());
+    intersection.add(new Intersection(i, x, y));
   }
 
   private boolean ghostKiller()
@@ -278,19 +278,19 @@ public class Map
     {
       return false;
     }
-    for (Ghost ghost : ghosts)
+    for (BaseObject ghost : ghosts)
     {
       root.getChildren().remove(ghost.getObject());
-      ghost.setWalking(false);
+      ((NpcObject) ghost).setWalking(false);
     }
     return true;
   }
 
-  private boolean addGhosts()
+  private boolean addObject(List<BaseObject> obj)
   {
-    for (Ghost ghost : ghosts)
+    for (BaseObject child : obj)
     {
-      root.getChildren().add(ghost.getObject());
+      root.getChildren().add(child.getObject());
     }
     return true;
   }

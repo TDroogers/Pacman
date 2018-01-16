@@ -61,6 +61,6 @@ public class OnWallChoiceGhost extends Ghost
     {
       previus = new ArrayList<>();
     }
-    System.out.println(mirror + " " + dir + " : " + previus);
+    // System.out.println(mirror + " " + dir + " : " + previus);
   }
 }

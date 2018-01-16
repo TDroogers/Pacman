@@ -5,15 +5,28 @@ import javafx.scene.shape.Circle;
 
 public class Intersection extends BaseObject
 {
+  private int id;
   private Circle inters;
 
-  public Intersection(double x, double y)
+  public Intersection(int id, double x, double y)
   {
+    this(id, x, y, 0, 0, 0, 0);
+  }
+
+  public Intersection(int id, double x, double y, int up, int down, int left, int right)
+  {
+    this.id = id;
+
     inters = new Circle();
     inters.setFill(Color.RED);
     inters.setCenterX(x);
     inters.setCenterY(y);
     inters.setRadius(1);
+  }
+
+  public int getID()
+  {
+    return id;
   }
 
   @Override public Circle getObject()

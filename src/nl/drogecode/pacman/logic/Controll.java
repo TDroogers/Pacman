@@ -23,10 +23,6 @@ public class Controll
     {
       setKey(e.getCode());
     });
-    stage.getScene().setOnKeyReleased(e ->
-    {
-      setRelease(e.getCode());
-    });
   }
 
   private void setKey(KeyCode keyCode)
@@ -36,15 +32,15 @@ public class Controll
       case UP:
         man.setDirection(1);
         break;
-        
+
       case RIGHT:
         man.setDirection(2);
         break;
-        
+
       case DOWN:
         man.setDirection(3);
         break;
-        
+
       case LEFT:
         man.setDirection(4);
         break;
@@ -52,10 +48,5 @@ public class Controll
       default:
         break;
     }
-  }
-
-  private void setRelease(KeyCode keyCode)
-  {
-
   }
 }

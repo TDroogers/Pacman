@@ -149,6 +149,12 @@ public abstract class Ghost extends NpcObject
         }
       }
     }
+    if (inters != null)
+    {
+      newX = inters.getCenterX();
+      newY = inters.getCenterY();
+      inters = null;
+    }
   }
 
   protected abstract void beforeLoop();
@@ -166,6 +172,7 @@ public abstract class Ghost extends NpcObject
       sleep.sleeper(30);
       bumped = true;
       intersected = false;
+      intersectionId = -1;
       return false;
     }
     else if (intersected)

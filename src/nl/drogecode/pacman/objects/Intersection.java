@@ -21,7 +21,7 @@ public class Intersection extends BaseObject
     inters.setFill(Color.RED);
     inters.setCenterX(x);
     inters.setCenterY(y);
-    inters.setRadius(1);
+    inters.setRadius(2);
   }
 
   public int getID()

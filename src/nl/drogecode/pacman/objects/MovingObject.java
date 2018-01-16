@@ -15,6 +15,7 @@ public abstract class MovingObject extends BaseObject
 
   protected Sleeper sleep;
   protected Thread th;
+  protected Circle inters;
   protected double oldX, oldY, x, y, newX, newY, maxX, maxY;
   protected boolean walking, intersected;
   protected volatile int direction, intersectionId;
@@ -148,6 +149,7 @@ public abstract class MovingObject extends BaseObject
 
     for (BaseObject intersection : intersections)
     {
+
       if (clone.getBoundsInParent().intersects(intersection.getObject().getBoundsInParent()))
       {
         int id = ((Intersection) intersection).getID();
@@ -156,6 +158,7 @@ public abstract class MovingObject extends BaseObject
           intersected = false;
           return;
         }
+        inters = (Circle) intersection.getObject();
         intersected = true;
         intersectionId = id;
       }

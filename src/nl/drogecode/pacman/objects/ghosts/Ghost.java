@@ -86,12 +86,12 @@ public abstract class Ghost extends NpcObject
         newY = y + GSPEED;
         break;
 
-      case RIGHT:
-        newX = x + GSPEED;
-        break;
-
       case LEFT:
         newX = x - GSPEED;
+        break;
+
+      case RIGHT:
+        newX = x + GSPEED;
         break;
     }
   }

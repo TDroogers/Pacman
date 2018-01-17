@@ -14,9 +14,6 @@ import nl.drogecode.pacman.objects.Intersection;
 import nl.drogecode.pacman.objects.NpcObject;
 import nl.drogecode.pacman.objects.Wall;
 import nl.drogecode.pacman.objects.ghosts.AstarGhost;
-import nl.drogecode.pacman.objects.ghosts.OnWallChoiceGhost;
-import nl.drogecode.pacman.objects.ghosts.RandomGhost;
-import nl.drogecode.pacman.objects.ghosts.XorYGhost;
 import nl.drogecode.pacman.text.Score;
 
 public class Map
@@ -217,11 +214,11 @@ public class Map
     ghostKiller();
     ghosts = new ArrayList<>();
 
-    ghosts.add(new OnWallChoiceGhost(50, 100, logic)); // This ghost will never reache you
-    ghosts.add(new XorYGhost(180, 208, logic));
-    ghosts.add(new RandomGhost(250, 350, logic));
-    ghosts.add(new OnWallChoiceGhost(380, 307, logic));
-    ghosts.add(new AstarGhost(22, 377, logic));
+    // ghosts.add(new OnWallChoiceGhost(50, 100, logic)); // This ghost will never reache you
+    // ghosts.add(new XorYGhost(180, 208, logic));
+    // ghosts.add(new RandomGhost(250, 350, logic));
+    // ghosts.add(new OnWallChoiceGhost(380, 307, logic));
+    ghosts.add(new AstarGhost(65, 162, logic));
 
     addObject(ghosts);
   }

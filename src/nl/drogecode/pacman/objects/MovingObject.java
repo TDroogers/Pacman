@@ -39,10 +39,10 @@ public abstract class MovingObject extends BaseObject
 
   protected boolean checkMove(Circle object)
   {
-    Circle clone = getClone(object, newX, newY);
+    Circle clone = getClone(newX, newY);
     checkIntersection(clone);
     clone.setRadius(object.getRadius());
-    if (!checkBumpBorder())
+    if (!checkBumpBorder(newX, newY))
     {
       direction = 0;
       return false;
@@ -91,34 +91,7 @@ public abstract class MovingObject extends BaseObject
     }
   }
 
-  /*
-   * 
-   * ====================================================
-   * 
-   * abstract function's
-   * 
-   */
-
-  protected abstract void initiateLoop();
-
-  /*
-   * 
-   * =====================================================
-   * 
-   * private functions
-   * 
-   */
-
-  private Circle getClone(Circle a, double newX, double newY)
-  {
-    Circle clone = new Circle();
-    clone.setCenterX(newX);
-    clone.setCenterY(newY);
-
-    return clone;
-  }
-
-  private boolean checkBumpBorder()
+  protected boolean checkBumpBorder(double newX, double newY)
   {
     // Has to be side specific, but fine for now. (In the current map you can never reach the borders)
     if (newX > maxX || newX < 0 || newY > maxY || newY < 25)
@@ -128,7 +101,7 @@ public abstract class MovingObject extends BaseObject
     return true;
   }
 
-  private boolean checkBumpWall(Circle clone)
+  protected boolean checkBumpWall(Circle clone)
   {
     List<Shape> shapes = logic.map.getShapeArray();
 
@@ -142,7 +115,7 @@ public abstract class MovingObject extends BaseObject
     return true;
   }
 
-  private void checkIntersection(Circle clone)
+  protected void checkIntersection(Circle clone)
   {
     clone.setRadius(1);
     List<BaseObject> intersections = logic.map.getIntersectionArray();
@@ -163,5 +136,32 @@ public abstract class MovingObject extends BaseObject
         intersectionId = id;
       }
     }
+  }
+
+  /*
+   * 
+   * ====================================================
+   * 
+   * abstract function's
+   * 
+   */
+
+  protected abstract void initiateLoop();
+
+  /*
+   * 
+   * =====================================================
+   * 
+   * private functions
+   * 
+   */
+
+  private Circle getClone(double newX, double newY)
+  {
+    Circle clone = new Circle();
+    clone.setCenterX(newX);
+    clone.setCenterY(newY);
+
+    return clone;
   }
 }

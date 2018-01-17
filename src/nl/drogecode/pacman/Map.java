@@ -116,6 +116,12 @@ public class Map
     newWall(80, 55, 'y', 100);
     newWall(30, 150, 'x', 170);
     newWall(135, 150, 'y', 25);
+    newWall(200, 150, 'y', 25);
+    newWall(160, 172, 'x', 100);
+
+    newWall(220, 120, 'x', 100, Color.SPRINGGREEN);
+    newWall(220, 150, 'x', 100, Color.SPRINGGREEN);
+    newWall(220, 120, 'y', 35, Color.SPRINGGREEN);
 
     newWall(100, 130, 'x', 80, Color.AQUA);
     newWall(100, 55, 'y', 80, Color.AQUA);
@@ -151,10 +157,21 @@ public class Map
     newWall(190, 295, 'y', 70, Color.DARKTURQUOISE);
     newWall(340, 295, 'y', 93, Color.DARKTURQUOISE);
 
+    newWall(190, 192, 'y', 105, Color.HOTPINK);
+    newWall(215, 217, 'y', 60, Color.HOTPINK);
+    newWall(270, 217, 'y', 60, Color.HOTPINK);
+    newWall(300, 192, 'y', 85, Color.HOTPINK);
+    newWall(325, 192, 'y', 85, Color.HOTPINK);
+    newWall(190, 192, 'x', 135, Color.HOTPINK);
+    newWall(215, 217, 'x', 60, Color.HOTPINK);
+    newWall(215, 272, 'x', 60, Color.HOTPINK);
+
     newWall(600, 40, 'y', 30, Color.BROWN);
     newWall(600, 70, 'x', 85, Color.BROWN);
     newWall(600, 350, 'y', 35, Color.BROWN);
     newWall(600, 350, 'x', 85, Color.BROWN);
+
+    newWall(405, 40, 'y', 345, Color.BROWN);// Map is not ready, but this cuts of a big space
 
     root.getChildren().addAll(shape);
   }
@@ -174,6 +191,12 @@ public class Map
     drawCoinRow(23, 305, 'y', 6);
     drawCoinRow(92, 68, 'y', 7);
     drawCoinRow(115, 123, 'x', 6);
+    drawCoinRow(205, 205, 'y', 8);
+    drawCoinRow(217, 205, 'x', 7);
+    drawCoinRow(289, 217, 'y', 7);
+    drawCoinRow(217, 289, 'x', 6);
+    drawCoinRow(191, 163, 'x', 1);
+    drawCoinRow(314, 207, 'x', 1);
 
     drawCoinRow(55, 308, 'x', 9);
     drawCoinRow(55, 328, 'x', 9);
@@ -193,9 +216,9 @@ public class Map
     ghosts = new ArrayList<>();
 
     ghosts.add(new OnWallChoiceGhost(50, 100, logic)); // This ghost will never reache you
-    ghosts.add(new XorYGhost(200, 280, logic));
+    ghosts.add(new XorYGhost(180, 208, logic));
     ghosts.add(new RandomGhost(250, 350, logic));
-    ghosts.add(new OnWallChoiceGhost(450, 350, logic));
+    ghosts.add(new OnWallChoiceGhost(380, 307, logic));
 
     addObject(ghosts);
   }
@@ -225,6 +248,9 @@ public class Map
     newIntersection(19, 43, 329);
     newIntersection(20, 43, 349);
     newIntersection(21, 43, 369);
+    newIntersection(22, 354, 285);
+    newIntersection(23, 312, 285);
+    newIntersection(24, 340, 137);
 
     addObject(intersection);
   }

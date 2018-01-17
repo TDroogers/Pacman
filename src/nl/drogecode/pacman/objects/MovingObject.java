@@ -18,7 +18,7 @@ public abstract class MovingObject extends BaseObject
   protected Circle inters;
   protected double oldX, oldY, x, y, newX, newY, maxX, maxY;
   protected boolean walking, intersected;
-  protected volatile int direction, intersectionId;
+  protected volatile int direction, intersectionId = 1;
   protected final int SPEED = 2;
 
   protected MovingObject()
@@ -130,7 +130,7 @@ public abstract class MovingObject extends BaseObject
 
   private boolean checkBumpWall(Circle clone)
   {
-    List<Shape> shapes = logic.getWallArray();
+    List<Shape> shapes = logic.map.getShapeArray();
 
     for (Shape shape : shapes)
     {
@@ -145,7 +145,7 @@ public abstract class MovingObject extends BaseObject
   private void checkIntersection(Circle clone)
   {
     clone.setRadius(1);
-    List<BaseObject> intersections = logic.getIntersectionArray();
+    List<BaseObject> intersections = logic.map.getIntersectionArray();
 
     for (BaseObject intersection : intersections)
     {

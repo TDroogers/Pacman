@@ -46,6 +46,11 @@ public class Man extends MovingObject
     return y;
   }
 
+  public Integer getLastIntersectionId()
+  {
+    return intersectionId;
+  }
+
   /*
    * ===================================================
    * 
@@ -113,13 +118,13 @@ public class Man extends MovingObject
 
   private void checkBumpCoin()
   {
-    List<Shape> coins = logic.getCoinArray();
+    List<Shape> coins = logic.map.getCoinsArray();
 
     for (Shape coin : coins)
     {
       if (man.getBoundsInParent().intersects(coin.getBoundsInParent()))
       {
-        logic.removeCoin(coin);
+        logic.map.remove(coin);
         logic.setCoinsLeft((byte) 1);
         logic.checkWin();
         coins.remove(coin);

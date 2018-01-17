@@ -52,8 +52,8 @@ public class OnWallChoiceGhost extends Ghost
 
   protected void findMan()
   {
-    double xchecker = logic.getXMan() - ghost.getCenterX();
-    double ychecker = logic.getYMan() - ghost.getCenterY();
+    double xchecker = logic.man.getXman() - ghost.getCenterX();
+    double ychecker = logic.man.getYman() - ghost.getCenterY();
 
     if (Math.abs(xchecker) >= Math.abs(ychecker)
         && (previus.isEmpty() || (!((previus.contains(Direction.RIGHT) && xchecker > 0)

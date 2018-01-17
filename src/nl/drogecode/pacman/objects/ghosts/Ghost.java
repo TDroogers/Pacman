@@ -96,8 +96,6 @@ public abstract class Ghost extends NpcObject
     }
   }
 
-  protected abstract void findMan();
-
   protected abstract void beforeLoop();
 
   protected abstract void afterBumb();

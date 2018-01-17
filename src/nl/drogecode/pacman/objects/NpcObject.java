@@ -5,25 +5,25 @@ import javafx.scene.shape.Circle;
 public abstract class NpcObject extends MovingObject
 {
 
-  public NpcObject ()
+  public NpcObject()
   {
     super();
   }
-  
+
   public boolean setWalking(boolean res)
   {
     walking = res;
     return true;
   }
-  
+
   protected boolean checkBumpMan(Circle ghost)
   {
-    Circle man = logic.getMan();
+    Circle man = logic.man.getObject();
 
-      if (man.getBoundsInParent().intersects(ghost.getBoundsInParent()))
-      {
-        return true;
-      }
-      return false;
+    if (man.getBoundsInParent().intersects(ghost.getBoundsInParent()))
+    {
+      return true;
+    }
+    return false;
   }
 }

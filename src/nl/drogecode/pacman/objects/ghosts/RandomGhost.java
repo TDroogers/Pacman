@@ -29,7 +29,4 @@ public class RandomGhost extends Ghost
 
   @Override protected void noBumb()
   {}
-
-  @Override protected void findMan()
-  {}
 }

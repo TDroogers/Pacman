@@ -1,21 +1,16 @@
 package nl.drogecode.pacman.logic;
 
-import java.util.List;
-
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 import nl.drogecode.pacman.Map;
-import nl.drogecode.pacman.objects.BaseObject;
 import nl.drogecode.pacman.objects.Man;
 import nl.drogecode.pacman.text.Lifes;
 import nl.drogecode.pacman.text.Score;
 
 public class GetSetLogic
 {
-  protected Stage stage;
-  protected Map map;
-  protected Man man;
+  public Stage stage;
+  public Map map;
+  public Man man;
   protected Score score;
   protected Lifes lifes;
   protected WakeUp wakeUp;
@@ -73,50 +68,6 @@ public class GetSetLogic
   public double getSceneHight()
   {
     return stage.getScene().getHeight();
-  }
-
-  /*
-   * Man
-   */
-
-  public Circle getMan()
-  {
-    return man.getObject();
-  }
-
-  public double getXMan()
-  {
-    return man.getXman();
-  }
-
-  public double getYMan()
-  {
-    return man.getYman();
-  }
-
-  /*
-   * Map
-   */
-
-  public List<Shape> getCoinArray()
-  {
-    return map.getCoinsArray();
-  }
-
-  public List<Shape> getWallArray()
-  {
-    return map.getShapeArray();
-  }
-
-  public List<BaseObject> getIntersectionArray()
-  {
-    return map.getIntersectionArray();
-  }
-
-  public boolean removeCoin(Shape coin)
-  {
-    map.remove(coin, 1);
-    return true;
   }
 
   /*

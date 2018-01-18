@@ -1,5 +1,6 @@
 package nl.drogecode.pacman.objects;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javafx.application.Platform;
@@ -35,6 +36,30 @@ public abstract class MovingObject extends BaseObject
   public void setDirection(int newDir)
   {
     direction = newDir;
+  }
+
+  public boolean checkBumpBorder(double newX, double newY)
+  {
+    // Has to be side specific, but fine for now. (In the current map you can never reach the borders)
+    if (newX > maxX || newX < 0 || newY > maxY || newY < 25)
+    {
+      return false;
+    }
+    return true;
+  }
+
+  public boolean checkBumpWall(Circle clone)
+  {
+    List<Shape> shapes = new ArrayList<>(logic.map.getShapeArray());
+
+    for (Shape shape : shapes)
+    {
+      if (clone.getBoundsInParent().intersects(shape.getBoundsInParent()))
+      {
+        return false;
+      }
+    }
+    return true;
   }
 
   protected boolean checkMove(Circle object)
@@ -91,53 +116,6 @@ public abstract class MovingObject extends BaseObject
     }
   }
 
-  protected boolean checkBumpBorder(double newX, double newY)
-  {
-    // Has to be side specific, but fine for now. (In the current map you can never reach the borders)
-    if (newX > maxX || newX < 0 || newY > maxY || newY < 25)
-    {
-      return false;
-    }
-    return true;
-  }
-
-  protected boolean checkBumpWall(Circle clone)
-  {
-    List<Shape> shapes = logic.map.getShapeArray();
-
-    for (Shape shape : shapes)
-    {
-      if (clone.getBoundsInParent().intersects(shape.getBoundsInParent()))
-      {
-        return false;
-      }
-    }
-    return true;
-  }
-
-  protected void checkIntersection(Circle clone)
-  {
-    clone.setRadius(1);
-    List<BaseObject> intersections = logic.map.getIntersectionArray();
-
-    for (BaseObject intersection : intersections)
-    {
-
-      if (clone.getBoundsInParent().intersects(intersection.getObject().getBoundsInParent()))
-      {
-        int id = ((Intersection) intersection).getID();
-        if (id == intersectionId)
-        {
-          intersected = false;
-          return;
-        }
-        inters = (Circle) intersection.getObject();
-        intersected = true;
-        intersectionId = id;
-      }
-    }
-  }
-
   /*
    * 
    * ====================================================
@@ -155,6 +133,33 @@ public abstract class MovingObject extends BaseObject
    * private functions
    * 
    */
+
+  private void checkIntersection(Circle clone)
+  {
+    clone.setRadius(1);
+    List<BaseObject> intersections = logic.map.getIntersectionArray();
+
+    for (BaseObject intersection : intersections)
+    {
+
+      if (clone.getBoundsInParent().intersects(intersection.getObject().getBoundsInParent()))
+      {
+        int id = ((Intersection) intersection).getID();
+        if (id == intersectionId)
+        {
+          intersected = false;
+          return;
+        }
+        else
+        {
+          inters = (Circle) intersection.getObject();
+          intersectionId = id;
+          intersected = true;
+          return;
+        }
+      }
+    }
+  }
 
   private Circle getClone(double newX, double newY)
   {

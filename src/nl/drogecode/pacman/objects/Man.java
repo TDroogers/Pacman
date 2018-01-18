@@ -1,5 +1,6 @@
 package nl.drogecode.pacman.objects;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javafx.scene.paint.Color;
@@ -10,6 +11,7 @@ import nl.drogecode.pacman.logic.GameLogic;
 public class Man extends MovingObject
 {
   private Circle man;
+  private ArrayList<Double> lastMan;
 
   public Man(GameLogic logic)
   {
@@ -31,6 +33,9 @@ public class Man extends MovingObject
   {
     x = newX = oldX = 22;
     y = newY = oldY = 47;
+
+    fillLastMan();
+
     man.setCenterX(x);
     man.setCenterY(y);
     direction = 0;
@@ -46,9 +51,9 @@ public class Man extends MovingObject
     return y;
   }
 
-  public Integer getLastIntersectionId()
+  public ArrayList<Double> getLastBumb()
   {
-    return intersectionId;
+    return lastMan;
   }
 
   /*
@@ -73,7 +78,9 @@ public class Man extends MovingObject
       walker();
       if (!checkMove(man))
       {
-        sleep.sleeper(30);
+        afterBumb();
+        Thread.yield();
+        sleep.sleeper(Long.MAX_VALUE);
         continue;
       }
       moveObject(man);
@@ -114,6 +121,18 @@ public class Man extends MovingObject
         newX = x - SPEED;
         break;
     }
+  }
+
+  private void afterBumb()
+  {
+    fillLastMan();
+  }
+
+  private void fillLastMan()
+  {
+    lastMan = new ArrayList<>();
+    lastMan.add(oldX);
+    lastMan.add(oldY);
   }
 
   private void checkBumpCoin()

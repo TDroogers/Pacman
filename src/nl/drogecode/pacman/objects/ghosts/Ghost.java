@@ -13,9 +13,7 @@ public abstract class Ghost extends NpcObject
   protected Direction dir;
   protected ArrayList<Direction> previus;
   protected Circle ghost;
-  protected final double GSPEED = SPEED * 0.75;
-
-  private boolean bumped;
+  public final double GSPEED = SPEED * 0.75;
 
   public Ghost(double x, double y, GameLogic logic)
   {
@@ -34,6 +32,30 @@ public abstract class Ghost extends NpcObject
   public Circle getObject()
   {
     return ghost;
+  }
+
+  public Direction getMirror(Direction dir)
+  {
+    switch (dir)
+    {
+      case UP:
+        return Direction.DOWN;
+
+      case DOWN:
+        return Direction.UP;
+
+      case LEFT:
+        return Direction.RIGHT;
+
+      case RIGHT:
+        return Direction.LEFT;
+    }
+
+    /*
+     * switch will alwais succeed, but compiler reqested an return.
+     */
+    System.err.println("Somthing went wrong with getMirror.");
+    return Direction.DOWN;
   }
 
   protected void initiateLoop()
@@ -104,21 +126,27 @@ public abstract class Ghost extends NpcObject
 
   private boolean checkBumb()
   {
+    boolean bumped = false;
 
     if (!checkMove(ghost))
     {
       afterBumb();
-      sleep.sleeper(30);
       bumped = true;
       intersected = false;
       intersectionId = -1;
+
+      Thread.yield();
+      sleep.sleeper(Long.MAX_VALUE);
+
       return false;
     }
     else if (intersected)
     {
       afterBumb();
-      sleep.sleeper(30);
       bumped = false;
+
+      Thread.yield();
+      sleep.sleeper(Long.MAX_VALUE);
     }
     else
     {
@@ -126,7 +154,6 @@ public abstract class Ghost extends NpcObject
       {
         noBumb();
       }
-      bumped = false;
     }
     return true;
   }

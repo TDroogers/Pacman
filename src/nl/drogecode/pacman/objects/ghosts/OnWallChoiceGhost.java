@@ -28,24 +28,7 @@ public class OnWallChoiceGhost extends Ghost
   {
     previus = new ArrayList<>();
 
-    switch (dir)
-    {
-      case UP:
-        mirror = Direction.DOWN;
-        break;
-
-      case DOWN:
-        mirror = Direction.UP;
-        break;
-
-      case LEFT:
-        mirror = Direction.RIGHT;
-        break;
-
-      case RIGHT:
-        mirror = Direction.LEFT;
-        break;
-    }
+    mirror = getMirror(dir);
 
     previus.add(mirror);
   }
@@ -118,6 +101,5 @@ public class OnWallChoiceGhost extends Ghost
     {
       previus = new ArrayList<>();
     }
-    // System.out.println(mirror + " " + dir + " : " + previus);
   }
 }

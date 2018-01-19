@@ -175,6 +175,7 @@ public class ManFinder extends Thread
       }
     }
     else
+
     {
       hashPath = (HashMap<Object, Object>) routeMap.get(path);
       boolean doesChildWork = runSelfDemandingLoop(hashPath);

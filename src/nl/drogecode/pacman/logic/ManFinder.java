@@ -23,9 +23,10 @@ public class ManFinder extends Thread
   private Sleeper sleep;
   private int distanceCounter, currentCounter;
   private double testX, testY, oldTestX, oldTestY;
-  private boolean foundMan, newVersion;
+  private boolean foundMan;
   private ArrayList<Direction> walker, realWalker;
   private ArrayList<Double> manPrevLast;
+  private ArrayList<HashMap<Double, Double>> listOfPoints;
   private int intersectionId;
 
   public ManFinder(SmartBehindGhost sbg, GameLogic logic)
@@ -38,6 +39,7 @@ public class ManFinder extends Thread
     tester.setRadius(sbg.getObject().getRadius());
     clone.setRadius(1);
     realWalker = new ArrayList<>();
+    listOfPoints = new ArrayList<>();
     sleep = new Sleeper();
   }
 
@@ -65,7 +67,7 @@ public class ManFinder extends Thread
 
       if (lastMan.equals(manPrevLast))
       {
-        sleep.sleeper(30);
+        sleep.sleeper(Long.MAX_VALUE);
         continue;
       }
       manPrevLast = lastMan;
@@ -74,6 +76,7 @@ public class ManFinder extends Thread
       HashMap<Object, Object> routeMap = getHashMap();
       routeMap.put("x", sbg.getSbgX());
       routeMap.put("y", sbg.getSbgY());
+      setHashInList(sbg.getSbgX(), sbg.getSbgY());
 
       distanceCounter = 0;
       currentCounter = 0;
@@ -98,51 +101,96 @@ public class ManFinder extends Thread
       }
       System.out.println("round: " + distanceCounter);
     }
+    System.out.println(listOfPoints);
   }
 
-  private void runSelfDemandingLoop(HashMap<Object, Object> routeMap)
+  private boolean runSelfDemandingLoop(HashMap<Object, Object> routeMap)
   {
     currentCounter++;
 
+    boolean ret = false;
     if (distanceCounter >= currentCounter)
     {
-      walkingPaths(Direction.UP, routeMap);
-      walkingPaths(Direction.DOWN, routeMap);
-      walkingPaths(Direction.LEFT, routeMap);
-      walkingPaths(Direction.RIGHT, routeMap);
+      boolean up = walkingPaths(Direction.UP, routeMap);
+      boolean down = walkingPaths(Direction.DOWN, routeMap);
+      boolean left = walkingPaths(Direction.LEFT, routeMap);
+      boolean right = walkingPaths(Direction.RIGHT, routeMap);
+
+      if (up && down && left && right)
+      {
+        ret = true;
+      }
     }
     currentCounter--;
+    return ret;
   }
 
-  @SuppressWarnings("unchecked") private HashMap<Object, Object> walkingPaths(Direction path,
-      HashMap<Object, Object> routeMap)
+  @SuppressWarnings("unchecked") private boolean walkingPaths(Direction path, HashMap<Object, Object> routeMap)
   {
+    if (routeMap.get(path) == "end")
+    {
+      return true;
+    }
     walker.add(path);
     HashMap<Object, Object> hashPath;
+    resetTester(routeMap);
+
     if (routeMap.get(path) == null)
     {
       routeMap.put(path, getHashMap());
+      hashPath = (HashMap<Object, Object>) routeMap.get(path);
+      hashPath.put("end", walking(path));
+
+      if (currentCounter >= 2 && walker.get(currentCounter - 2).equals(sbg.getMirror(path)))
+      {
+        hashPath.put("end", (Boolean) true);
+      }
+      if (hashPath.get("end") == (Boolean) false)
+      {
+        walkTestDirection(path);
+        boolean check = checkDoubleDouble();
+        if (check)
+        {
+          setHashInList(oldTestX, oldTestY);
+          hashPath.put("x", oldTestX);
+          hashPath.put("y", oldTestY);
+          boolean doesChildWork = runSelfDemandingLoop(hashPath);
+          if (doesChildWork)
+          {
+            hashPath.put("end", (Boolean) true);
+            hashPath.put(Direction.UP, "end");
+            hashPath.put(Direction.DOWN, "end");
+            hashPath.put(Direction.LEFT, "end");
+            hashPath.put(Direction.RIGHT, "end");
+          }
+        }
+        else
+        {
+          System.out.println(currentCounter);
+          System.out.println(listOfPoints);
+          System.out.println(testX + " " + testY);
+          System.out.println(oldTestX + " " + oldTestY);
+          hashPath.put("end", (Boolean) true);
+        }
+      }
     }
-
-    hashPath = (HashMap<Object, Object>) routeMap.get(path);
-    hashPath.put("end", resetTester(path, routeMap));
-
-    if (currentCounter >= 2 && walker.get(currentCounter - 2).equals(sbg.getMirror(path)))
+    else
     {
-      hashPath.put("end", (Boolean) true);
-    }
-
-    if (hashPath.get("end") == (Boolean) false)
-    {
-      walkTestDirection(path);
-      hashPath.put("x", oldTestX);
-      hashPath.put("y", oldTestY);
-      runSelfDemandingLoop(hashPath);
+      hashPath = (HashMap<Object, Object>) routeMap.get(path);
+      boolean doesChildWork = runSelfDemandingLoop(hashPath);
+      if (doesChildWork)
+      {
+        hashPath.put("end", (Boolean) true);
+        hashPath.put(Direction.UP, "end");
+        hashPath.put(Direction.DOWN, "end");
+        hashPath.put(Direction.LEFT, "end");
+        hashPath.put(Direction.RIGHT, "end");
+      }
     }
 
     walker.remove(currentCounter - 1);
 
-    return hashPath;
+    return (boolean) hashPath.get("end");
   }
 
   private int walkTestDirection(Direction path)
@@ -166,12 +214,12 @@ public class ManFinder extends Thread
     return -1;
   }
 
-  private Boolean resetTester(Direction path, HashMap<Object, Object> routeMap)
+  private void resetTester(HashMap<Object, Object> routeMap)
   {
     testX = oldTestX = (double) routeMap.get("x");
     testY = oldTestY = (double) routeMap.get("y");
 
-    return walking(path);
+    return;
   }
 
   private boolean walking(Direction path)
@@ -211,6 +259,26 @@ public class ManFinder extends Thread
     newList.put("x", 0.0);
     newList.put("y", 0.0);
     return newList;
+  }
+
+  private void setHashInList(double xHash, double yHash)
+  {
+    HashMap<Double, Double> newList = new HashMap<>();
+    newList.put(xHash, yHash);
+    listOfPoints.add(newList);
+  }
+
+  private boolean checkDoubleDouble()
+  {
+    for (HashMap<Double, Double> hash : listOfPoints)
+    {
+      if (hash.get(oldTestX) != null && hash.get(oldTestX) == (oldTestY))
+      {
+        // System.out.println(listOfPoints.size() + "~~~~" + oldTestX + " : " + oldTestY);
+        return false;
+      }
+    }
+    return true;
   }
 
   private boolean checkTestMove()

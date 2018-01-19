@@ -1,3 +1,8 @@
+/**
+ * 
+ * The map constructor, this class has lists with objecs to that will draw the map.
+ * 
+ */
 package nl.drogecode.pacman;
 
 import java.util.ArrayList;

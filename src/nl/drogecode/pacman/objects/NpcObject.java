@@ -1,3 +1,8 @@
+/**
+ * 
+ * The super above all npc's, currently only the ghosts.
+ * 
+ */
 package nl.drogecode.pacman.objects;
 
 import javafx.scene.shape.Circle;

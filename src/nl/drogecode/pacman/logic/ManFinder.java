@@ -1,3 +1,8 @@
+/**
+ * 
+ * A work in progress path finding algorithm, it works, but needs still needs a lot of optimization.
+ *
+ */
 package nl.drogecode.pacman.logic;
 
 import java.util.ArrayList;
@@ -39,23 +44,6 @@ public class ManFinder extends Thread
   @Override public void run()
   {
     manClone.setRadius(logic.man.getObject().getRadius());
-    realWalker = new ArrayList<>();
-    realWalker.add(Direction.RIGHT);
-    realWalker.add(Direction.UP);
-    realWalker.add(Direction.UP);
-    realWalker.add(Direction.UP);
-    realWalker.add(Direction.UP);
-    realWalker.add(Direction.RIGHT);
-    realWalker.add(Direction.UP);
-    realWalker.add(Direction.LEFT);
-    realWalker.add(Direction.DOWN);
-    realWalker.add(Direction.RIGHT);
-    realWalker.add(Direction.UP);
-    realWalker.add(Direction.RIGHT);
-    realWalker.add(Direction.UP);
-    realWalker.add(Direction.LEFT);
-    realWalker.add(Direction.UP);
-    newVersion = true;
     MainLoop();
   }
 

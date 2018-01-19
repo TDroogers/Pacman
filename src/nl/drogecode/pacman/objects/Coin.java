@@ -1,3 +1,10 @@
+/**
+ * 
+ * Will be created several times in the Map function.
+ * 
+ * If the Man overlaps with a coin the Map will remove that coin.
+ * 
+ */
 package nl.drogecode.pacman.objects;
 
 import javafx.scene.paint.Color;

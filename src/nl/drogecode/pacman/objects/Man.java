@@ -1,3 +1,8 @@
+/**
+ * 
+ * The man the user controll's.
+ * 
+ */
 package nl.drogecode.pacman.objects;
 
 import java.util.ArrayList;

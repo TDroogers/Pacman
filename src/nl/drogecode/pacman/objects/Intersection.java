@@ -1,3 +1,8 @@
+/**
+ * 
+ * If some ghost's hit this object it will recalculate it's direction.
+ * 
+ */
 package nl.drogecode.pacman.objects;
 
 import javafx.scene.paint.Color;

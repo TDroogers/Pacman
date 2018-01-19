@@ -1,3 +1,8 @@
+/**
+ * 
+ * Current score
+ * 
+ */
 package nl.drogecode.pacman.text;
 
 public class Score extends BaseText
@@ -9,7 +14,7 @@ public class Score extends BaseText
     setY(375);
     setText("0");
   }
-  
+
   public void restart()
   {
     setText("0");

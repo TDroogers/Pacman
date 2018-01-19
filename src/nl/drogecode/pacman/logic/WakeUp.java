@@ -1,3 +1,6 @@
+/**
+ * Every SLEEPTIME it will wake the Thread's.
+ */
 package nl.drogecode.pacman.logic;
 
 import java.util.Timer;

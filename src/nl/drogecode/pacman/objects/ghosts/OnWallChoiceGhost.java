@@ -1,3 +1,10 @@
+/**
+ * 
+ * On hitting a wall or intersection it will chose a path in the direction of the man.
+ * 
+ * Does get into infinite loop somtime's.
+ * 
+ */
 package nl.drogecode.pacman.objects.ghosts;
 
 import java.util.ArrayList;

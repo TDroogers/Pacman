@@ -1,3 +1,8 @@
+/**
+ * 
+ * The super above all moving objects, this are the Man and all Ghosts on the time of writing.
+ * 
+ */
 package nl.drogecode.pacman.objects;
 
 import java.util.ArrayList;

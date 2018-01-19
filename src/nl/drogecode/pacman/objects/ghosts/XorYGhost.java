@@ -1,3 +1,8 @@
+/**
+ * 
+ * This simpel ghost goes the shortest way to the man, it will not go arround wall's.
+ * 
+ */
 package nl.drogecode.pacman.objects.ghosts;
 
 import nl.drogecode.pacman.enums.Direction;

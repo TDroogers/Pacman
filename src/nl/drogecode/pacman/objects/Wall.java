@@ -1,3 +1,10 @@
+/**
+ * 
+ * Non moving object, to show the will's on the map.
+ * 
+ * The Map will create several Wall's
+ * 
+ */
 package nl.drogecode.pacman.objects;
 
 import javafx.scene.paint.Color;

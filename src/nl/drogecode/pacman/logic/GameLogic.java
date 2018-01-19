@@ -1,3 +1,9 @@
+/**
+ * 
+ * This function is the bridge between the different function's
+ * 
+ */
+
 package nl.drogecode.pacman.logic;
 
 import javafx.application.Platform;

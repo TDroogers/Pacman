@@ -1,3 +1,8 @@
+/**
+ * 
+ * This ghost will follow you and try's to get behind you.
+ * 
+ */
 package nl.drogecode.pacman.objects.ghosts;
 
 import java.util.ArrayList;

@@ -1,3 +1,8 @@
+/**
+ * 
+ * This function's give's the user the controll of the Man.
+ * 
+ */
 package nl.drogecode.pacman.logic;
 
 import javafx.scene.input.KeyCode;

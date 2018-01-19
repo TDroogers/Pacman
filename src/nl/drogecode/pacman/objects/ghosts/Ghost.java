@@ -1,3 +1,8 @@
+/**
+ * 
+ * Abstract class above all ghost's.
+ * 
+ */
 package nl.drogecode.pacman.objects.ghosts;
 
 import java.util.ArrayList;

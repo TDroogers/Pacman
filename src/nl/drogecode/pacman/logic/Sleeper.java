@@ -1,3 +1,9 @@
+/**
+ * 
+ * Put a Thread on hold, default 30 milliseconds.
+ * 
+ * Do you use the WakeUp function? Use sleeper(Long.MAX_VALUE);
+ */
 package nl.drogecode.pacman.logic;
 
 public class Sleeper

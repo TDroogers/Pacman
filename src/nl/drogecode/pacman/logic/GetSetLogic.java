@@ -1,3 +1,8 @@
+/**
+ * 
+ * Extended by GameLogic, has getters and setters to bridge the different moddule's.
+ * 
+ */
 package nl.drogecode.pacman.logic;
 
 import javafx.stage.Stage;
@@ -6,7 +11,7 @@ import nl.drogecode.pacman.objects.Man;
 import nl.drogecode.pacman.text.Lifes;
 import nl.drogecode.pacman.text.Score;
 
-public class GetSetLogic
+public abstract class GetSetLogic
 {
   public Stage stage;
   public Map map;

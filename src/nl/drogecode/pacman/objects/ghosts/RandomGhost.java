@@ -1,3 +1,8 @@
+/**
+ * 
+ * On every wall or intersection point it will choce a random directon.
+ * 
+ */
 package nl.drogecode.pacman.objects.ghosts;
 
 import java.util.Random;

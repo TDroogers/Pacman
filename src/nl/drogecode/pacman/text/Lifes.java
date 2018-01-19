@@ -1,3 +1,8 @@
+/**
+ * 
+ * Life's left.
+ * 
+ */
 package nl.drogecode.pacman.text;
 
 public class Lifes extends BaseText

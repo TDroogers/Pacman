@@ -3,7 +3,7 @@
  * A work in progress path finding algorithm, it works, but needs still needs a lot of optimization.
  *
  */
-package nl.drogecode.pacman.logic;
+package nl.drogecode.pacman.logic.pathfinder;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,6 +11,8 @@ import java.util.List;
 
 import javafx.scene.shape.Circle;
 import nl.drogecode.pacman.enums.Direction;
+import nl.drogecode.pacman.logic.GameLogic;
+import nl.drogecode.pacman.logic.Sleeper;
 import nl.drogecode.pacman.objects.BaseObject;
 import nl.drogecode.pacman.objects.Intersection;
 import nl.drogecode.pacman.objects.ghosts.SmartBehindGhost;

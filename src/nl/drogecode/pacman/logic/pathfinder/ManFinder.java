@@ -75,9 +75,8 @@ public class ManFinder extends Thread
       manPrevLast = lastMan;
       manClone.setCenterX(lastMan.get(0));
       manClone.setCenterY(lastMan.get(1));
-      HashMap<Object, Object> routeMap = getHashMap();
-      routeMap.put("x", sbg.getSbgX());
-      routeMap.put("y", sbg.getSbgY());
+      SingleDecisionPoint route = new SingleDecisionPoint();
+      route.setPoint(sbg.getSbgX(), sbg.getSbgY());
       setHashInList(sbg.getSbgX(), sbg.getSbgY());
 
       distanceCounter = 0;
@@ -85,16 +84,16 @@ public class ManFinder extends Thread
       foundMan = false;
       walker = new ArrayList<>();
 
-      startFindLoop(routeMap);
+      startFindLoop(route);
     }
   }
 
-  private void startFindLoop(HashMap<Object, Object> routeMap)
+  private void startFindLoop(SingleDecisionPoint route)
   {
     while (distanceCounter <= 100)
     {
       distanceCounter++;
-      runSelfDemandingLoop(routeMap);
+      runSelfDemandingLoop(route);
 
       if (foundMan)
       {
@@ -103,22 +102,21 @@ public class ManFinder extends Thread
       }
       System.out.println("round: " + distanceCounter);
     }
-    System.out.println(listOfPoints);
   }
 
-  private boolean runSelfDemandingLoop(HashMap<Object, Object> routeMap)
+  private boolean runSelfDemandingLoop(SingleDecisionPoint route)
   {
     currentCounter++;
 
     boolean ret = false;
     if (distanceCounter >= currentCounter)
     {
-      boolean up = walkingPaths(Direction.UP, routeMap);
-      boolean down = walkingPaths(Direction.DOWN, routeMap);
-      boolean left = walkingPaths(Direction.LEFT, routeMap);
-      boolean right = walkingPaths(Direction.RIGHT, routeMap);
+      boolean up = walkingPaths(Direction.UP, route);
+      boolean down = walkingPaths(Direction.DOWN, route);
+      boolean left = walkingPaths(Direction.LEFT, route);
+      boolean right = walkingPaths(Direction.RIGHT, route);
 
-      if (up && down && left && right)
+      if (up && down && left && right && distanceCounter >= currentCounter + 3)
       {
         ret = true;
       }
@@ -127,73 +125,65 @@ public class ManFinder extends Thread
     return ret;
   }
 
-  @SuppressWarnings("unchecked") private boolean walkingPaths(Direction path, HashMap<Object, Object> routeMap)
+  private boolean walkingPaths(Direction path, SingleDecisionPoint route)
   {
-    if (routeMap.get(path) == "end")
+    if (route.getFullStop() == true)
     {
       return true;
     }
     walker.add(path);
-    HashMap<Object, Object> hashPath;
-    resetTester(routeMap);
+    SingleDecisionPoint thisRoute;
 
-    if (routeMap.get(path) == null)
+    if (route.getPath(path) == null)
     {
-      routeMap.put(path, getHashMap());
-      hashPath = (HashMap<Object, Object>) routeMap.get(path);
-      hashPath.put("end", walking(path));
+      resetTester(route);
+      route.setPath(path);
+
+      thisRoute = route.getPath(path);
+      thisRoute.setEnd(walking(path));
 
       if (currentCounter >= 2 && walker.get(currentCounter - 2).equals(sbg.getMirror(path)))
       {
-        hashPath.put("end", (Boolean) true);
+        thisRoute.setEnd(true);
       }
-      if (hashPath.get("end") == (Boolean) false)
+      if (!thisRoute.getEnd())
       {
         walkTestDirection(path);
-        boolean check = checkDoubleDouble();
-        if (check)
+        thisRoute.setIntersectionId(intersectionId);
+        thisRoute.setPoint(oldTestX, oldTestY);
+        boolean doesChildWork = runSelfDemandingLoop(thisRoute);
+        if (doesChildWork)
         {
-          setHashInList(oldTestX, oldTestY);
-          hashPath.put("x", oldTestX);
-          hashPath.put("y", oldTestY);
-          boolean doesChildWork = runSelfDemandingLoop(hashPath);
-          if (doesChildWork)
-          {
-            hashPath.put("end", (Boolean) true);
-            hashPath.put(Direction.UP, "end");
-            hashPath.put(Direction.DOWN, "end");
-            hashPath.put(Direction.LEFT, "end");
-            hashPath.put(Direction.RIGHT, "end");
-          }
-        }
-        else
-        {
-          System.out.println(currentCounter);
-          System.out.println(listOfPoints);
-          System.out.println(testX + " " + testY);
-          System.out.println(oldTestX + " " + oldTestY);
-          hashPath.put("end", (Boolean) true);
+          thisRoute.unsetAllNextPath();
         }
       }
     }
     else
-
     {
-      hashPath = (HashMap<Object, Object>) routeMap.get(path);
-      boolean doesChildWork = runSelfDemandingLoop(hashPath);
-      if (doesChildWork)
+      thisRoute = route.getPath(path);
+      if (!route.getEnd())
       {
-        hashPath.put("end", (Boolean) true);
-        hashPath.put(Direction.UP, "end");
-        hashPath.put(Direction.DOWN, "end");
-        hashPath.put(Direction.LEFT, "end");
-        hashPath.put(Direction.RIGHT, "end");
+        resetTester(thisRoute);
+        boolean doesChildWork = runSelfDemandingLoop(thisRoute);
+        if (doesChildWork)
+        {
+          thisRoute.unsetAllNextPath();
+        }
       }
     }
 
     walker.remove(currentCounter - 1);
 
-    return (boolean) hashPath.get("end");
+    return thisRoute.getEnd();
+  }
+
+  private void resetTester(SingleDecisionPoint route)
+  {
+    testX = oldTestX = route.getX();
+    testY = oldTestY = route.getY();
+    intersectionId = route.getIntersectionId();
+
+    return;
   }
 
   private int walkTestDirection(Direction path)
@@ -215,14 +205,6 @@ public class ManFinder extends Thread
       oldTestY = testY;
     }
     return -1;
-  }
-
-  private void resetTester(HashMap<Object, Object> routeMap)
-  {
-    testX = oldTestX = (double) routeMap.get("x");
-    testY = oldTestY = (double) routeMap.get("y");
-
-    return;
   }
 
   private boolean walking(Direction path)
@@ -249,19 +231,6 @@ public class ManFinder extends Thread
     tester.setCenterY(testY);
 
     return checkTestMove();
-  }
-
-  private HashMap<Object, Object> getHashMap()
-  {
-    HashMap<Object, Object> newList = new HashMap<>();
-    newList.put(Direction.UP, null);
-    newList.put(Direction.DOWN, null);
-    newList.put(Direction.LEFT, null);
-    newList.put(Direction.RIGHT, null);
-    newList.put("end", (Boolean) false);
-    newList.put("x", 0.0);
-    newList.put("y", 0.0);
-    return newList;
   }
 
   private void setHashInList(double xHash, double yHash)

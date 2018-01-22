@@ -25,7 +25,7 @@ public class ManFinder extends Thread
   private Sleeper sleep;
   private int distanceCounter, currentCounter;
   private double testX, testY, oldTestX, oldTestY;
-  private boolean foundMan;
+  private boolean foundMan, updated;
   private ArrayList<Direction> walker, realWalker;
   private ArrayList<Double> manPrevLast;
   private ArrayList<HashMap<Double, Double>> listOfPoints;
@@ -41,19 +41,27 @@ public class ManFinder extends Thread
     tester.setRadius(sbg.getObject().getRadius());
     clone.setRadius(1);
     realWalker = new ArrayList<>();
-    listOfPoints = new ArrayList<>();
     sleep = new Sleeper();
   }
 
   @Override public void run()
   {
     manClone.setRadius(logic.man.getObject().getRadius());
+    logic.setWakeUp(this);
     MainLoop();
   }
 
   public synchronized ArrayList<Direction> getWalker()
   {
-    return realWalker;
+    if (updated)
+    {
+      updated = false;
+      return realWalker;
+    }
+    else
+    {
+      return new ArrayList<Direction>();
+    }
   }
 
   private synchronized void setWalker(ArrayList<Direction> realWalker)
@@ -63,26 +71,35 @@ public class ManFinder extends Thread
 
   private void MainLoop()
   {
-    for (;;)
+    while (sbg.getWalking())
     {
       ArrayList<Double> lastMan = logic.man.getLastBumb();
 
       if (lastMan.equals(manPrevLast))
       {
+        Thread.yield();
         sleep.sleeper(Long.MAX_VALUE);
         continue;
       }
       manPrevLast = lastMan;
       manClone.setCenterX(lastMan.get(0));
       manClone.setCenterY(lastMan.get(1));
-      SingleDecisionPoint route = new SingleDecisionPoint();
+      Direction currentDir = sbg.getDir();
+      SingleDecisionPoint route = new SingleDecisionPoint(true, currentDir);
+      listOfPoints = new ArrayList<>();
       route.setPoint(sbg.getSbgX(), sbg.getSbgY());
       setHashInList(sbg.getSbgX(), sbg.getSbgY());
 
+      intersectionId = -1;
       distanceCounter = 0;
       currentCounter = 0;
       foundMan = false;
       walker = new ArrayList<>();
+
+      if (currentDir != null)
+      {
+        System.out.println("hallo");
+      }
 
       startFindLoop(route);
     }
@@ -100,7 +117,6 @@ public class ManFinder extends Thread
         System.out.println("Here is man: " + realWalker);
         break;
       }
-      System.out.println("round: " + distanceCounter);
     }
   }
 
@@ -149,12 +165,16 @@ public class ManFinder extends Thread
       if (!thisRoute.getEnd())
       {
         walkTestDirection(path);
-        thisRoute.setIntersectionId(intersectionId);
-        thisRoute.setPoint(oldTestX, oldTestY);
-        boolean doesChildWork = runSelfDemandingLoop(thisRoute);
-        if (doesChildWork)
+        if (checkDoubleDouble())
         {
-          thisRoute.unsetAllNextPath();
+          setHashInList(oldTestX, oldTestY);
+          thisRoute.setIntersectionId(intersectionId);
+          thisRoute.setPoint(oldTestX, oldTestY);
+          boolean doesChildWork = runSelfDemandingLoop(thisRoute);
+          if (doesChildWork)
+          {
+            thisRoute.unsetAllNextPath();
+          }
         }
       }
     }
@@ -198,6 +218,7 @@ public class ManFinder extends Thread
       {
         distanceCounter = 0;
         foundMan = true;
+        updated = true;
         setWalker(walker);
       }
 
@@ -246,7 +267,6 @@ public class ManFinder extends Thread
     {
       if (hash.get(oldTestX) != null && hash.get(oldTestX) == (oldTestY))
       {
-        // System.out.println(listOfPoints.size() + "~~~~" + oldTestX + " : " + oldTestY);
         return false;
       }
     }

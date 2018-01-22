@@ -7,6 +7,7 @@ package nl.drogecode.pacman.objects.ghosts;
 
 import java.util.ArrayList;
 
+import javafx.scene.paint.Color;
 import nl.drogecode.pacman.enums.Direction;
 import nl.drogecode.pacman.logic.GameLogic;
 import nl.drogecode.pacman.logic.pathfinder.ManFinder;
@@ -22,6 +23,7 @@ public class SmartBehindGhost extends Ghost
     walker = new ArrayList<>();
     manFinder = new ManFinder(this, logic);
     manFinder.setDaemon(true);
+    ghost.setFill(Color.RED);
   }
 
   public double getSbgX()
@@ -34,12 +36,24 @@ public class SmartBehindGhost extends Ghost
     return y;
   }
 
+  public Direction getDir()
+  {
+    return dir;
+  }
+
   protected void findMan()
   {
-    while (walker.isEmpty())
+    ArrayList<Direction> tempWalker = new ArrayList<>(manFinder.getWalker());
+    if (!tempWalker.isEmpty())
     {
-      walker = new ArrayList<>(manFinder.getWalker());
+      walker = tempWalker;
+      intersectionId = -1;
     }
+    else if (walker.isEmpty())
+    {
+      walker.add(findManShort());
+    }
+
   }
 
   protected void nextDir()

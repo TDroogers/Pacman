@@ -88,6 +88,10 @@ public class Man extends MovingObject
         sleep.sleeper(Long.MAX_VALUE);
         continue;
       }
+      else if (intersected)
+      {
+        afterBumb();
+      }
       moveObject(man);
       checkBumpCoin();
       oldX = x;

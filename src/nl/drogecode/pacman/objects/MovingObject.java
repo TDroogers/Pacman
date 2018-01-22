@@ -25,7 +25,7 @@ public abstract class MovingObject extends BaseObject
   protected double oldX, oldY, x, y, newX, newY, maxX, maxY;
   protected boolean walking, intersected;
   protected volatile int direction, intersectionId = 1;
-  protected final int SPEED = 2;
+  protected final int SPEED = 1;
 
   protected MovingObject()
   {

@@ -9,7 +9,7 @@ import java.util.TimerTask;
 public class WakeUp
 {
   private Timer timer;
-  private final int SLEEPTIME = 30;
+  private final int SLEEPTIME = 16;
   private boolean stopper;
 
   public WakeUp()

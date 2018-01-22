@@ -46,7 +46,7 @@ public class OnWallChoiceGhost extends Ghost
     double ychecker = logic.man.getYman() - ghost.getCenterY();
 
     if (Math.abs(xchecker) >= Math.abs(ychecker) && (previus.isEmpty()
-        || (!((previus.contains(Direction.RIGHT) && xchecker > 0) || previus.contains(Direction.LEFT) && xchecker <= 0)
+        || (!(previus.contains(Direction.RIGHT) && xchecker > 0 || previus.contains(Direction.LEFT) && xchecker <= 0)
             || (previus.contains(Direction.DOWN) && ychecker > 0 || previus.contains(Direction.UP) && ychecker <= 0))))
     {
       if ((xchecker > 0 || previus.contains(Direction.LEFT)) && !previus.contains(Direction.RIGHT))
@@ -101,5 +101,5 @@ public class OnWallChoiceGhost extends Ghost
       previus = new ArrayList<>();
     }
   }
-  
+
 }

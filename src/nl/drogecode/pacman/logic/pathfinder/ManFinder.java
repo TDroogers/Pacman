@@ -11,17 +11,19 @@ import java.util.List;
 
 import javafx.scene.shape.Circle;
 import nl.drogecode.pacman.enums.Direction;
+import nl.drogecode.pacman.enums.GhostType;
 import nl.drogecode.pacman.logic.GameLogic;
 import nl.drogecode.pacman.logic.Sleeper;
 import nl.drogecode.pacman.objects.BaseObject;
 import nl.drogecode.pacman.objects.Intersection;
-import nl.drogecode.pacman.objects.ghosts.SmartBehindGhost;
+import nl.drogecode.pacman.objects.ghosts.SmartGhost;
 
 public class ManFinder extends Thread
 {
   private Circle tester, inters, clone, manClone;
   private GameLogic logic;
-  private SmartBehindGhost sbg;
+  private SmartGhost sbg;
+  private GhostType type;
   private Sleeper sleep;
   private int distanceCounter, currentCounter;
   private double testX, testY, oldTestX, oldTestY;
@@ -31,10 +33,11 @@ public class ManFinder extends Thread
   private ArrayList<HashMap<Double, Double>> listOfPoints;
   private int intersectionId;
 
-  public ManFinder(SmartBehindGhost sbg, GameLogic logic)
+  public ManFinder(SmartGhost sbg, GameLogic logic, GhostType type)
   {
     this.sbg = sbg;
     this.logic = logic;
+    this.type = type;
     tester = new Circle();
     clone = new Circle();
     manClone = new Circle();
@@ -73,17 +76,10 @@ public class ManFinder extends Thread
   {
     while (sbg.getWalking())
     {
-      ArrayList<Double> lastMan = logic.man.getLastBumb();
-
-      if (lastMan.equals(manPrevLast))
+      if (!howFindMan())
       {
-        Thread.yield();
-        sleep.sleeper(Long.MAX_VALUE);
         continue;
       }
-      manPrevLast = lastMan;
-      manClone.setCenterX(lastMan.get(0));
-      manClone.setCenterY(lastMan.get(1));
       Direction currentDir = sbg.getDir();
       SingleDecisionPoint route = new SingleDecisionPoint(true, currentDir);
       listOfPoints = new ArrayList<>();
@@ -103,6 +99,36 @@ public class ManFinder extends Thread
 
       startFindLoop(route);
     }
+  }
+
+  private boolean howFindMan()
+  {
+    ArrayList<Double> lastMan;
+    switch (type)
+    {
+      case BEHIND:
+        lastMan = logic.man.getLastBumb();
+        break;
+
+      case FRONT:
+        lastMan = null;
+        break;
+
+      default:
+        lastMan = null;
+        break;
+    }
+
+    if (lastMan.equals(manPrevLast))
+    {
+      Thread.yield();
+      sleep.sleeper(Long.MAX_VALUE);
+      return false;
+    }
+    manPrevLast = lastMan;
+    manClone.setCenterX(lastMan.get(0));
+    manClone.setCenterY(lastMan.get(1));
+    return true;
   }
 
   private void startFindLoop(SingleDecisionPoint route)

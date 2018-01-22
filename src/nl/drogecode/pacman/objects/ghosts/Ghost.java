@@ -18,6 +18,7 @@ public abstract class Ghost extends NpcObject
   protected Direction dir;
   protected ArrayList<Direction> previus;
   protected Circle ghost;
+  protected boolean bumped;
   public final double GSPEED = SPEED * 0.75;
 
   public Ghost(double x, double y, GameLogic logic)
@@ -131,11 +132,10 @@ public abstract class Ghost extends NpcObject
 
   private boolean checkBumb()
   {
-    boolean bumped = false;
-
     if (!checkMove(ghost))
     {
       afterBumb();
+
       bumped = true;
       intersected = false;
       intersectionId = -1;
@@ -148,6 +148,7 @@ public abstract class Ghost extends NpcObject
     else if (intersected)
     {
       afterBumb();
+
       bumped = false;
 
       Thread.yield();
@@ -159,6 +160,7 @@ public abstract class Ghost extends NpcObject
       {
         noBumb();
       }
+      bumped = false;
     }
     return true;
   }

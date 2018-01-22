@@ -45,11 +45,9 @@ public class OnWallChoiceGhost extends Ghost
     double xchecker = logic.man.getXman() - ghost.getCenterX();
     double ychecker = logic.man.getYman() - ghost.getCenterY();
 
-    if (Math.abs(xchecker) >= Math.abs(ychecker)
-        && (previus.isEmpty() || (!((previus.contains(Direction.RIGHT) && xchecker > 0)
-            || (previus.contains(Direction.LEFT) && xchecker <= 0))
-            || (((previus.contains(Direction.DOWN) && ychecker > 0)
-                || (previus.contains(Direction.UP) && ychecker <= 0))))))
+    if (Math.abs(xchecker) >= Math.abs(ychecker) && (previus.isEmpty()
+        || (!(previus.contains(Direction.RIGHT) && xchecker > 0 || previus.contains(Direction.LEFT) && xchecker <= 0)
+            || (previus.contains(Direction.DOWN) && ychecker > 0 || previus.contains(Direction.UP) && ychecker <= 0))))
     {
       if ((xchecker > 0 || previus.contains(Direction.LEFT)) && !previus.contains(Direction.RIGHT))
       {
@@ -59,16 +57,13 @@ public class OnWallChoiceGhost extends Ghost
       {
         dir = Direction.LEFT;
       }
+      else if (previus.contains(Direction.UP))
+      {
+        dir = Direction.DOWN;
+      }
       else
       {
-        if (previus.contains(Direction.UP))
-        {
-          dir = Direction.DOWN;
-        }
-        else
-        {
-          dir = Direction.UP;
-        }
+        dir = Direction.UP;
       }
     }
     else
@@ -81,16 +76,13 @@ public class OnWallChoiceGhost extends Ghost
       {
         dir = Direction.UP;
       }
+      else if (previus.contains(Direction.LEFT))
+      {
+        dir = Direction.RIGHT;
+      }
       else
       {
-        if (previus.contains(Direction.LEFT))
-        {
-          dir = Direction.RIGHT;
-        }
-        else
-        {
-          dir = Direction.LEFT;
-        }
+        dir = Direction.LEFT;
       }
     }
     if (inters != null)
@@ -109,4 +101,5 @@ public class OnWallChoiceGhost extends Ghost
       previus = new ArrayList<>();
     }
   }
+
 }

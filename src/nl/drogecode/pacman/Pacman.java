@@ -1,3 +1,8 @@
+/**
+ * 
+ * The frond door of the programm.
+ * 
+ */
 package nl.drogecode.pacman;
 
 import javafx.application.Application;

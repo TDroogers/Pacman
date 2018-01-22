@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 import nl.drogecode.pacman.enums.Direction;
 import nl.drogecode.pacman.logic.GameLogic;
-import nl.drogecode.pacman.logic.ManFinder;
+import nl.drogecode.pacman.logic.pathfinder.ManFinder;
 
 public class SmartBehindGhost extends Ghost
 {

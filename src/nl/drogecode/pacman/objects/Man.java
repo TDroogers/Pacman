@@ -148,10 +148,10 @@ public class Man extends MovingObject
     {
       if (man.getBoundsInParent().intersects(coin.getBoundsInParent()))
       {
-        logic.map.remove(coin);
+        logic.map.remove(coin, 1);
         logic.setCoinsLeft((byte) 1);
-        logic.checkWin();
         coins.remove(coin);
+        logic.checkWin();
         return;
       }
     }

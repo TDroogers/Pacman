@@ -17,5 +17,4 @@ public class SmartFrontGhost extends SmartGhost
     super(x, y, logic, GhostType.FRONT);
     ghost.setFill(Color.PINK);
   }
-
 }

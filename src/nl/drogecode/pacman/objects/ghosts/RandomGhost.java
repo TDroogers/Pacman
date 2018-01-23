@@ -7,6 +7,7 @@ package nl.drogecode.pacman.objects.ghosts;
 
 import java.util.Random;
 
+import javafx.scene.paint.Color;
 import nl.drogecode.pacman.enums.Direction;
 import nl.drogecode.pacman.logic.GameLogic;
 
@@ -15,6 +16,7 @@ public class RandomGhost extends Ghost
   public RandomGhost(double x, double y, GameLogic logic)
   {
     super(x, y, logic);
+    ghost.setFill(Color.CYAN);
   }
 
   @Override protected void afterBumb()

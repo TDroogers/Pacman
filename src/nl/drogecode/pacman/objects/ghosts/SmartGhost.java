@@ -24,12 +24,12 @@ public abstract class SmartGhost extends Ghost
     manFinder.setDaemon(true);
   }
 
-  public double getSbgX()
+  public double getMovingX()
   {
     return x;
   }
 
-  public double getSbgY()
+  public double getMovingY()
   {
     return y;
   }
@@ -51,7 +51,6 @@ public abstract class SmartGhost extends Ghost
     {
       walker.add(findManShort());
     }
-
   }
 
   protected void nextDir()
@@ -67,6 +66,8 @@ public abstract class SmartGhost extends Ghost
   @Override protected void beforeLoop()
   {
     manFinder.start();
+    Thread.yield();
+    sleep.sleeper(Long.MAX_VALUE);
     findMan();
     nextDir();
   }

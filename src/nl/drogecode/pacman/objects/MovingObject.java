@@ -12,6 +12,7 @@ import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;
+import nl.drogecode.pacman.enums.Direction;
 import nl.drogecode.pacman.logic.GameLogic;
 import nl.drogecode.pacman.logic.Sleeper;
 
@@ -19,6 +20,7 @@ public abstract class MovingObject extends BaseObject
 {
   protected static GameLogic logic;
 
+  protected Direction dir;
   protected Sleeper sleep;
   protected Thread th;
   protected Circle inters;

@@ -15,7 +15,6 @@ import nl.drogecode.pacman.objects.NpcObject;
 
 public abstract class Ghost extends NpcObject
 {
-  protected Direction dir;
   protected ArrayList<Direction> previus;
   protected Circle ghost;
   protected boolean bumped;

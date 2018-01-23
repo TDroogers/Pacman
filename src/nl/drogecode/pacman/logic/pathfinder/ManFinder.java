@@ -91,7 +91,7 @@ public class ManFinder extends Thread
 
   private boolean howFindMan()
   {
-    ArrayList<Double> lastMan;
+    ArrayList<Double> lastMan = new ArrayList<>();
     switch (type)
     {
       case BEHIND:

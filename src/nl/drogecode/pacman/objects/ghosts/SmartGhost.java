@@ -39,25 +39,32 @@ public abstract class SmartGhost extends Ghost
     return dir;
   }
 
-  protected void findMan()
+  protected void findMan(boolean first)
   {
-    ArrayList<Direction> tempWalker = new ArrayList<>(manFinder.getWalker());
-    if (!tempWalker.isEmpty())
+    ArrayList<Direction> tempWalker;
+    do
     {
-      walker = tempWalker;
-      intersectionId = -1;
+      tempWalker = new ArrayList<>(manFinder.getWalker());
+      if (!tempWalker.isEmpty())
+      {
+        walker = tempWalker;
+        intersectionId = -1;
+      }
+      else if (walker.isEmpty() && !first)
+      {
+        walker.add(findManShort());
+      }
+      Thread.yield();
+      sleep.sleeper(Long.MAX_VALUE);
     }
-    else if (walker.isEmpty())
-    {
-      walker.add(findManShort());
-    }
+    while (tempWalker.isEmpty() && first);
   }
 
   protected void nextDir()
   {
     if (walker.size() == 0)
     {
-      findMan();
+      findMan(false);
     }
     dir = walker.get(0);
     walker.remove(0);
@@ -66,15 +73,13 @@ public abstract class SmartGhost extends Ghost
   @Override protected void beforeLoop()
   {
     manFinder.start();
-    Thread.yield();
-    sleep.sleeper(Long.MAX_VALUE);
-    findMan();
+    findMan(true);
     nextDir();
   }
 
   @Override protected void afterBumb()
   {
-    findMan();
+    findMan(false);
     nextDir();
     if (inters != null)
     {

@@ -26,7 +26,7 @@ public class ManFinder extends Thread
   private int distanceCounter, currentCounter;
   private boolean foundMan, updated;
   private ArrayList<Direction> walker, realWalker;
-  private ArrayList<Double> manPrevLast;
+  private volatile ArrayList<Double> manPrevLast;
   private ArrayList<HashMap<Double, Double>> listOfPoints;
 
   public ManFinder(SmartGhost moving, GameLogic logic, GhostType type)
@@ -78,7 +78,6 @@ public class ManFinder extends Thread
       route.setPoint(moving.getMovingX(), moving.getMovingY());
       setHashInList(moving.getMovingX(), moving.getMovingY());
 
-      // route.setIntersectionId(-1);
       distanceCounter = 0;
       currentCounter = 0;
       foundMan = false;
@@ -91,15 +90,15 @@ public class ManFinder extends Thread
 
   private boolean howFindMan()
   {
-    ArrayList<Double> lastMan = new ArrayList<>();
+    ArrayList<Double> lastMan;
     switch (type)
     {
       case BEHIND:
-        lastMan = logic.man.getLastBumb();
+        lastMan = new ArrayList<>(logic.man.getLastBumb());
         break;
 
       case FRONT:
-        lastMan = logic.man.getNextBumb();
+        lastMan = new ArrayList<>(logic.man.getNextBumb());
         break;
 
       default:
@@ -115,9 +114,16 @@ public class ManFinder extends Thread
       sleep.sleeper(Long.MAX_VALUE);
       return false;
     }
-    manPrevLast = lastMan;
-    manClone.setCenterX(lastMan.get(0));
-    manClone.setCenterY(lastMan.get(1));
+    try
+    {
+      manPrevLast = lastMan;
+      manClone.setCenterX(lastMan.get(0));
+      manClone.setCenterY(lastMan.get(1));
+    }
+    catch (IndexOutOfBoundsException e)
+    {
+      System.out.println(e);
+    }
     return true;
   }
 
@@ -130,6 +136,7 @@ public class ManFinder extends Thread
 
       if (foundMan)
       {
+        System.out.println("Here is man: " + realWalker);
         break;
       }
     }

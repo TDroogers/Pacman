@@ -54,13 +54,12 @@ public abstract class Ghost extends NpcObject
 
       case RIGHT:
         return Direction.LEFT;
-    }
 
-    /*
-     * switch will alwais succeed, but compiler reqested an return.
-     */
-    System.err.println("Somthing went wrong with getMirror.");
-    return Direction.DOWN;
+      default:
+        System.err.println("Somthing went wrong with getMirror.");
+        return Direction.DOWN;
+
+    }
   }
 
   protected void initiateLoop()
@@ -71,8 +70,8 @@ public abstract class Ghost extends NpcObject
     }
     maxX = logic.getSceneWidth();
     maxY = logic.getSceneHight();
-    x = newX = ghost.getCenterX();
-    y = newY = ghost.getCenterY();
+    x = oldX = newX = ghost.getCenterX();
+    y = oldY = newY = ghost.getCenterY();
     walking = true;
     beforeLoop();
     while (walking)
@@ -86,7 +85,8 @@ public abstract class Ghost extends NpcObject
       if (checkBumpMan(ghost))
       {
         walking = false;
-        sleep.sleeper(30);
+        Thread.yield();
+        sleep.sleeper(Long.MAX_VALUE);
         logic.loseLife();
         break;
       }
@@ -106,19 +106,19 @@ public abstract class Ghost extends NpcObject
     switch (dir)
     {
       case UP:
-        newY = y - GSPEED;
+        newY = oldY - GSPEED;
         break;
 
       case DOWN:
-        newY = y + GSPEED;
+        newY = oldY + GSPEED;
         break;
 
       case LEFT:
-        newX = x - GSPEED;
+        newX = oldX - GSPEED;
         break;
 
       case RIGHT:
-        newX = x + GSPEED;
+        newX = oldX + GSPEED;
         break;
     }
   }

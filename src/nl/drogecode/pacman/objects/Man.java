@@ -38,8 +38,8 @@ public class Man extends MovingObject
 
   public void restart()
   {
-    x = newX = oldX = 22;
-    y = newY = oldY = 47;
+    x = newX = oldX = 366;
+    y = newY = oldY = 100;
 
     fillLastMan();
 

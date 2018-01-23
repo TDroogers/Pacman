@@ -18,10 +18,7 @@ import nl.drogecode.pacman.objects.Coin;
 import nl.drogecode.pacman.objects.Intersection;
 import nl.drogecode.pacman.objects.NpcObject;
 import nl.drogecode.pacman.objects.Wall;
-import nl.drogecode.pacman.objects.ghosts.OnWallChoiceGhost;
-import nl.drogecode.pacman.objects.ghosts.RandomGhost;
 import nl.drogecode.pacman.objects.ghosts.SmartBehindGhost;
-import nl.drogecode.pacman.objects.ghosts.SmartFrontGhost;
 import nl.drogecode.pacman.text.Score;
 
 public class Map
@@ -223,10 +220,10 @@ public class Map
     ghosts = new ArrayList<>();
 
     // * ghosts.add(new XorYGhost(180, 208, logic));
-    ghosts.add(new RandomGhost(114, 92, logic));
-    ghosts.add(new OnWallChoiceGhost(380, 307, logic));
-    ghosts.add(new SmartBehindGhost(369, 280, logic));
-    ghosts.add(new SmartFrontGhost(22, 377, logic));
+    // ghosts.add(new RandomGhost(114, 92, logic));
+    // ghosts.add(new OnWallChoiceGhost(380, 307, logic));
+    ghosts.add(new SmartBehindGhost(392, 280, logic));
+    // ghosts.add(new SmartFrontGhost(22, 377, logic));
     /*
      * 79, 162
      * 

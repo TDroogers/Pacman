@@ -15,6 +15,11 @@ public abstract class NpcObject extends MovingObject
     super();
   }
 
+  public boolean getWalking()
+  {
+    return walking;
+  }
+
   public boolean setWalking(boolean res)
   {
     walking = res;

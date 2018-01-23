@@ -15,7 +15,6 @@ import nl.drogecode.pacman.objects.NpcObject;
 
 public abstract class Ghost extends NpcObject
 {
-  protected Direction dir;
   protected ArrayList<Direction> previus;
   protected Circle ghost;
   protected boolean bumped;
@@ -121,6 +120,35 @@ public abstract class Ghost extends NpcObject
       case RIGHT:
         newX = x + GSPEED;
         break;
+    }
+  }
+
+  protected Direction findManShort()
+  {
+    double xchecker = logic.man.getXman() - ghost.getCenterX();
+    double ychecker = logic.man.getYman() - ghost.getCenterY();
+
+    if (Math.abs(xchecker) >= Math.abs(ychecker))
+    {
+      if (xchecker > 0)
+      {
+        return Direction.RIGHT;
+      }
+      else
+      {
+        return Direction.LEFT;
+      }
+    }
+    else
+    {
+      if (ychecker > 0)
+      {
+        return Direction.DOWN;
+      }
+      else
+      {
+        return Direction.UP;
+      }
     }
   }
 

@@ -7,53 +7,56 @@ package nl.drogecode.pacman.logic.pathfinder;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import javafx.scene.shape.Circle;
 import nl.drogecode.pacman.enums.Direction;
+import nl.drogecode.pacman.enums.GhostType;
 import nl.drogecode.pacman.logic.GameLogic;
 import nl.drogecode.pacman.logic.Sleeper;
-import nl.drogecode.pacman.objects.BaseObject;
-import nl.drogecode.pacman.objects.Intersection;
-import nl.drogecode.pacman.objects.ghosts.SmartBehindGhost;
+import nl.drogecode.pacman.objects.ghosts.SmartGhost;
 
 public class ManFinder extends Thread
 {
-  private Circle tester, inters, clone, manClone;
+  private Circle manClone;
   private GameLogic logic;
-  private SmartBehindGhost sbg;
+  private SmartGhost moving;
+  private GhostType type;
+  private WalkUntilObstacle walkinUntilObstacle;
   private Sleeper sleep;
   private int distanceCounter, currentCounter;
-  private double testX, testY, oldTestX, oldTestY;
-  private boolean foundMan;
+  private boolean foundMan, updated;
   private ArrayList<Direction> walker, realWalker;
   private ArrayList<Double> manPrevLast;
   private ArrayList<HashMap<Double, Double>> listOfPoints;
-  private int intersectionId;
 
-  public ManFinder(SmartBehindGhost sbg, GameLogic logic)
+  public ManFinder(SmartGhost moving, GameLogic logic, GhostType type)
   {
-    this.sbg = sbg;
+    this.moving = moving;
     this.logic = logic;
-    tester = new Circle();
-    clone = new Circle();
+    this.type = type;
     manClone = new Circle();
-    tester.setRadius(sbg.getObject().getRadius());
-    clone.setRadius(1);
     realWalker = new ArrayList<>();
-    listOfPoints = new ArrayList<>();
     sleep = new Sleeper();
   }
 
   @Override public void run()
   {
     manClone.setRadius(logic.man.getObject().getRadius());
+    logic.setWakeUp(this);
     MainLoop();
   }
 
   public synchronized ArrayList<Direction> getWalker()
   {
-    return realWalker;
+    if (updated)
+    {
+      updated = false;
+      return realWalker;
+    }
+    else
+    {
+      return new ArrayList<Direction>();
+    }
   }
 
   private synchronized void setWalker(ArrayList<Direction> realWalker)
@@ -63,29 +66,59 @@ public class ManFinder extends Thread
 
   private void MainLoop()
   {
-    for (;;)
+    while (moving.getWalking())
     {
-      ArrayList<Double> lastMan = logic.man.getLastBumb();
-
-      if (lastMan.equals(manPrevLast))
+      if (!howFindMan())
       {
-        sleep.sleeper(Long.MAX_VALUE);
         continue;
       }
-      manPrevLast = lastMan;
-      manClone.setCenterX(lastMan.get(0));
-      manClone.setCenterY(lastMan.get(1));
-      SingleDecisionPoint route = new SingleDecisionPoint();
-      route.setPoint(sbg.getSbgX(), sbg.getSbgY());
-      setHashInList(sbg.getSbgX(), sbg.getSbgY());
+      Direction currentDir = moving.getDir();
+      SingleDecisionPoint route = new SingleDecisionPoint(true, currentDir);
+      listOfPoints = new ArrayList<>();
+      route.setPoint(moving.getMovingX(), moving.getMovingY());
+      setHashInList(moving.getMovingX(), moving.getMovingY());
 
+      // route.setIntersectionId(-1);
       distanceCounter = 0;
       currentCounter = 0;
       foundMan = false;
       walker = new ArrayList<>();
+      walkinUntilObstacle = new WalkUntilObstacle(manClone, moving.GSPEED, moving, logic);
 
       startFindLoop(route);
     }
+  }
+
+  private boolean howFindMan()
+  {
+    ArrayList<Double> lastMan;
+    switch (type)
+    {
+      case BEHIND:
+        lastMan = logic.man.getLastBumb();
+        break;
+
+      case FRONT:
+        lastMan = logic.man.getNextBumb();
+        break;
+
+      default:
+        System.err.println("wrong GhostType in ManFinder");
+        System.exit(0);
+        lastMan = null;
+        break;
+    }
+
+    if (lastMan.equals(manPrevLast) || lastMan.isEmpty())
+    {
+      Thread.yield();
+      sleep.sleeper(Long.MAX_VALUE);
+      return false;
+    }
+    manPrevLast = lastMan;
+    manClone.setCenterX(lastMan.get(0));
+    manClone.setCenterY(lastMan.get(1));
+    return true;
   }
 
   private void startFindLoop(SingleDecisionPoint route)
@@ -97,10 +130,8 @@ public class ManFinder extends Thread
 
       if (foundMan)
       {
-        System.out.println("Here is man: " + realWalker);
         break;
       }
-      System.out.println("round: " + distanceCounter);
     }
   }
 
@@ -136,25 +167,37 @@ public class ManFinder extends Thread
 
     if (route.getPath(path) == null)
     {
-      resetTester(route);
+      walkinUntilObstacle.resetTester(route);
       route.setPath(path);
 
       thisRoute = route.getPath(path);
-      thisRoute.setEnd(walking(path));
+      thisRoute.setEnd(walkinUntilObstacle.walking(path));
 
-      if (currentCounter >= 2 && walker.get(currentCounter - 2).equals(sbg.getMirror(path)))
+      if (currentCounter >= 2 && walker.get(currentCounter - 2).equals(moving.getMirror(path)))
       {
         thisRoute.setEnd(true);
       }
       if (!thisRoute.getEnd())
       {
-        walkTestDirection(path);
-        thisRoute.setIntersectionId(intersectionId);
-        thisRoute.setPoint(oldTestX, oldTestY);
-        boolean doesChildWork = runSelfDemandingLoop(thisRoute);
-        if (doesChildWork)
+        if (walkinUntilObstacle.walkTestDirection(path) == -1)
         {
-          thisRoute.unsetAllNextPath();
+          distanceCounter = 0;
+          foundMan = true;
+          updated = true;
+          setWalker(walker);
+        }
+        double oldTestX = walkinUntilObstacle.getOldTestX();
+        double oldTestY = walkinUntilObstacle.getOldTestY();
+        if (checkDoubleDouble(oldTestX, oldTestY))
+        {
+          setHashInList(oldTestX, oldTestY);
+          thisRoute.setIntersectionId(walkinUntilObstacle.getIntersectionId());
+          thisRoute.setPoint(oldTestX, oldTestY);
+          boolean doesChildWork = runSelfDemandingLoop(thisRoute);
+          if (doesChildWork)
+          {
+            thisRoute.unsetAllNextPath();
+          }
         }
       }
     }
@@ -163,7 +206,7 @@ public class ManFinder extends Thread
       thisRoute = route.getPath(path);
       if (!route.getEnd())
       {
-        resetTester(thisRoute);
+        walkinUntilObstacle.resetTester(thisRoute);
         boolean doesChildWork = runSelfDemandingLoop(thisRoute);
         if (doesChildWork)
         {
@@ -177,62 +220,6 @@ public class ManFinder extends Thread
     return thisRoute.getEnd();
   }
 
-  private void resetTester(SingleDecisionPoint route)
-  {
-    testX = oldTestX = route.getX();
-    testY = oldTestY = route.getY();
-    intersectionId = route.getIntersectionId();
-
-    return;
-  }
-
-  private int walkTestDirection(Direction path)
-  {
-    for (int stapCount = 0; stapCount < 1000; stapCount++)
-    {
-      if (walking(path))
-      {
-        return stapCount;
-      }
-      else if (tester.getBoundsInParent().intersects(manClone.getBoundsInParent()))
-      {
-        distanceCounter = 0;
-        foundMan = true;
-        setWalker(walker);
-      }
-
-      oldTestX = testX;
-      oldTestY = testY;
-    }
-    return -1;
-  }
-
-  private boolean walking(Direction path)
-  {
-    switch (path)
-    {
-      case UP:
-        testY = testY - sbg.GSPEED;
-        break;
-
-      case DOWN:
-        testY = testY + sbg.GSPEED;
-        break;
-
-      case LEFT:
-        testX = testX - sbg.GSPEED;
-        break;
-
-      case RIGHT:
-        testX = testX + sbg.GSPEED;
-        break;
-    }
-    tester.setCenterX(testX);
-    tester.setCenterY(testY);
-
-    return checkTestMove();
-  }
-
   private void setHashInList(double xHash, double yHash)
   {
     HashMap<Double, Double> newList = new HashMap<>();
@@ -240,61 +227,13 @@ public class ManFinder extends Thread
     listOfPoints.add(newList);
   }
 
-  private boolean checkDoubleDouble()
+  private boolean checkDoubleDouble(double oldTestX, double oldTestY)
   {
     for (HashMap<Double, Double> hash : listOfPoints)
     {
       if (hash.get(oldTestX) != null && hash.get(oldTestX) == (oldTestY))
       {
-        // System.out.println(listOfPoints.size() + "~~~~" + oldTestX + " : " + oldTestY);
         return false;
-      }
-    }
-    return true;
-  }
-
-  private boolean checkTestMove()
-  {
-    if (!sbg.checkBumpWall(tester))
-    {
-      intersectionId = -1;
-      return true;
-    }
-    if (!checkIntersection())
-    {
-      oldTestX = testX = inters.getCenterX();
-      oldTestY = testY = inters.getCenterY();
-      inters = null;
-      return true;
-    }
-    if (!sbg.checkBumpBorder(testX, testY))
-    {
-      return true;
-    }
-    return false;
-  }
-
-  protected boolean checkIntersection()
-  {
-    clone.setCenterX(testX);
-    clone.setCenterY(testY);
-    List<BaseObject> intersections = logic.map.getIntersectionArray();
-
-    for (BaseObject intersection : intersections)
-    {
-      if (clone.getBoundsInParent().intersects(intersection.getObject().getBoundsInParent()))
-      {
-        int id = ((Intersection) intersection).getID();
-        if (id == intersectionId)
-        {
-          return true;
-        }
-        else
-        {
-          inters = (Circle) intersection.getObject();
-          intersectionId = id;
-          return false;
-        }
       }
     }
     return true;

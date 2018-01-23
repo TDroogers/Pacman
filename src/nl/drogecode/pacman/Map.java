@@ -21,7 +21,7 @@ import nl.drogecode.pacman.objects.Wall;
 import nl.drogecode.pacman.objects.ghosts.OnWallChoiceGhost;
 import nl.drogecode.pacman.objects.ghosts.RandomGhost;
 import nl.drogecode.pacman.objects.ghosts.SmartBehindGhost;
-import nl.drogecode.pacman.objects.ghosts.XorYGhost;
+import nl.drogecode.pacman.objects.ghosts.SmartFrontGhost;
 import nl.drogecode.pacman.text.Score;
 
 public class Map
@@ -222,11 +222,11 @@ public class Map
     ghostKiller();
     ghosts = new ArrayList<>();
 
-    // ghosts.add(new OnWallChoiceGhost(50, 100, logic)); // This ghost will never reache you
-    ghosts.add(new XorYGhost(180, 208, logic));
-    ghosts.add(new RandomGhost(250, 350, logic));
+    // * ghosts.add(new XorYGhost(180, 208, logic));
+    ghosts.add(new RandomGhost(114, 92, logic));
     ghosts.add(new OnWallChoiceGhost(380, 307, logic));
-    ghosts.add(new SmartBehindGhost(22, 377, logic));
+    ghosts.add(new SmartBehindGhost(369, 280, logic));
+    ghosts.add(new SmartFrontGhost(22, 377, logic));
     /*
      * 79, 162
      * 
@@ -245,13 +245,13 @@ public class Map
     intersection = new ArrayList<>();
 
     newIntersection(1, 189, 48);
-    newIntersection(2, 93, 46);
+    newIntersection(2, 93, 48);
     newIntersection(3, 189, 66);
     newIntersection(4, 366, 143);
     newIntersection(5, 184, 231);
     newIntersection(6, 157, 231);
     newIntersection(7, 172, 287);
-    newIntersection(8, 42, 287);
+    newIntersection(8, 43, 287);
     newIntersection(9, 397, 48);
     newIntersection(10, 212, 88);
     newIntersection(11, 125, 182);

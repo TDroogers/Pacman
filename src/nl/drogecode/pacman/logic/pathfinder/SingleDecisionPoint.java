@@ -12,10 +12,45 @@ public class SingleDecisionPoint
   private SingleDecisionPoint up, down, left, right;
   private int intersectionId;
   private double x, y;
-  private boolean end, fullStop;
+  private boolean end, fullStop, first;
 
   public SingleDecisionPoint()
   {}
+
+  public SingleDecisionPoint(boolean first, Direction dir)
+  {
+    this.first = first;
+    if (first && dir != null)
+    {
+      up = new SingleDecisionPoint();
+      down = new SingleDecisionPoint();
+      left = new SingleDecisionPoint();
+      right = new SingleDecisionPoint();
+      up.unsetAllNextPath();
+      down.unsetAllNextPath();
+      left.unsetAllNextPath();
+      right.unsetAllNextPath();
+
+      switch (dir)
+      {
+        case UP:
+          up = null;
+          break;
+
+        case DOWN:
+          down = null;
+          break;
+
+        case LEFT:
+          left = null;
+          break;
+
+        case RIGHT:
+          right = null;
+          break;
+      }
+    }
+  }
 
   /*
    * setters
@@ -56,6 +91,11 @@ public class SingleDecisionPoint
   protected void setEnd(boolean end)
   {
     this.end = end;
+  }
+
+  protected void setFullStop(boolean fullStop)
+  {
+    this.fullStop = fullStop;
   }
 
   /*
@@ -106,6 +146,11 @@ public class SingleDecisionPoint
   protected boolean getFullStop()
   {
     return fullStop;
+  }
+
+  protected boolean getFirst()
+  {
+    return first;
   }
 
   /*

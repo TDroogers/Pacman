@@ -70,13 +70,15 @@ public class ManFinder extends Thread
     {
       if (!howFindMan())
       {
+        Thread.yield();
+        sleep.sleeper(Long.MAX_VALUE);
         continue;
       }
       Direction currentDir = moving.getDir();
       SingleDecisionPoint route = new SingleDecisionPoint(true, currentDir);
       listOfPoints = new ArrayList<>();
       route.setPoint(moving.getMovingX(), moving.getMovingY());
-      setHashInList(moving.getMovingX(), moving.getMovingY());
+      // setHashInList(moving.getMovingX(), moving.getMovingY());
 
       distanceCounter = 0;
       currentCounter = 0;
@@ -108,44 +110,53 @@ public class ManFinder extends Thread
         break;
     }
 
-    if (lastMan.equals(manPrevLast) || lastMan.isEmpty())
+    if (lastMan.equals(manPrevLast) | lastMan.isEmpty() | !tryToSetNewManClone(lastMan))
     {
-      Thread.yield();
-      sleep.sleeper(Long.MAX_VALUE);
       return false;
     }
-    try
+    else
     {
       manPrevLast = lastMan;
+      return true;
+    }
+  }
+
+  private boolean tryToSetNewManClone(ArrayList<Double> lastMan)
+  {
+    try
+    {
       manClone.setCenterX(lastMan.get(0));
       manClone.setCenterY(lastMan.get(1));
+      return true;
     }
     catch (IndexOutOfBoundsException e)
     {
       System.out.println(e);
+      return false;
     }
-    return true;
   }
 
   private void startFindLoop(SingleDecisionPoint route)
   {
-    while (distanceCounter <= 100)
+    while (distanceCounter < 1000)
     {
       distanceCounter++;
       runSelfDemandingLoop(route);
-
       if (foundMan)
       {
         System.out.println("Here is man: " + realWalker);
         break;
       }
     }
+    if (distanceCounter >= 1000)
+    {
+      System.err.println("faild after 100 try's");
+    }
   }
 
   private boolean runSelfDemandingLoop(SingleDecisionPoint route)
   {
     currentCounter++;
-
     boolean ret = false;
     if (distanceCounter >= currentCounter)
     {
@@ -156,7 +167,7 @@ public class ManFinder extends Thread
 
       if (up && down && left && right && distanceCounter >= currentCounter + 3)
       {
-        ret = true;
+        // ret = true;
       }
     }
     currentCounter--;

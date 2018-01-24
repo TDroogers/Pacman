@@ -106,19 +106,19 @@ public abstract class Ghost extends NpcObject
     switch (dir)
     {
       case UP:
-        newY = oldY - GSPEED;
+        newY = y - GSPEED;
         break;
 
       case DOWN:
-        newY = oldY + GSPEED;
+        newY = y + GSPEED;
         break;
 
       case LEFT:
-        newX = oldX - GSPEED;
+        newX = x - GSPEED;
         break;
 
       case RIGHT:
-        newX = oldX + GSPEED;
+        newX = x + GSPEED;
         break;
     }
   }

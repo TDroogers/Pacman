@@ -38,8 +38,8 @@ public class Man extends MovingObject
 
   public void restart()
   {
-    x = newX = oldX = 366;
-    y = newY = oldY = 100;
+    x = newX = oldX = 22;
+    y = newY = oldY = 47;
 
     fillLastMan();
 
@@ -58,12 +58,12 @@ public class Man extends MovingObject
     return y;
   }
 
-  public ArrayList<Double> getLastBumb()
+  public synchronized ArrayList<Double> getLastBumb()
   {
     return lastMan;
   }
 
-  public ArrayList<Double> getNextBumb()
+  public synchronized ArrayList<Double> getNextBumb()
   {
     if (nextMan == null)
     {
@@ -154,14 +154,14 @@ public class Man extends MovingObject
     fillLastMan();
   }
 
-  private void fillLastMan()
+  private synchronized void fillLastMan()
   {
     lastMan = new ArrayList<>();
     lastMan.add(oldX);
     lastMan.add(oldY);
   }
 
-  private void fillNextMan(Direction oldDir)
+  private synchronized void fillNextMan(Direction oldDir)
   {
     if (oldDir != dir)
     {
@@ -171,6 +171,7 @@ public class Man extends MovingObject
       walkinUntilObstacle.walkTestDirection(dir);
       nextMan.add(walkinUntilObstacle.getOldTestX());
       nextMan.add(walkinUntilObstacle.getOldTestY());
+      System.out.println(nextMan);
     }
   }
 

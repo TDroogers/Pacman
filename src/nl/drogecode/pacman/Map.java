@@ -33,13 +33,14 @@ public class Map
   private volatile List<Shape> coins;
   private volatile List<BaseObject> ghosts;
   private volatile List<BaseObject> intersection;
-  private volatile int scoreCounter;
+  private volatile int scoreCounter, intersectionCount;
 
   public Map(Group root, Score score, GameLogic logic)
   {
     this.root = root;
     this.score = score;
     this.logic = logic;
+    intersectionCount = 0;
     restart();
   }
 
@@ -133,7 +134,7 @@ public class Map
     newWall(100, 130, 'x', 80, Color.AQUA);
     newWall(100, 55, 'y', 80, Color.AQUA);
     newWall(100, 55, 'x', 80, Color.AQUA);
-    newWall(275, 35, 'y', 25, Color.AQUA);
+    newWall(275, 39, 'y', 21, Color.AQUA);
     newWall(200, 55, 'x', 80, Color.AQUA);
 
     newWall(125, 75, 'x', 200, Color.GREEN);
@@ -152,8 +153,8 @@ public class Map
     newWall(168, 242, 'y', 35, Color.PURPLE);
     newWall(50, 192, 'x', 120, Color.PURPLE);
     newWall(50, 272, 'x', 120, Color.PURPLE);
-    newWall(12, 295, 'x', 150, Color.PURPLE);
-    newWall(12, 170, 'x', 100, Color.PURPLE);
+    newWall(16, 295, 'x', 146, Color.PURPLE);
+    newWall(16, 170, 'x', 96, Color.PURPLE);
 
     newWall(30, 295, 'y', 75, Color.DARKTURQUOISE);
     newWall(50, 315, 'x', 110, Color.DARKTURQUOISE);
@@ -162,7 +163,7 @@ public class Map
     newWall(50, 375, 'x', 110, Color.DARKTURQUOISE);
     newWall(190, 295, 'x', 150, Color.DARKTURQUOISE);
     newWall(190, 295, 'y', 70, Color.DARKTURQUOISE);
-    newWall(340, 295, 'y', 93, Color.DARKTURQUOISE);
+    newWall(340, 295, 'y', 90, Color.DARKTURQUOISE);
 
     newWall(190, 192, 'y', 105, Color.HOTPINK);
     newWall(215, 217, 'y', 60, Color.HOTPINK);
@@ -224,8 +225,8 @@ public class Map
 
     // * ghosts.add(new XorYGhost(180, 208, logic));
     ghosts.add(new RandomGhost(114, 92, logic));
-    ghosts.add(new OnWallChoiceGhost(380, 307, logic));
-    ghosts.add(new SmartBehindGhost(369, 280, logic));
+    ghosts.add(new OnWallChoiceGhost(22, 185, logic));
+    ghosts.add(new SmartBehindGhost(392, 280, logic));
     ghosts.add(new SmartFrontGhost(22, 377, logic));
     /*
      * 79, 162
@@ -244,32 +245,35 @@ public class Map
   {
     intersection = new ArrayList<>();
 
-    newIntersection(1, 189, 48);
-    newIntersection(2, 93, 48);
-    newIntersection(3, 189, 66);
-    newIntersection(4, 366, 143);
-    newIntersection(5, 184, 231);
-    newIntersection(6, 157, 231);
-    newIntersection(7, 172, 287);
-    newIntersection(8, 43, 287);
-    newIntersection(9, 397, 48);
-    newIntersection(10, 212, 88);
-    newIntersection(11, 125, 182);
-    newIntersection(12, 183, 182);
-    newIntersection(13, 213, 182);
-    newIntersection(14, 292, 65);
-    newIntersection(15, 168, 309);
-    newIntersection(16, 168, 329);
-    newIntersection(17, 168, 349);
-    newIntersection(18, 168, 369);
-    newIntersection(19, 43, 329);
-    newIntersection(20, 43, 349);
-    newIntersection(21, 43, 369);
-    newIntersection(22, 354, 285);
-    newIntersection(23, 312, 285);
-    newIntersection(24, 340, 137);
-
-    addObject(intersection);
+    newIntersection(189, 48);
+    newIntersection(93, 48);
+    newIntersection(189, 66);
+    newIntersection(366, 143);
+    newIntersection(366, 183);
+    newIntersection(184, 231);
+    newIntersection(159, 231);
+    newIntersection(59, 231);
+    newIntersection(172, 287);
+    newIntersection(43, 287);
+    newIntersection(397, 48);
+    newIntersection(212, 88);
+    newIntersection(212, 108);
+    newIntersection(123, 183);
+    newIntersection(183, 183);
+    newIntersection(213, 183);
+    newIntersection(336, 183);
+    newIntersection(292, 65);
+    newIntersection(168, 309);
+    newIntersection(168, 329);
+    newIntersection(168, 349);
+    newIntersection(168, 369);
+    newIntersection(43, 329);
+    newIntersection(43, 349);
+    newIntersection(43, 369);
+    newIntersection(354, 285);
+    newIntersection(312, 285);
+    newIntersection(340, 137);
+    newIntersection(204, 375);
   }
 
   private void drawCoinSquare(double x, double y, int xCount, int yCount)
@@ -310,9 +314,10 @@ public class Map
     shape.add(new Wall(x, y, cha, howFar, color).getObject());
   }
 
-  private void newIntersection(int i, double x, double y)
+  private void newIntersection(double x, double y)
   {
-    intersection.add(new Intersection(i, x, y));
+    intersectionCount++;
+    intersection.add(new Intersection(intersectionCount, x, y));
   }
 
   private boolean ghostKiller()

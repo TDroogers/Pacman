@@ -12,7 +12,7 @@ import nl.drogecode.pacman.objects.MovingObject;
 public class WalkUntilObstacle
 {
   private Circle tester, manClone, inters, clone;
-  private double testX, testY, oldTestX, oldTestY, speed;
+  private double testX, testY, oldTestX, oldTestY, olderX, olderY, speed;
   private int intersectionId;
   private MovingObject moving;
   private GameLogic logic;
@@ -39,12 +39,12 @@ public class WalkUntilObstacle
 
   public double getOldTestX()
   {
-    return oldTestX;
+    return olderX;
   }
 
   public double getOldTestY()
   {
-    return oldTestY;
+    return olderY;
   }
 
   public int getIntersectionId()
@@ -54,8 +54,8 @@ public class WalkUntilObstacle
 
   public void resetTester(SingleDecisionPoint route)
   {
-    testX = oldTestX = route.getX();
-    testY = oldTestY = route.getY();
+    testX = oldTestX = olderX = route.getX();
+    testY = oldTestY = olderY = route.getY();
     int intersTemp = route.getIntersectionId();
     if (intersTemp != 0)
     {
@@ -67,8 +67,8 @@ public class WalkUntilObstacle
 
   public void resetTester(double x, double y)
   {
-    testX = oldTestX = x;
-    testY = oldTestY = y;
+    testX = oldTestX = olderX = x;
+    testY = oldTestY = olderY = y;
   }
 
   public int walkTestDirection(Direction path)
@@ -88,6 +88,8 @@ public class WalkUntilObstacle
         return -1;
       }
 
+      olderX = oldTestX;
+      olderY = oldTestY;
       oldTestX = testX;
       oldTestY = testY;
     }
@@ -99,19 +101,19 @@ public class WalkUntilObstacle
     switch (path)
     {
       case UP:
-        testY = testY - speed;
+        testY = oldTestY - speed;
         break;
 
       case DOWN:
-        testY = testY + speed;
+        testY = oldTestY + speed;
         break;
 
       case LEFT:
-        testX = testX - speed;
+        testX = oldTestX - speed;
         break;
 
       case RIGHT:
-        testX = testX + speed;
+        testX = oldTestX + speed;
         break;
     }
     tester.setCenterX(testX);
@@ -135,8 +137,8 @@ public class WalkUntilObstacle
     }
     if (!checkIntersection())
     {
-      oldTestX = testX = inters.getCenterX();
-      oldTestY = testY = inters.getCenterY();
+      testX = oldTestX = olderX = inters.getCenterX();
+      testY = oldTestY = olderY = inters.getCenterY();
       inters = null;
       return true;
     }

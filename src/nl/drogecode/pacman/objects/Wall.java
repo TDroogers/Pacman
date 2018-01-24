@@ -16,7 +16,7 @@ public class Wall extends BaseObject
 
   public Wall(double x, double y, Character direction, double howFar)
   {
-    this(x, y, direction, howFar, Color.ANTIQUEWHITE);
+    this(x, y, direction, howFar, Color.PURPLE);
   }
 
   public Wall(double x, double y, Character direction, double howFar, Color color)
@@ -24,7 +24,7 @@ public class Wall extends BaseObject
     wall = new Rectangle();
     wall.setX(x);
     wall.setY(y);
-    wall.setFill(color);
+    checkColor(color);
     if (direction.equals('x'))
     {
       wall.setWidth(howFar);
@@ -40,5 +40,17 @@ public class Wall extends BaseObject
   public Rectangle getObject()
   {
     return wall;
+  }
+
+  private void checkColor(Color color)
+  {
+    /*
+     * color's where set to easy the map design.
+     */
+    if (color != Color.BLUE)
+    {
+      color = Color.PURPLE;
+    }
+    wall.setFill(color);
   }
 }

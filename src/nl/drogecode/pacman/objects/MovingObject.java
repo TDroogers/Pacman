@@ -91,13 +91,14 @@ public abstract class MovingObject extends BaseObject
 
   protected boolean moveObject(Circle object)
   {
-
+    double oldX = this.oldX;
+    double oldY = this.oldY;
     Platform.runLater(new Runnable()
     {
       @Override public void run()
       {
-        object.setCenterX(newX);
-        object.setCenterY(newY);
+        object.setCenterX(oldX);
+        object.setCenterY(oldY);
       }
     });
     return true;

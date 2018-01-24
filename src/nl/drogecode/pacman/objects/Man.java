@@ -58,12 +58,12 @@ public class Man extends MovingObject
     return y;
   }
 
-  public ArrayList<Double> getLastBumb()
+  public synchronized ArrayList<Double> getLastBumb()
   {
     return lastMan;
   }
 
-  public ArrayList<Double> getNextBumb()
+  public synchronized ArrayList<Double> getNextBumb()
   {
     if (nextMan == null)
     {
@@ -154,14 +154,14 @@ public class Man extends MovingObject
     fillLastMan();
   }
 
-  private void fillLastMan()
+  private synchronized void fillLastMan()
   {
     lastMan = new ArrayList<>();
     lastMan.add(oldX);
     lastMan.add(oldY);
   }
 
-  private void fillNextMan(Direction oldDir)
+  private synchronized void fillNextMan(Direction oldDir)
   {
     if (oldDir != dir)
     {

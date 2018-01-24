@@ -171,7 +171,6 @@ public class Man extends MovingObject
       walkinUntilObstacle.walkTestDirection(dir);
       nextMan.add(walkinUntilObstacle.getOldTestX());
       nextMan.add(walkinUntilObstacle.getOldTestY());
-      System.out.println(nextMan);
     }
   }
 

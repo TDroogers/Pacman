@@ -144,13 +144,8 @@ public class ManFinder extends Thread
       runSelfDemandingLoop(route);
       if (foundMan)
       {
-        System.out.println("Here is man: " + realWalker);
         break;
       }
-    }
-    if (distanceCounter >= 1000)
-    {
-      System.err.println("faild after 100 try's");
     }
   }
 

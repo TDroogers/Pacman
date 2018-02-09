@@ -1,5 +1,6 @@
 package nl.drogecode.pacman.logic.pathfinder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javafx.scene.shape.Circle;
@@ -153,7 +154,7 @@ public class WalkUntilObstacle
   {
     clone.setCenterX(testX);
     clone.setCenterY(testY);
-    List<BaseObject> intersections = logic.map.getIntersectionArray();
+    List<BaseObject> intersections = new ArrayList<>(logic.map.getIntersectionArray());
 
     for (BaseObject intersection : intersections)
     {

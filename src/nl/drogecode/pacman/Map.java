@@ -63,8 +63,8 @@ public class Map
       root.getChildren().removeAll(shape);
     }
     drawWalls();
-    drawGhosts();
     drawIntersection();
+    drawGhosts();
     return true;
   }
 
@@ -83,7 +83,7 @@ public class Map
     return ghosts;
   }
 
-  public List<BaseObject> getIntersectionArray()
+  public synchronized List<BaseObject> getIntersectionArray()
   {
     return intersection;
   }

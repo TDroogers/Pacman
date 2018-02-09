@@ -112,7 +112,7 @@ public abstract class MovingObject extends BaseObject
       {
         @Override protected Void call() throws Exception
         {
-          sleep.sleeper(60);
+          waitUntilReady();
           logic.setWakeUp(th);
           initiateLoop();
           return null;
@@ -152,20 +152,26 @@ public abstract class MovingObject extends BaseObject
 
       if (clone.getBoundsInParent().intersects(intersection.getObject().getBoundsInParent()))
       {
-        int id = ((Intersection) intersection).getID();
-        if (id == intersectionId)
-        {
-          intersected = false;
-          return;
-        }
-        else
-        {
-          inters = (Circle) intersection.getObject();
-          intersectionId = id;
-          intersected = true;
-          return;
-        }
+        isIntersectedAProblem(intersection);
+        return;
       }
+    }
+  }
+
+  private void isIntersectedAProblem(BaseObject intersection)
+  {
+    int id = ((Intersection) intersection).getID();
+    if (id == intersectionId)
+    {
+      intersected = false;
+      return;
+    }
+    else
+    {
+      inters = (Circle) intersection.getObject();
+      intersectionId = id;
+      intersected = true;
+      return;
     }
   }
 
@@ -176,5 +182,16 @@ public abstract class MovingObject extends BaseObject
     clone.setCenterY(newY);
 
     return clone;
+  }
+
+  private void waitUntilReady()
+  {
+    while (!logic.getReady())
+    {
+      /*
+       * Long.MAX_VALUE does net work yet, logic.setWakeUp() is not garranteed to be ready.
+       */
+      sleep.sleeper(60);
+    }
   }
 }

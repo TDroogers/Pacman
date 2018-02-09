@@ -54,8 +54,8 @@ public class Pacman extends Application
      */
     Score score = new Score();
     Lifes lifes = new Lifes();
-    Map map = new Map(root, score, logic);
     Man man = new Man(logic);
+    Map map = new Map(root, score, logic);
 
     logic.setStuff(primaryStage, map, man, score, lifes);
 

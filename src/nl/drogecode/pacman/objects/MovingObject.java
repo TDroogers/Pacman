@@ -124,6 +124,12 @@ public abstract class MovingObject extends BaseObject
     }
   }
 
+  protected void yieldLong()
+  {
+    Thread.yield();
+    sleep.sleeper(Long.MAX_VALUE);
+  }
+
   /*
    * 
    * ====================================================

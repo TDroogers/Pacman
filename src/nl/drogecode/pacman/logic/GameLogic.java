@@ -20,10 +20,10 @@ public class GameLogic extends GetSetLogic
     {
       @Override public void run()
       {
-        map.restart();
         man.restart();
         lifes.restart();
         score.restart();
+        map.restart();
       }
     });
   }
@@ -67,23 +67,26 @@ public class GameLogic extends GetSetLogic
 
   private boolean showDieAllert()
   {
-    holdGhosts();
-    System.gc();
-    Alert a = new Alert(Alert.AlertType.INFORMATION, "You are dead!");
-    a.showAndWait();
+    showAllert("You are dead!");
     return true;
   }
 
   private boolean showWinAllert()
   {
-    holdGhosts();
-    System.gc();
-    Alert a = new Alert(Alert.AlertType.INFORMATION, "You have won");
-    a.showAndWait();
+    showAllert("You have won");
     return true;
     /*
      * TODO: hiscore
      */
+  }
+
+  private boolean showAllert(String message)
+  {
+    holdGhosts();
+    System.gc();
+    Alert a = new Alert(Alert.AlertType.INFORMATION, message);
+    a.showAndWait();
+    return true;
   }
 
   private void holdGhosts()

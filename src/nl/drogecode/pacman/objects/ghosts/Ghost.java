@@ -64,15 +64,7 @@ public abstract class Ghost extends NpcObject
 
   protected void initiateLoop()
   {
-    while (!logic.getReady())
-    {
-      sleep.sleeper();
-    }
-    maxX = logic.getSceneWidth();
-    maxY = logic.getSceneHight();
-    x = oldX = newX = ghost.getCenterX();
-    y = oldY = newY = ghost.getCenterY();
-    walking = true;
+    beforeLoopAlwais();
     beforeLoop();
     while (walking)
     {
@@ -85,8 +77,7 @@ public abstract class Ghost extends NpcObject
       if (checkBumpMan(ghost))
       {
         walking = false;
-        Thread.yield();
-        sleep.sleeper(Long.MAX_VALUE);
+        yieldLong();
         logic.loseLife();
         break;
       }
@@ -95,8 +86,7 @@ public abstract class Ghost extends NpcObject
       x = newX;
       y = newY;
 
-      Thread.yield();
-      sleep.sleeper(Long.MAX_VALUE);
+      yieldLong();
     }
   }
 
@@ -158,29 +148,32 @@ public abstract class Ghost extends NpcObject
 
   protected abstract void noBumb();
 
+  private void beforeLoopAlwais()
+  {
+    while (!logic.getReady())
+    {
+      Thread.yield();
+      sleep.sleeper(60);
+    }
+    maxX = logic.getSceneWidth();
+    maxY = logic.getSceneHight();
+    x = oldX = newX = ghost.getCenterX();
+    y = oldY = newY = ghost.getCenterY();
+    walking = true;
+  }
+
   private boolean checkBumb()
   {
     if (!checkMove(ghost))
     {
       afterBumb();
-
-      bumped = true;
-      intersected = false;
-      intersectionId = -1;
-
-      Thread.yield();
-      sleep.sleeper(Long.MAX_VALUE);
-
+      Cantmove();
       return false;
     }
     else if (intersected)
     {
       afterBumb();
-
-      bumped = false;
-
-      Thread.yield();
-      sleep.sleeper(Long.MAX_VALUE);
+      hitIntersection();
     }
     else
     {
@@ -191,6 +184,21 @@ public abstract class Ghost extends NpcObject
       bumped = false;
     }
     return true;
+  }
+
+  private void Cantmove()
+  {
+    bumped = true;
+    intersected = false;
+    intersectionId = -1;
+
+    yieldLong();
+  }
+
+  private void hitIntersection()
+  {
+    bumped = false;
+    yieldLong();
   }
 
 }

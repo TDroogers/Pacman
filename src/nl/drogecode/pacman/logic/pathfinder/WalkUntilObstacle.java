@@ -160,19 +160,24 @@ public class WalkUntilObstacle
     {
       if (clone.getBoundsInParent().intersects(intersection.getObject().getBoundsInParent()))
       {
-        int id = ((Intersection) intersection).getID();
-        if (id == intersectionId)
-        {
-          return true;
-        }
-        else
-        {
-          inters = (Circle) intersection.getObject();
-          intersectionId = id;
-          return false;
-        }
+        foundIntersection(intersection);
       }
     }
     return true;
+  }
+
+  private boolean foundIntersection(BaseObject intersection)
+  {
+    int id = ((Intersection) intersection).getID();
+    if (id == intersectionId)
+    {
+      return true;
+    }
+    else
+    {
+      inters = (Circle) intersection.getObject();
+      intersectionId = id;
+      return false;
+    }
   }
 }

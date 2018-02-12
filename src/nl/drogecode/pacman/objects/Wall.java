@@ -21,10 +21,7 @@ public class Wall extends BaseObject
 
   public Wall(double x, double y, Character direction, double howFar, Color color)
   {
-    wall = new Rectangle();
-    wall.setX(x);
-    wall.setY(y);
-    checkColor(color);
+    setDefaults(x, y, color);
     if (direction.equals('x'))
     {
       wall.setWidth(howFar);
@@ -40,6 +37,14 @@ public class Wall extends BaseObject
   public Rectangle getObject()
   {
     return wall;
+  }
+
+  private void setDefaults(double x, double y, Color color)
+  {
+    wall = new Rectangle();
+    wall.setX(x);
+    wall.setY(y);
+    checkColor(color);
   }
 
   private void checkColor(Color color)

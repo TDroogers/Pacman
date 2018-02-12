@@ -74,18 +74,8 @@ public class ManFinder extends Thread
         sleep.sleeper(Long.MAX_VALUE);
         continue;
       }
-      Direction currentDir = moving.getDir();
-      SingleDecisionPoint route = new SingleDecisionPoint(true, currentDir);
-      listOfPoints = new ArrayList<>();
-      route.setPoint(moving.getMovingX(), moving.getMovingY());
-      // setHashInList(moving.getMovingX(), moving.getMovingY());
 
-      distanceCounter = 0;
-      currentCounter = 0;
-      foundMan = false;
-      walker = new ArrayList<>();
-      walkinUntilObstacle = new WalkUntilObstacle(manClone, moving.GSPEED, moving, logic);
-
+      SingleDecisionPoint route = initialSettings();
       startFindLoop(route);
     }
   }
@@ -119,6 +109,23 @@ public class ManFinder extends Thread
       manPrevLast = lastMan;
       return true;
     }
+  }
+
+  private SingleDecisionPoint initialSettings()
+  {
+    Direction currentDir = moving.getDir();
+    SingleDecisionPoint route = new SingleDecisionPoint(true, currentDir);
+    listOfPoints = new ArrayList<>();
+    route.setPoint(moving.getMovingX(), moving.getMovingY());
+    // setHashInList(moving.getMovingX(), moving.getMovingY());
+
+    distanceCounter = 0;
+    currentCounter = 0;
+    foundMan = false;
+    walker = new ArrayList<>();
+    walkinUntilObstacle = new WalkUntilObstacle(manClone, moving.GSPEED, moving, logic);
+
+    return route;
   }
 
   private boolean tryToSetNewManClone(ArrayList<Double> lastMan)
@@ -176,61 +183,83 @@ public class ManFinder extends Thread
       return true;
     }
     walker.add(path);
-    SingleDecisionPoint thisRoute;
+    SingleDecisionPoint thisRoute = null;
 
     if (route.getPath(path) == null)
     {
-      walkinUntilObstacle.resetTester(route);
-      route.setPath(path);
-
-      thisRoute = route.getPath(path);
-      thisRoute.setEnd(walkinUntilObstacle.walking(path));
-
-      if (currentCounter >= 2 && walker.get(currentCounter - 2).equals(moving.getMirror(path)))
-      {
-        thisRoute.setEnd(true);
-      }
-      if (!thisRoute.getEnd())
-      {
-        if (walkinUntilObstacle.walkTestDirection(path) == -1)
-        {
-          distanceCounter = 0;
-          foundMan = true;
-          updated = true;
-          setWalker(walker);
-        }
-        double oldTestX = walkinUntilObstacle.getOldTestX();
-        double oldTestY = walkinUntilObstacle.getOldTestY();
-        if (checkDoubleDouble(oldTestX, oldTestY))
-        {
-          setHashInList(oldTestX, oldTestY);
-          thisRoute.setIntersectionId(walkinUntilObstacle.getIntersectionId());
-          thisRoute.setPoint(oldTestX, oldTestY);
-          boolean doesChildWork = runSelfDemandingLoop(thisRoute);
-          if (doesChildWork)
-          {
-            thisRoute.unsetAllNextPath();
-          }
-        }
-      }
+      thisRoute = newPath(route, path, thisRoute);
     }
     else
     {
-      thisRoute = route.getPath(path);
-      if (!route.getEnd())
-      {
-        walkinUntilObstacle.resetTester(thisRoute);
-        boolean doesChildWork = runSelfDemandingLoop(thisRoute);
-        if (doesChildWork)
-        {
-          thisRoute.unsetAllNextPath();
-        }
-      }
+      thisRoute = oldPath(route, path, thisRoute);
     }
 
     walker.remove(currentCounter - 1);
 
     return thisRoute.getEnd();
+  }
+
+  private SingleDecisionPoint newPath(SingleDecisionPoint route, Direction path, SingleDecisionPoint thisRoute)
+  {
+    walkinUntilObstacle.resetTester(route);
+    route.setPath(path);
+
+    thisRoute = route.getPath(path);
+    thisRoute.setEnd(walkinUntilObstacle.walking(path));
+
+    if (currentCounter >= 2 && walker.get(currentCounter - 2).equals(moving.getMirror(path)))
+    {
+      thisRoute.setEnd(true);
+    }
+    if (!thisRoute.getEnd())
+    {
+      newPathNotEnding(path, thisRoute);
+    }
+    return thisRoute;
+  }
+
+  private void newPathNotEnding(Direction path, SingleDecisionPoint thisRoute)
+  {
+    if (walkinUntilObstacle.walkTestDirection(path) == -1)
+    {
+      distanceCounter = 0;
+      foundMan = true;
+      updated = true;
+      setWalker(walker);
+    }
+    double oldTestX = walkinUntilObstacle.getOldTestX();
+    double oldTestY = walkinUntilObstacle.getOldTestY();
+    if (checkDoubleDouble(oldTestX, oldTestY))
+    {
+      noNewDouble(oldTestX, oldTestY, thisRoute);
+    }
+  }
+
+  private void noNewDouble(double oldTestX, double oldTestY, SingleDecisionPoint thisRoute)
+  {
+    setHashInList(oldTestX, oldTestY);
+    thisRoute.setIntersectionId(walkinUntilObstacle.getIntersectionId());
+    thisRoute.setPoint(oldTestX, oldTestY);
+    boolean doesChildWork = runSelfDemandingLoop(thisRoute);
+    if (doesChildWork)
+    {
+      thisRoute.unsetAllNextPath();
+    }
+  }
+
+  private SingleDecisionPoint oldPath(SingleDecisionPoint route, Direction path, SingleDecisionPoint thisRoute)
+  {
+    thisRoute = route.getPath(path);
+    if (!route.getEnd())
+    {
+      walkinUntilObstacle.resetTester(thisRoute);
+      boolean doesChildWork = runSelfDemandingLoop(thisRoute);
+      if (doesChildWork)
+      {
+        thisRoute.unsetAllNextPath();
+      }
+    }
+    return thisRoute;
   }
 
   private void setHashInList(double xHash, double yHash)

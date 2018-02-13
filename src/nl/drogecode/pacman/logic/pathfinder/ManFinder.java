@@ -213,12 +213,12 @@ public class ManFinder extends Thread
     }
     if (!thisRoute.getEnd())
     {
-      newPathNotEnding(path, thisRoute);
+      thisRoute = newPathNotEnding(path, thisRoute);
     }
     return thisRoute;
   }
 
-  private void newPathNotEnding(Direction path, SingleDecisionPoint thisRoute)
+  private SingleDecisionPoint newPathNotEnding(Direction path, SingleDecisionPoint thisRoute)
   {
     if (walkinUntilObstacle.walkTestDirection(path) == -1)
     {
@@ -231,11 +231,12 @@ public class ManFinder extends Thread
     double oldTestY = walkinUntilObstacle.getOldTestY();
     if (checkDoubleDouble(oldTestX, oldTestY))
     {
-      noNewDouble(oldTestX, oldTestY, thisRoute);
+      thisRoute = noNewDouble(oldTestX, oldTestY, thisRoute);
     }
+    return thisRoute;
   }
 
-  private void noNewDouble(double oldTestX, double oldTestY, SingleDecisionPoint thisRoute)
+  private SingleDecisionPoint noNewDouble(double oldTestX, double oldTestY, SingleDecisionPoint thisRoute)
   {
     setHashInList(oldTestX, oldTestY);
     thisRoute.setIntersectionId(walkinUntilObstacle.getIntersectionId());
@@ -245,6 +246,8 @@ public class ManFinder extends Thread
     {
       thisRoute.unsetAllNextPath();
     }
+
+    return thisRoute;
   }
 
   private SingleDecisionPoint oldPath(SingleDecisionPoint route, Direction path, SingleDecisionPoint thisRoute)

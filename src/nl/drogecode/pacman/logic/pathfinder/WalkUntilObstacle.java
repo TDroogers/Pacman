@@ -160,7 +160,7 @@ public class WalkUntilObstacle
     {
       if (clone.getBoundsInParent().intersects(intersection.getObject().getBoundsInParent()))
       {
-        foundIntersection(intersection);
+        return foundIntersection(intersection);
       }
     }
     return true;

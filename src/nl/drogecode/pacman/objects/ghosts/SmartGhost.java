@@ -54,8 +54,7 @@ public abstract class SmartGhost extends Ghost
       {
         walker.add(findManShort());
       }
-      Thread.yield();
-      sleep.sleeper(Long.MAX_VALUE);
+      yieldLong();
     }
     while (tempWalker.isEmpty() && first);
   }

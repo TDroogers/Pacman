@@ -259,9 +259,12 @@ public class Map
     newIntersection(212, 88);
     newIntersection(212, 108);
     newIntersection(123, 183);
+    newIntersection(148, 183);
     newIntersection(183, 183);
     newIntersection(213, 183);
+    newIntersection(265, 183);
     newIntersection(336, 183);
+    newIntersection(400, 183);
     newIntersection(292, 65);
     newIntersection(168, 309);
     newIntersection(168, 329);
@@ -272,8 +275,10 @@ public class Map
     newIntersection(43, 369);
     newIntersection(354, 285);
     newIntersection(312, 285);
+    newIntersection(400, 285);
     newIntersection(340, 137);
     newIntersection(204, 375);
+    addObject(intersection);
   }
 
   private void drawCoinSquare(double x, double y, int xCount, int yCount)

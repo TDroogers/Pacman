@@ -1,6 +1,6 @@
 /**
  * 
- * A work in progress path finding algorithm, it works, but needs still needs a lot of optimization.
+ * A working path finder algorithm, for the ghosts to find the fastest route to the man.
  *
  */
 package nl.drogecode.pacman.logic.pathfinder;
@@ -17,13 +17,14 @@ import nl.drogecode.pacman.objects.ghosts.SmartGhost;
 
 public class ManFinder extends Thread
 {
+  private static final int EXTRA_ROUNTS = 5;
   private Circle manClone;
   private GameLogic logic;
   private SmartGhost moving;
   private GhostType type;
   private WalkUntilObstacle walkinUntilObstacle;
   private Sleeper sleep;
-  private int distanceCounter, currentCounter;
+  private int distanceCounter, currentCounter, countDownAfterFoundMan, stapsTillMan;
   private boolean foundMan, updated;
   private ArrayList<Direction> walker, realWalker;
   private volatile ArrayList<Double> manPrevLast;
@@ -117,10 +118,11 @@ public class ManFinder extends Thread
     SingleDecisionPoint route = new SingleDecisionPoint(true, currentDir);
     listOfPoints = new ArrayList<>();
     route.setPoint(moving.getMovingX(), moving.getMovingY());
-    // setHashInList(moving.getMovingX(), moving.getMovingY());
+    setHashInList(moving.getMovingX(), moving.getMovingY());
 
     distanceCounter = 0;
     currentCounter = 0;
+    countDownAfterFoundMan = EXTRA_ROUNTS;
     foundMan = false;
     walker = new ArrayList<>();
     walkinUntilObstacle = new WalkUntilObstacle(manClone, moving.GSPEED, moving, logic);
@@ -138,7 +140,7 @@ public class ManFinder extends Thread
     }
     catch (IndexOutOfBoundsException e)
     {
-      System.out.println(e);
+      System.err.println(e);
       return false;
     }
   }
@@ -149,8 +151,9 @@ public class ManFinder extends Thread
     {
       distanceCounter++;
       runSelfDemandingLoop(route);
-      if (foundMan)
+      if (foundMan && countDownAfterFoundMan-- <= 0)
       {
+        updated = true;
         break;
       }
     }
@@ -213,19 +216,28 @@ public class ManFinder extends Thread
     }
     if (!thisRoute.getEnd())
     {
-      thisRoute = newPathNotEnding(path, thisRoute);
+      thisRoute = newPathNotEnding(route, path, thisRoute);
     }
     return thisRoute;
   }
 
-  private SingleDecisionPoint newPathNotEnding(Direction path, SingleDecisionPoint thisRoute)
+  private SingleDecisionPoint newPathNotEnding(SingleDecisionPoint route, Direction path, SingleDecisionPoint thisRoute)
   {
+    int PreviusRouteStepCount = route.getStapCount();
     if (walkinUntilObstacle.walkTestDirection(path) == -1)
     {
-      distanceCounter = 0;
-      foundMan = true;
-      updated = true;
-      setWalker(walker);
+      if (foundMan)
+      {
+        thisRoute = alreadyAManFound(thisRoute, PreviusRouteStepCount);
+      }
+      else
+      {
+        thisRoute = firstManFound(thisRoute, PreviusRouteStepCount);
+      }
+    }
+    else
+    {
+      thisRoute.setStapCount(PreviusRouteStepCount + walkinUntilObstacle.getStapCount());
     }
     double oldTestX = walkinUntilObstacle.getOldTestX();
     double oldTestY = walkinUntilObstacle.getOldTestY();
@@ -233,6 +245,37 @@ public class ManFinder extends Thread
     {
       thisRoute = noNewDouble(oldTestX, oldTestY, thisRoute);
     }
+    return thisRoute;
+  }
+
+  private SingleDecisionPoint alreadyAManFound(SingleDecisionPoint thisRoute, int PreviusRouteStepCount)
+  {
+    thisRoute.setStapCount(PreviusRouteStepCount + walkinUntilObstacle.getStapCount());
+    thisRoute.setIsMan(true);
+    if (stapsTillMan > thisRoute.getStapCount())
+    {
+      System.out.println(stapsTillMan + "" + realWalker);
+      thisRoute = manFound(thisRoute);
+      System.out.println(stapsTillMan + "" + realWalker);
+      System.out.println("");
+    }
+    return thisRoute;
+  }
+
+  private SingleDecisionPoint firstManFound(SingleDecisionPoint thisRoute, int PreviusRouteStepCount)
+  {
+    foundMan = true;
+    thisRoute.setStapCount(PreviusRouteStepCount + walkinUntilObstacle.getStapCount());
+    thisRoute.setIsMan(true);
+    thisRoute = manFound(thisRoute);
+    return thisRoute;
+  }
+
+  private SingleDecisionPoint manFound(SingleDecisionPoint thisRoute)
+  {
+    setWalker(walker);
+    stapsTillMan = thisRoute.getStapCount();
+    thisRoute.setEnd(true);
     return thisRoute;
   }
 

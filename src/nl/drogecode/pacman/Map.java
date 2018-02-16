@@ -278,7 +278,6 @@ public class Map
     newIntersection(400, 285);
     newIntersection(340, 137);
     newIntersection(204, 375);
-    addObject(intersection);
   }
 
   private void drawCoinSquare(double x, double y, int xCount, int yCount)

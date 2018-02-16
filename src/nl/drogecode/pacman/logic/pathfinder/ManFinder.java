@@ -254,9 +254,7 @@ public class ManFinder extends Thread
     thisRoute.setIsMan(true);
     if (stapsTillMan > thisRoute.getStapCount())
     {
-      System.out.println(stapsTillMan + "" + realWalker);
       thisRoute = manFound(thisRoute);
-      System.out.println(stapsTillMan + "" + realWalker);
       System.out.println("");
     }
     return thisRoute;

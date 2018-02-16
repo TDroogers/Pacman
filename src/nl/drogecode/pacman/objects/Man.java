@@ -95,8 +95,7 @@ public class Man extends MovingObject
       if (!checkMove(man))
       {
         afterBumb();
-        Thread.yield();
-        sleep.sleeper(Long.MAX_VALUE);
+        yieldLong();
         continue;
       }
       else if (intersected)
@@ -110,8 +109,7 @@ public class Man extends MovingObject
       x = newX;
       y = newY;
 
-      Thread.yield();
-      sleep.sleeper(Long.MAX_VALUE);
+      yieldLong();
     }
   }
 

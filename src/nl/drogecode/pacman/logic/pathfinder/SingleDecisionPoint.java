@@ -10,9 +10,9 @@ import nl.drogecode.pacman.enums.Direction;
 public class SingleDecisionPoint
 {
   private SingleDecisionPoint up, down, left, right;
-  private int intersectionId;
+  private int intersectionId, stapCount;
   private double x, y;
-  private boolean end, fullStop, first;
+  private boolean end, fullStop, first, isMan;
 
   public SingleDecisionPoint()
   {}
@@ -82,6 +82,11 @@ public class SingleDecisionPoint
     intersectionId = newIntId;
   }
 
+  protected void setStapCount(int staps)
+  {
+    stapCount = staps;
+  }
+
   protected void setPoint(double x, double y)
   {
     this.x = x;
@@ -96,6 +101,11 @@ public class SingleDecisionPoint
   protected void setFullStop(boolean fullStop)
   {
     this.fullStop = fullStop;
+  }
+
+  protected void setIsMan(boolean isMan)
+  {
+    this.isMan = isMan;
   }
 
   /*
@@ -128,6 +138,11 @@ public class SingleDecisionPoint
     return intersectionId;
   }
 
+  protected int getStapCount()
+  {
+    return stapCount;
+  }
+
   protected double getX()
   {
     return x;
@@ -151,6 +166,11 @@ public class SingleDecisionPoint
   protected boolean getFirst()
   {
     return first;
+  }
+
+  protected boolean getIsMan()
+  {
+    return isMan;
   }
 
   /*

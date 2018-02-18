@@ -14,7 +14,7 @@ public class WalkUntilObstacle
 {
   private Circle tester, manClone, inters, clone;
   private double testX, testY, oldTestX, oldTestY, olderX, olderY, speed;
-  private int intersectionId;
+  private int intersectionId, stapCount;
   private MovingObject moving;
   private GameLogic logic;
 
@@ -53,6 +53,11 @@ public class WalkUntilObstacle
     return intersectionId;
   }
 
+  public int getStapCount()
+  {
+    return stapCount;
+  }
+
   public void resetTester(SingleDecisionPoint route)
   {
     testX = oldTestX = olderX = route.getX();
@@ -82,10 +87,12 @@ public class WalkUntilObstacle
     {
       if (walking(path))
       {
+        this.stapCount = stapCount;
         return stapCount;
       }
       else if (tester.getBoundsInParent().intersects(manClone.getBoundsInParent()))
       {
+        this.stapCount = stapCount;
         return -1;
       }
 
